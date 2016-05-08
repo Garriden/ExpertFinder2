@@ -4,6 +4,7 @@ import java.util.*;
 /**
  * Created by Ruben Bagan Benavides on 05/05/2016.
  */
+
 public class Matriu implements Serializable{
     private class Index implements Comparator<Index> {
         public int fila;
