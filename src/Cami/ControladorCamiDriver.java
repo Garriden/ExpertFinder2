@@ -1,3 +1,7 @@
+package Cami;
+
+import Cami.Cami;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -6,7 +10,7 @@ import java.util.Scanner;
  */
 public class ControladorCamiDriver {
     public static Scanner scan = new Scanner(System.in);
-    public static ControladorCami controladorCami = new ControladorCami();
+    public static Cami.ControladorCami controladorCami = new Cami.ControladorCami();
 
     public static int llegir_enter(int minim, int maxim) {
         int n = scan.nextInt();
@@ -142,7 +146,7 @@ public class ControladorCamiDriver {
         ArrayList<Cami> camins = controladorCami.get_camins();
         System.out.println("Camins disponibles: " + camins.size());
         for (int i = 0; i < camins.size(); ++i) {
-            System.out.println(i + 1 + " - Descripcio: " + camins.get(i).getDescripcio() + " Cami: " + camins.get(i).getCami());
+            System.out.println(i + 1 + " - Descripcio: " + camins.get(i).getDescripcio() + " Cami.Cami: " + camins.get(i).getCami());
         }
     }
 
@@ -156,7 +160,7 @@ public class ControladorCamiDriver {
             String descripcio = scan.nextLine();
             Cami c = controladorCami.get_cami(descripcio);
             if (c != null) {
-                System.out.println("Descripcio: " + c.getDescripcio() + " Cami: " + c.getCami());
+                System.out.println("Descripcio: " + c.getDescripcio() + " Cami.Cami: " + c.getCami());
             }
             else System.out.println("No hi ha cap cami amb aquesta descripcio");
         }
@@ -176,7 +180,7 @@ public class ControladorCamiDriver {
             --id;
             Cami c = controladorCami.get_cami(id);
             if (c != null) {
-                System.out.println("Descripcio: " + c.getDescripcio() + " Cami: " + c.getCami());
+                System.out.println("Descripcio: " + c.getDescripcio() + " Cami.Cami: " + c.getCami());
             }
             else System.out.println("No hi ha cap cami amb aquesta descripcio");
         }

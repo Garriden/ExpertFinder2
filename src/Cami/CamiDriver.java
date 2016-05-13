@@ -1,3 +1,7 @@
+package Cami;
+
+import Cami.Cami;
+
 import java.util.Scanner;
 
 /**
@@ -21,13 +25,13 @@ public class CamiDriver {
         Integer menu=99;
         while(menu!=0){
             System.out.println("Selecciona una opció:");
-            System.out.println("1:Cambiar atribut Cami.");
+            System.out.println("1:Cambiar atribut Cami.Cami.");
             System.out.println("2:Cambiar atribut Descripcio.");
-            System.out.println("3:Consultar atribut Cami.");
+            System.out.println("3:Consultar atribut Cami.Cami.");
             System.out.println("4:Consultar atribut Descripcio.");
-            System.out.println("5.Consultar la longitud del atribut Cami.");
-            System.out.println("6.Comprobar si el atribut Cami es concatenable amb un altre string.");
-            System.out.println("7.Concatenar el atribut Cami amb un string.");
+            System.out.println("5.Consultar la longitud del atribut Cami.Cami.");
+            System.out.println("6.Comprobar si el atribut Cami.Cami es concatenable amb un altre string.");
+            System.out.println("7.Concatenar el atribut Cami.Cami amb un string.");
             System.out.println("8.Comprovar si es un cami valid.");
             System.out.println("9.Invertir atribut cami.");
             System.out.println("0.Sortir.");
@@ -44,25 +48,25 @@ public class CamiDriver {
                     test.setDescripcio(s);
                     break;
                 case 3:
-                    System.out.println("L'atribut Cami es:"+test.getCami());
+                    System.out.println("L'atribut Cami.Cami es:"+test.getCami());
                     break;
                 case 4:
                     System.out.println("L'atribut Descripcio es:"+test.getDescripcio());
                     break;
                 case 5:
-                    System.out.println("La longitud de l'atribut Cami es:"+test.get_longitud());
+                    System.out.println("La longitud de l'atribut Cami.Cami es:"+test.get_longitud());
                     break;
                 case 6:
                     System.out.println("Introdueix un cami a concatenar:");
                     s=capt.next();
                     Boolean b=test.es_concatenable(s);
-                    if(b) System.out.println("l'atribut Cami es concatenable amb "+s);
-                    else System.out.println("l'atribut Cami NO es concatenable amb "+s);
+                    if(b) System.out.println("l'atribut Cami.Cami es concatenable amb "+s);
+                    else System.out.println("l'atribut Cami.Cami NO es concatenable amb "+s);
                     break;
                 case 7:
                     System.out.println("Introdueix un cami a concatenar:");
                     s=capt.next();
-                    System.out.println("El atribut Cami es "+test.getCami());
+                    System.out.println("El atribut Cami.Cami es "+test.getCami());
                     System.out.println("El cami a concatenar es "+s);
                     test.concatenar(s);
                     System.out.println("El resultat de concatenar es "+test.getCami());
@@ -75,7 +79,7 @@ public class CamiDriver {
                     break;
                 case 9:
                     test.invertir();
-                    System.out.println("L'atribut Cami es:"+test.getCami());
+                    System.out.println("L'atribut Cami.Cami es:"+test.getCami());
 
             }
         }

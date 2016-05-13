@@ -1,3 +1,8 @@
+package Consulta;
+
+import Node.Node;
+import Resultat.Resultat;
+
 import java.util.Scanner;
 
 /**
