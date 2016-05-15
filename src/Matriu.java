@@ -1,5 +1,3 @@
-package Matriu;
-
 import java.io.Serializable;
 import java.util.*;
 
@@ -8,7 +6,7 @@ import java.util.*;
  */
 
 public class Matriu implements Serializable{
-    private class Index implements Comparator<Index> {
+    public class Index implements Comparator<Index>, Serializable {
         public int fila;
         public int columna;
 
@@ -48,10 +46,10 @@ public class Matriu implements Serializable{
         this.nFiles = files;
         this.nColumnes = columnes;
         this.tmpIndex = new Index(0,0);
-        this.data = new HashMap<>(files*32);
+        this.data = new HashMap<>(files*64);
     }
 
-    // Pre:  0 <= fila < Matriu.Matriu.fila; 0 <= columna < Matriu.Matriu.columna
+    // Pre:  0 <= fila < Matriu.fila; 0 <= columna < Matriu.columna
     // Post: La matriu implicita té un nou valor en la fila i columna pasades per paràmetre.
     // Cost: O(1).
     public void set_valor(int fila, int columna, double valor) {
@@ -63,7 +61,7 @@ public class Matriu implements Serializable{
         else if (valor != 0.0) this.data.put(i, valor);
     }
 
-    // Pre:  0 <= fila < Matriu.Matriu.fila; 0 <= columna < Matriu.Matriu.columna
+    // Pre:  0 <= fila < Matriu.fila; 0 <= columna < Matriu.columna
     // Post: Retorna el valor en la fila i columna pasades per paràmetre de la matriu implicita.
     // Cost: O(1).
     public double get_valor(int fila, int columna) {
@@ -88,7 +86,7 @@ public class Matriu implements Serializable{
         return this.nColumnes;
     }
 
-    // Pre:  0 <= fila < Matriu.Matriu.Fila; data != NULL. La longitud de data té que ser igual al numero de columnes de la
+    // Pre:  0 <= fila < Matriu.Fila; data != NULL. La longitud de data té que ser igual al numero de columnes de la
     //       matriu implícita.
     // Post: La fila i-èssima de la matriu implícita té com a valors data.
     // Cost: O(n)
@@ -96,7 +94,7 @@ public class Matriu implements Serializable{
         for (int i = 0; i < data.length; ++i) this.set_valor(fila, i, data[i]);
     }
 
-    // Pre:  0 <= columna < Matriu.Matriu.columna; data != NULL. La longitud de data té que ser igual al numero de files de la
+    // Pre:  0 <= columna < Matriu.columna; data != NULL. La longitud de data té que ser igual al numero de files de la
     //       matriu implícita.
     // Post: La columna i-èssima de la matriu implícita té com a valors data.
     // Cost: O(n)
@@ -104,8 +102,8 @@ public class Matriu implements Serializable{
         for (int i = 0; i < data.length; ++i) this.set_valor(i, columna, data[i]);
     }
 
-    // Pre:  0 <= fila < Matriu.Matriu.fila
-    // Post: Retorna una Matriu.Matriu C coma resultat de obtenir la fila i-èssima de la matriu implícita.
+    // Pre:  0 <= fila < Matriu.fila
+    // Post: Retorna una Matriu C coma resultat de obtenir la fila i-èssima de la matriu implícita.
     // Cost: O(n).
     public Matriu get_fila_iessima(int fila) {
         Matriu m = new Matriu(1, this.nColumnes);
@@ -113,8 +111,8 @@ public class Matriu implements Serializable{
         return m;
     }
 
-    // Pre:  0 <= columna < Matriu.Matriu.columna
-    // Post: Retorna una Matriu.Matriu C coma resultat de obtenir la columna i-èssima de la matriu implícita.
+    // Pre:  0 <= columna < Matriu.columna
+    // Post: Retorna una Matriu C coma resultat de obtenir la columna i-èssima de la matriu implícita.
     // Cost: O(n).
     public Matriu get_columna_iessima(int columna) {
         Matriu m = new Matriu(this.nFiles, 1);
@@ -122,7 +120,7 @@ public class Matriu implements Serializable{
         return m;
     }
 
-    // Pre:  0 <= fila < Matriu.Matriu.fila; El nombre de files de la matriu >= 2.
+    // Pre:  0 <= fila < Matriu.fila; El nombre de files de la matriu >= 2.
     // Post: S'ha eliminat de la matriu implícita la fila pasada com a paràmetre.
     // Cost: O(n).
     public void eliminar_fila(int fila) {
@@ -140,7 +138,7 @@ public class Matriu implements Serializable{
         --this.nFiles;
     }
 
-    // Pre:  0 <= columna < Matriu.Matriu.fila; El numero de columnes de la matriu >= 2.
+    // Pre:  0 <= columna < Matriu.fila; El numero de columnes de la matriu >= 2.
     // Post: S'ha eliminat de la matriu implícita la columna pasada com a paràmetre.
     // Cost: O(n).
     public void eliminar_columna(int columna) {
@@ -160,7 +158,7 @@ public class Matriu implements Serializable{
 
     // Pre:  Cert.
     // Post: S'ha afegit a la matriu implícita una fila on tots els seus valors són 0. Aquesta nova fila és la
-    //       última fila de la matriu. El numero de files de la matriu és Matriu.Matriu.files + 1.
+    //       última fila de la matriu. El numero de files de la matriu és Matriu.files + 1.
     // Cost: O(1).
     public void afegir_fila() {
         ++this.nFiles;
@@ -168,7 +166,7 @@ public class Matriu implements Serializable{
 
     // Pre:  Cert.
     // Post: S'ha afegit a la matriu implícita una columna on tots els seus valors són 0. Aquesta nova columna és la
-    //       última columna de la matriu. El numero de columnes de la matriu és Matriu.Matriu.columnes + 1.
+    //       última columna de la matriu. El numero de columnes de la matriu és Matriu.columnes + 1.
     // Cost: O(1).
     public void afegir_columna() {
         ++this.nColumnes;
@@ -205,7 +203,7 @@ public class Matriu implements Serializable{
     }
 
     // Pre:  Anomanem la matriu implícita com A i la matriu pasada per referència com B, B != NULL. El nombre files de
-    //		 la Matriu.Matriu A té que ser igual al nombre de columnes de la Matriu.Matriu B.
+    //		 la Matriu A té que ser igual al nombre de columnes de la Matriu B.
     // Post: Retorna una matriu C com a resultat de multiplicar la matriu implícita (A) amb la matriu B. C = A * B.
     // Cost: O(n³).
     public Matriu multiplicar(Matriu b) {
@@ -237,7 +235,7 @@ public class Matriu implements Serializable{
     }
 
     // Pre:  Cert.
-    // Post: Retorna una Matriu.Matriu C com a resultat de normalitzar per files la matriu implícita.
+    // Post: Retorna una Matriu C com a resultat de normalitzar per files la matriu implícita.
     // Cost: O(n²).
     public Matriu normalitzar_fila() {
         Matriu m = new Matriu(this.nFiles, this.nColumnes);
@@ -258,7 +256,7 @@ public class Matriu implements Serializable{
     }
 
     // Pre:  Cert.
-    // Post: Retorna una Matriu.Matriu C com a resultat de normalitzar per columnes la matriu implícita.
+    // Post: Retorna una Matriu C com a resultat de normalitzar per columnes la matriu implícita.
     // Cost: O(n²).
     public Matriu normalitzar_columna() {
         Matriu m = new Matriu(this.nFiles, this.nColumnes);
@@ -276,6 +274,14 @@ public class Matriu implements Serializable{
         }
 
         return m;
+    }
+
+    // Pre:  Cert
+    // Post: Retorna una referència a un Hashmap del contingut de la matriu on nomes conté els index dels valors que no
+    //       son zero.
+    // Cost: O(1)
+    public Set<Index> get_index_matriu() {
+        return this.data.keySet();
     }
 
     // Pre:  Cert.

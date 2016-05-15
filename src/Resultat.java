@@ -1,7 +1,3 @@
-package Resultat;
-
-import Node.Node;
-import Utils.Tuple;
 import java.util.ArrayList;
 /**
  * Created by Edgar Perez, Col·laboracio : Ruben Bagan Benavides
@@ -16,7 +12,7 @@ public class Resultat {
         taula = new ArrayList<>();
     }
 
-    // Pre:  Node.Node != null; 0 <= grauRellevancia <= 1
+    // Pre:  Node != null; 0 <= grauRellevancia <= 1
     // Post: Afegix una tuple al resultat amb el node i un grau de rellevancia passats per paràmetre.
     // Cost: O(1)
     public void afegir_tuple(Node node, double grauRellevancia){
@@ -30,7 +26,7 @@ public class Resultat {
         return taula.size();
     }
 
-    // Pre:  0 <= pos < Resultat.Resultat.Mida
+    // Pre:  0 <= pos < Resultat.Mida
     // Post: Retorna la tuple i-èssima del resultat.
     // Cost: O(1)
     public Tuple get_tuple(int pos) {
@@ -50,7 +46,7 @@ public class Resultat {
         return copia_taula;
     }
 
-    // Pre:  0 <= pos < Resultat.Resultat.Mida
+    // Pre:  0 <= pos < Resultat.Mida
     // Post: S'ha elimiant la tuple i-èssima del resultat.
     // Cost: O(1)
     public void eliminar_tuple(int pos){

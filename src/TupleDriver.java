@@ -1,7 +1,3 @@
-package Utils;
-
-import Node.Node;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
@@ -109,7 +105,7 @@ public class TupleDriver {
     public static void obtenir_llista_tuples() {
         System.out.println("Nombre de tuples total: " + tuples.size());
         for (int i = 0; i < tuples.size(); ++i) {
-            System.out.println((i+1) + "- Nom Node.Node: " + tuples.get(i).get_node().get_nom() + " Tipus Node.Node: " +
+            System.out.println((i+1) + "- Nom Node: " + tuples.get(i).get_node().get_nom() + " Tipus Node: " +
                     tuples.get(i).get_node().get_tipus_node() + " Grau rellevancia: " + tuples.get(i).get_grau_rellevancia());
         }
     }

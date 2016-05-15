@@ -1,10 +1,10 @@
-package Node;
+import java.io.Serializable;
 
 /**
  * Created by Edgar Perez on 17/04/2016.
  */
 
-public class Node {
+public class Node implements Serializable{
 
 		public enum TipusNode {
 			AUTOR, CONFERENCIA, PAPER, TERME

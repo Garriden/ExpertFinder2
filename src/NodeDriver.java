@@ -1,5 +1,3 @@
-package Node;
-
 import java.util.Scanner;
 
 // Created by Marc Garrido  17/04/2016

@@ -1,6 +1,3 @@
-package Consulta;
-import Resultat.*;
-
 /**
  *
  * @author adri

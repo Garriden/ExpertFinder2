@@ -1,15 +1,11 @@
-package Graf;
-
-import Node.Node;
-import Matriu.Matriu;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Marc Garrido on 17/04/2016. Col·laboracio Ruben Bagan Benavides
  */
 
-public class Graf {
+public class Graf implements Serializable{
     private Matriu paperAutor;
     private Matriu paperConferencia;
     private Matriu paperTerme;
@@ -69,7 +65,7 @@ public class Graf {
         }
     }
 
-    //Pre:  Node.Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
+    //Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
     //Post: Afegeix un '1' en la posició corresponent de la matriu paper_(TipusNodeDestí)
     // Errors:
     //      -1 = argument null
@@ -190,7 +186,7 @@ public class Graf {
         return 0;
     }
 
-    //Pre:  Node.Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
+    //Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
     //Post: Afegeix un '0' en la posició corresponent de la matriu paper_(TipusNodeDestí)
     // Errors:
     //      -1 = argument null;
