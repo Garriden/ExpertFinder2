@@ -1,3 +1,8 @@
+package Graf;
+
+import Node.Node;
+import Utils.*;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -173,12 +178,12 @@ public class ControladorPersistenciaGraf {
         return this.graf;
     }
 
-    public void exportar(String ruta) throws IOException {
+    public void exportar(String ruta , Graf graf) throws IOException {
         FileOutputStream fout = new FileOutputStream(ruta+"graf.sav");
         ObjectOutputStream oos;
         try {
             oos = new ObjectOutputStream(fout);
-            oos.writeObject(this.graf);
+            oos.writeObject(graf);
         }catch (IOException e) {
             throw new IOException("Error: No s'ha pogut importar el graf selvat de la ruta: " + ruta + "\\graf.sav " +
                     "perque o no existeix, o es utilitzat per un altre programa.");
@@ -332,7 +337,7 @@ public class ControladorPersistenciaGraf {
         FileInputStream fin = new FileInputStream(ruta+"graf.sav");
         ObjectInputStream ois = new ObjectInputStream(fin);
         try {
-            graf = (Graf) ois.readObject();
+            graf = (Graf.Graf) ois.readObject();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

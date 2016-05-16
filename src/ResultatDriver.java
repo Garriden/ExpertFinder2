@@ -2,6 +2,9 @@
  * Created by Ruben Bagan Benavides on 24/04/2016.
  */
 
+import Node.Node;
+import Utils.Tuple;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
@@ -108,7 +111,7 @@ public class ResultatDriver {
         ArrayList<Tuple> tuples = resultat.get_tuples();
         System.out.println("Nombre de tuples total: " + resultat.mida());
         for (int i = 0; i < resultat.mida(); ++i) {
-            System.out.println((i+1) + "- Nom Node: " + tuples.get(i).get_node().get_nom() + " Tipus Node: " +
+            System.out.println((i+1) + "- Nom Node.Node: " + tuples.get(i).get_node().get_nom() + " Tipus Node.Node: " +
                     tuples.get(i).get_node().get_tipus_node() + " Grau rellevancia: " + tuples.get(i).get_grau_rellevancia());
         }
     }

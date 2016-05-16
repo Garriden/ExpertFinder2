@@ -1,3 +1,6 @@
+import Node.Node;
+import Utils.Tuple;
+
 import java.util.ArrayList;
 /**
  * Created by Edgar Perez, Col·laboracio : Ruben Bagan Benavides
@@ -12,7 +15,7 @@ public class Resultat {
         taula = new ArrayList<>();
     }
 
-    // Pre:  Node != null; 0 <= grauRellevancia <= 1
+    // Pre:  Node.Node != null; 0 <= grauRellevancia <= 1
     // Post: Afegix una tuple al resultat amb el node i un grau de rellevancia passats per paràmetre.
     // Cost: O(1)
     public void afegir_tuple(Node node, double grauRellevancia){

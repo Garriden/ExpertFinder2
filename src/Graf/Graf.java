@@ -1,3 +1,7 @@
+package Graf;
+import Node.*;
+import Utils.*;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -65,7 +69,7 @@ public class Graf implements Serializable{
         }
     }
 
-    //Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
+    //Pre:  Node.Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
     //Post: Afegeix un '1' en la posició corresponent de la matriu paper_(TipusNodeDestí)
     // Errors:
     //      -1 = argument null
@@ -186,7 +190,7 @@ public class Graf implements Serializable{
         return 0;
     }
 
-    //Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
+    //Pre:  Node.Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
     //Post: Afegeix un '0' en la posició corresponent de la matriu paper_(TipusNodeDestí)
     // Errors:
     //      -1 = argument null;

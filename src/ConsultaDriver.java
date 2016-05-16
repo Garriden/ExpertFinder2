@@ -1,3 +1,5 @@
+import Node.Node;
+
 import java.util.Scanner;
 
 /**

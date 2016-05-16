@@ -1,3 +1,7 @@
+package Graf;
+import Utils.*;
+import Node.*;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -10,9 +14,9 @@ public class ControladorPersistenciaGrafDriver {
     private static Scanner scan = new Scanner(System.in);
 
     public static void menu() {
-        System.out.println("1\tImportar Graf a partir d'una ruta.");
-        System.out.println("2\tImportar Graf com a objecte");
-        System.out.println("3\tExportar Graf com a objecte");
+        System.out.println("1\tImportar Graf.Graf a partir d'una ruta.");
+        System.out.println("2\tImportar Graf.Graf com a objecte");
+        System.out.println("3\tExportar Graf.Graf com a objecte");
         System.out.println("0\tSortir");
     }
 
