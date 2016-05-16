@@ -1,6 +1,5 @@
-package Cami;
+package expert.finder.cami;
 
-import expertFinder.cami.Cami;
 
 import java.util.Scanner;
 

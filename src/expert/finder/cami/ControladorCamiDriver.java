@@ -1,4 +1,4 @@
-package Cami;
+package expert.finder.cami;
 
 import java.util.ArrayList;
 import java.util.Scanner;

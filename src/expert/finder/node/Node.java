@@ -1,4 +1,4 @@
-package Node;
+package expert.finder.node;
 
 import java.io.Serializable;
 

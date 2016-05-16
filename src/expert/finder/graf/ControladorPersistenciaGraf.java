@@ -1,7 +1,7 @@
-package Graf;
+package expert.finder.graf;
 
-import Node.Node;
-import Utils.*;
+import expert.finder.node.Node;
+import expert.finder.utils.Matriu;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -337,7 +337,7 @@ public class ControladorPersistenciaGraf {
         FileInputStream fin = new FileInputStream(ruta+"graf.sav");
         ObjectInputStream ois = new ObjectInputStream(fin);
         try {
-            graf = (Graf.Graf) ois.readObject();
+            graf = (Graf) ois.readObject();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

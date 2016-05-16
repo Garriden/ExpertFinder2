@@ -1,5 +1,5 @@
-import Node.Node;
-import Utils.Tuple;
+import expert.finder.node.Node;
+import expert.finder.utils.Tuple;
 
 import java.util.ArrayList;
 /**
@@ -15,7 +15,7 @@ public class Resultat {
         taula = new ArrayList<>();
     }
 
-    // Pre:  Node.Node != null; 0 <= grauRellevancia <= 1
+    // Pre:  Node != null; 0 <= grauRellevancia <= 1
     // Post: Afegix una tuple al resultat amb el node i un grau de rellevancia passats per paràmetre.
     // Cost: O(1)
     public void afegir_tuple(Node node, double grauRellevancia){

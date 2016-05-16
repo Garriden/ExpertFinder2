@@ -1,6 +1,6 @@
-package Graf;
-import Node.*;
-import Utils.*;
+package expert.finder.graf;
+import expert.finder.node.Node;
+import expert.finder.utils.Matriu;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ public class Graf implements Serializable{
         }
     }
 
-    //Pre:  Node.Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
+    //Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
     //Post: Afegeix un '1' en la posició corresponent de la matriu paper_(TipusNodeDestí)
     // Errors:
     //      -1 = argument null
@@ -103,94 +103,84 @@ public class Graf implements Serializable{
     //Pre:  Cert
     //Post: Elimina el node desitjat al final de l'Array corresponent i treu les columnes i/o files la matriu corresponent.
     // Errors:
-    //      -1 = argument null;
-    //      -2 = no hay ningun nodo con esa id.
-    //      -3 = tipus node incorrecte
-    //      -4 = no es pot eliminar un node si la matriu te dimensio 1,1
+    //      1 = no hay ningun nodo con esa id.
+    //      2 = tipus node incorrecte
     public int eliminar_node(Node node) {
-        if (node == null) return -1;
+        int error = 0;
         switch (node.get_tipus_node()) {
             case AUTOR:
-                if (this.autor.size() - 1 < 1) return -4;
-                if (this.autor.remove(node.get_id()) != null) {
+                if (node.get_id() < 0 || node.get_id() >= this.autor.size()) error = 1;
+                else {
+                    this.autor.remove(node.get_id());
                     this.paperAutor.eliminar_columna(node.get_id());
-                    for (int i = node.get_id(); i < autor.size(); ++i) {
-                        autor.get(i).set_id(i);
-                    }
-                    return 0;
+                    for (int i = node.get_id(); i < this.autor.size(); ++i) this.autor.get(i).set_id(i);
                 }
-                return -2;
+                break;
             case PAPER:
-                if (this.paper.size() - 1 < 1) return -4;
-                if (this.paper.remove(node.get_id()) != null) {
+                if (node.get_id() < 0 || node.get_id() >= this.paper.size()) error = 1;
+                else {
+                    this.paper.remove(node.get_id());
                     this.paperAutor.eliminar_fila(node.get_id());
                     this.paperTerme.eliminar_fila(node.get_id());
                     this.paperConferencia.eliminar_fila(node.get_id());
-                    for (int i = node.get_id(); i < paper.size(); ++i) {
-                        paper.get(i).set_id(i);
-                    }
-                    return 0;
+                    for (int i = node.get_id(); i < paper.size(); ++i) paper.get(i).set_id(i);
                 }
-                return -2;
+                break;
             case TERME:
-                if (this.terme.size() - 1 < 1) return -4;
-                if (this.terme.remove(node.get_id()) != null) {
+                if (node.get_id() < 0 || node.get_id() >= this.terme.size()) error = 1;
+                else {
+                    this.terme.remove(node.get_id());
                     this.paperTerme.eliminar_columna(node.get_id());
-                    for (int i = node.get_id(); i < terme.size(); ++i) {
-                        terme.get(i).set_id(i);
-                    }
-                    return 0;
+                    for (int i = node.get_id(); i < terme.size(); ++i) terme.get(i).set_id(i);
                 }
-                return -2;
+                break;
             case CONFERENCIA:
-                if (this.conferencia.size() - 1 < 1) return -4;
-                if (this.conferencia.remove(node.get_id()) != null) {
+                if (node.get_id() < 0 || node.get_id() >= this.conferencia.size()) error = 1;
+                else {
+                    this.conferencia.remove(node.get_id());
                     this.paperConferencia.eliminar_columna(node.get_id());
-                    for (int i = node.get_id(); i < conferencia.size(); ++i) {
-                        conferencia.get(i).set_id(i);
-                    }
-                    return 0;
+                    for (int i = node.get_id(); i < conferencia.size(); ++i) conferencia.get(i).set_id(i);
                 }
-                return -2;
+                break;
+            default:
+                error = 2;
         }
-        return -3;
+
+        return error;
     }
 
 
     // Pre: Cert
     // Post: Canvia el nom del node indicat
     // Errors:
-    //      -1 = argument null;
-    //      -2 = id negatiu
-    //      -3 = id >= tamany del vector
-    //      -4 = tipus node incorrecte
+    //      1 = No hi ha cap node amb aquest id.
+    //      2 = El tipus de node es incorrecte.
     public int actualizar_node(Node node) {
-        if (node == null) return -1;
-        if (node.get_id() < 0) return -2;
+        int error = 0;
         switch (node.get_tipus_node()) {
             case AUTOR:
-                if (node.get_id() >= this.autor.size()) return -3;
-                this.autor.get(node.get_id()).set_nom(node.get_nom());
+                if (0 < node.get_id() || node.get_id() >= this.autor.size()) error = 1;
+                else this.autor.get(node.get_id()).set_nom(node.get_nom());
                 break;
             case PAPER:
-                if (node.get_id() >= this.paper.size()) return -3;
-                this.paper.get(node.get_id()).set_nom(node.get_nom());
+                if (0 < node.get_id() || node.get_id() >= this.paper.size()) error = 1;
+                else this.paper.get(node.get_id()).set_nom(node.get_nom());
                 break;
             case TERME:
-                if (node.get_id() >= this.terme.size()) return -3;
-                this.terme.get(node.get_id()).set_nom(node.get_nom());
+                if (0 < node.get_id() || node.get_id() >= this.terme.size()) error = 1;
+                else this.terme.get(node.get_id()).set_nom(node.get_nom());
                 break;
             case CONFERENCIA:
-                if (node.get_id() >= this.conferencia.size()) return -3;
-                this.conferencia.get(node.get_id()).set_nom(node.get_nom());
+                if (0 < node.get_id() || node.get_id() >= this.conferencia.size()) error = 1;
+                else this.conferencia.get(node.get_id()).set_nom(node.get_nom());
                 break;
             default:
-                return -4;
+                return 2;
         }
-        return 0;
+        return error;
     }
 
-    //Pre:  Node.Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
+    //Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
     //Post: Afegeix un '0' en la posició corresponent de la matriu paper_(TipusNodeDestí)
     // Errors:
     //      -1 = argument null;
@@ -224,20 +214,18 @@ public class Graf implements Serializable{
 
     //Pre: Cert
     //Post: Retorna el node indicat
-    public Node get_node(int i, Node.TipusNode tipus)
-    {
+    public Node get_node(int i, Node.TipusNode tipus) {
         switch(tipus) {
             case AUTOR:
-                if(i < autor.size()) return autor.get(i);
-            case CONFERENCIA:
-                if(i < conferencia.size()) return conferencia.get(i);
+                if(i >= 0 && i < autor.size()) return autor.get(i);
             case PAPER:
-                if(i < paper.size()) return paper.get(i);
+                if(i >= 0 && i < paper.size()) return paper.get(i);
             case TERME:
-                if(i < terme.size()) return terme.get(i);
-            default:
-                return null;
+                if(i >= 0 && i < terme.size()) return terme.get(i);
+            case CONFERENCIA:
+                if(i >= 0 && i < conferencia.size()) return conferencia.get(i);
         }
+        return null;
     }
 
     //Pre: Cert

@@ -1,6 +1,6 @@
-package Utils;
+package expert.finder.utils;
 
-import Node.Node;
+import expert.finder.node.Node;
 
 /**
  * Created by Ruben Bagan Benavides on 08/05/2016.

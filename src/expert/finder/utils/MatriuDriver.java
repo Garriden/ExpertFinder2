@@ -1,4 +1,4 @@
-package Utils;
+package expert.finder.utils;
 
 import java.util.ArrayList;
 import java.util.Scanner;

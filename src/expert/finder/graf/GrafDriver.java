@@ -1,6 +1,8 @@
-package Graf;
+package expert.finder.graf;
 
-import Node.Node;
+import expert.finder.node.Node;
+import expert.finder.utils.Matriu;
+
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -67,9 +69,9 @@ public class GrafDriver {
             System.out.println("7) Printar ArrayList conferencia");
             System.out.println("8) Printar ArrayList autor");
             System.out.println("9) Printar ArrayList terme");
-            System.out.println("10) Printar Utils.Matriu paper_autor:");
-            System.out.println("11) Printar Utils.Matriu paper_conferencia:");
-            System.out.println("12) Printar Utils.Matriu paper_terme:");
+            System.out.println("10) Printar Matriu paper_autor:");
+            System.out.println("11) Printar Matriu paper_conferencia:");
+            System.out.println("12) Printar Matriu paper_terme:");
             System.out.println("13) Obtenir node:");
 
             //Inicialitzar matrius i Arrays
@@ -142,7 +144,7 @@ public class GrafDriver {
                             n = new Node(id, "", tipus);
 
                             if ((g.eliminar_node(n)) == 0) {
-                                System.out.println("Node.Node eliminat correctament");
+                                System.out.println("Node eliminat correctament");
                             } else System.out.println("No s'ha eliminat correctament");
                         } else System.out.println("Id erroni");
                         break;
@@ -173,7 +175,7 @@ public class GrafDriver {
                             n = new Node(id, nomN, tipus);
 
                             if ((g.actualizar_node(n)) == 0) {
-                                System.out.println("Node.Node actualitzat correctament");
+                                System.out.println("Node actualitzat correctament");
                             } else System.out.println("No s'ha actualitzat correctament");
                         } else System.out.println("Id erroni");
                         break;
@@ -338,9 +340,9 @@ public class GrafDriver {
                 System.out.println("7) Printar ArrayList conferencia");
                 System.out.println("8) Printar ArrayList autor");
                 System.out.println("9) Printar ArrayList terme");
-                System.out.println("10) Printar Utils.Matriu paper_autor:");
-                System.out.println("11) Printar Utils.Matriu paper_conferencia:");
-                System.out.println("12) Printar Utils.Matriu paper_terme:");
+                System.out.println("10) Printar Matriu paper_autor:");
+                System.out.println("11) Printar Matriu paper_conferencia:");
+                System.out.println("12) Printar Matriu paper_terme:");
                 System.out.println("13) Obtenir node:");
 
                 i = in.nextInt();

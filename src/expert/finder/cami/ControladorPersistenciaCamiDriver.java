@@ -1,4 +1,4 @@
-package Cami;
+package expert.finder.cami;
 
 import java.io.IOException;
 import java.util.ArrayList;

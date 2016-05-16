@@ -1,4 +1,4 @@
-import Node.Node;
+import expert.finder.node.Node;
 
 import java.util.Scanner;
 

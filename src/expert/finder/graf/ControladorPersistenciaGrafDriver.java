@@ -1,6 +1,6 @@
-package Graf;
-import Utils.*;
-import Node.*;
+package expert.finder.graf;
+import expert.finder.node.Node;
+import expert.finder.utils.Matriu;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,11 +12,12 @@ import java.util.Scanner;
 public class ControladorPersistenciaGrafDriver {
     private static ControladorPersistenciaGraf controladorPersistenciaGraf = new ControladorPersistenciaGraf();
     private static Scanner scan = new Scanner(System.in);
+    private static Graf graf;
 
     public static void menu() {
-        System.out.println("1\tImportar Graf.Graf a partir d'una ruta.");
-        System.out.println("2\tImportar Graf.Graf com a objecte");
-        System.out.println("3\tExportar Graf.Graf com a objecte");
+        System.out.println("1\tImportar Graf a partir d'una ruta.");
+        System.out.println("2\tImportar Graf com a objecte");
+        System.out.println("3\tExportar Graf com a objecte");
         System.out.println("0\tSortir");
     }
 
@@ -117,7 +118,7 @@ public class ControladorPersistenciaGrafDriver {
 
     public static void importar_graf_nou(String ruta) {
         try {
-            Graf graf = controladorPersistenciaGraf.importar_graf_nou(ruta);
+            graf = controladorPersistenciaGraf.importar_graf_nou(ruta);
             System.out.println("Imporacio completada");
             System.out.println("Contingut del graf en aquest ordre: Nodes i despres relacions.");
             System.out.println("Per no saturar la consola s'escriu el contingut en dos fitxers, un per els nodes i un " +
@@ -130,7 +131,7 @@ public class ControladorPersistenciaGrafDriver {
 
     public static void importar_graf_objecte(String ruta) {
         try {
-            Graf graf = controladorPersistenciaGraf.importar_graf_salvat(ruta);
+            graf = controladorPersistenciaGraf.importar_graf_salvat(ruta);
             System.out.println("Imporacio completada");
             System.out.println("Contingut del graf en aquest ordre: Nodes i despres relacions.");
             System.out.println("Per no saturar la consola s'escriu el contingut en dos fitxers, un per els nodes i un " +
@@ -142,16 +143,20 @@ public class ControladorPersistenciaGrafDriver {
     }
 
     public static void exportar_graf_objecte(String ruta) {
-        try {
-            controladorPersistenciaGraf.exportar(ruta);
-            System.out.println("Exportacio completada");
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        if (graf != null) {
+            try {
+                controladorPersistenciaGraf.exportar(ruta, graf);
+                System.out.println("Exportacio completada");
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
         }
+        else System.out.println("Primer tens que importar un graf per poder exportar-ne un.");
     }
 
     public static void main(String[] args) {
         int opcio = 1;
+        graf = null;
         while (opcio != 0) {
             menu();
             opcio = llegir_enter(0,3);
