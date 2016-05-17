@@ -35,69 +35,41 @@ public class Graf implements Serializable{
 
 
     // Pre:  Cert
-    // Post: Afegeix el node desitjat al final del vector corresponent i amplia les columnes i/o files la matriu corresponent
+    // Post: S'ha afegeix un node al graf del tipus especificat per el tipus node,
+    // Cost: O(1)
     // Errors:
-    //      -1 = argument null
-    //      -3 = el tipus node no existeix
+    //      -1 = Un dels arguments té valor nul.
+    //      -2 = El tipus de node no és vàlid.
     public int afegir_node(Node.TipusNode tipusNode, String nomNode) {
         if (tipusNode == null || nomNode == null) return -1;
+        int error = 0;
         switch (tipusNode) {
             case AUTOR:
                 int id = this.autor.size();
                 this.autor.add(new Node(id, nomNode, tipusNode));
                 this.paperAutor.afegir_columna();
-                return 0;
+                break;
             case PAPER:
                 id = this.paper.size();
                 this.paper.add(new Node(id, nomNode, tipusNode));
                 this.paperAutor.afegir_fila();
                 this.paperTerme.afegir_fila();
                 this.paperConferencia.afegir_fila();
-                return 0;
+                break;
             case TERME:
                 id = this.terme.size();
                 this.terme.add(new Node(id, nomNode, tipusNode));
                 paperTerme.afegir_columna();
-                return 0;
+                break;
             case CONFERENCIA:
                 id = this.conferencia.size();
                 this.conferencia.add(new Node(id, nomNode, tipusNode));
                 this.paperConferencia.afegir_columna();
-                return 0;
-            default:
-                return -3;
-        }
-    }
-
-    //Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
-    //Post: Afegeix un '1' en la posició corresponent de la matriu paper_(TipusNodeDestí)
-    // Errors:
-    //      -1 = argument null
-    //      -2 = id negatiu
-    //      -3 = id >= tamany del vector
-    //      -4 = tipus node incorrecte
-    //      -5 = nodeOrigen no es de tipus paper
-    public int afegir_aresta(Node nodeOrigen, Node nodeDesti) {
-        if (nodeOrigen == null || nodeDesti == null) return -1;
-        if (nodeOrigen.get_id() < 0 || nodeDesti.get_id() < 0) return -2;
-        if (nodeOrigen.get_tipus_node() != Node.TipusNode.PAPER) return -5;
-        switch (nodeDesti.get_tipus_node()) {
-            case AUTOR:
-                if (nodeOrigen.get_id() >= this.paper.size() || nodeDesti.get_id() >= this.autor.size()) return -3;
-                this.paperAutor.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 1.0);
-                break;
-            case CONFERENCIA:
-                if (nodeOrigen.get_id() >= this.paper.size() || nodeDesti.get_id() >= this.conferencia.size()) return -3;
-                this.paperConferencia.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 1.0);
-                break;
-            case TERME:
-                if (nodeOrigen.get_id() >= this.paper.size() || nodeDesti.get_id() >= this.terme.size()) return -3;
-                this.paperTerme.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 1.0);
                 break;
             default:
-                return -4;
+                error = -2;
         }
-        return 0;
+        return error;
     }
 
     //Pre:  Cert
@@ -180,52 +152,89 @@ public class Graf implements Serializable{
         return error;
     }
 
-    //Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
-    //Post: Afegeix un '0' en la posició corresponent de la matriu paper_(TipusNodeDestí)
-    // Errors:
-    //      -1 = argument null;
-    //      -2 = id negatiu
-    //      -3 = id >= tamany del vector
-    //      -4 = tipus node incorrecte
-    //      -5 = nodeOrigen no es de tipus paper
-    public int eliminar_aresta(Node nodeOrigen, Node nodeDesti) {
-        if (nodeOrigen == null || nodeDesti == null) return -1;
-        if (nodeOrigen.get_id() < 0 || nodeDesti.get_id() < 0) return -2;
-        if (nodeOrigen.get_tipus_node() != Node.TipusNode.PAPER) return -5;
-        switch (nodeDesti.get_tipus_node()) {
-            case AUTOR:
-                if (nodeOrigen.get_id() >= this.paper.size() || nodeDesti.get_id() >= this.autor.size()) return -3;
-                this.paperAutor.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 0.0);
-                break;
-            case CONFERENCIA:
-                if (nodeOrigen.get_id() >= this.paper.size() || nodeDesti.get_id() >= this.conferencia.size()) return -3;
-                this.paperConferencia.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 0.0);
-                break;
-            case TERME:
-                if (nodeOrigen.get_id() >= this.paper.size() || nodeDesti.get_id() >= this.terme.size()) return -3;
-                this.paperTerme.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 0.0);
-                break;
-            default:
-                return -4;
-        }
-
-        return 0;
-    }
-
     //Pre: Cert
     //Post: Retorna el node indicat
     public Node get_node(int i, Node.TipusNode tipus) {
         switch(tipus) {
             case AUTOR:
                 if(i >= 0 && i < autor.size()) return autor.get(i);
+                break;
             case PAPER:
                 if(i >= 0 && i < paper.size()) return paper.get(i);
+                break;
             case TERME:
                 if(i >= 0 && i < terme.size()) return terme.get(i);
+                break;
             case CONFERENCIA:
                 if(i >= 0 && i < conferencia.size()) return conferencia.get(i);
+                break;
         }
         return null;
+    }
+
+    //Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
+    //Post: Afegeix un '1' en la posició corresponent de la matriu paper_(TipusNodeDestí)
+    // Errors:
+    //      -1 = Un dels arguments té valor nul.
+    //      -2 = El node origen no es de tipus paper.
+    //      -3 = No hi ha cap node de tipus paper amb el id del node origen.
+    //      -4 = L'identificador del node desti no existeix.
+    //      -5 = El node desti no es del tipus Autor, Conferencia o Terme.
+    public int afegir_aresta(Node nodeOrigen, Node nodeDesti) {
+        if (nodeOrigen == null || nodeDesti == null) return -1;
+        if (nodeOrigen.get_tipus_node() != Node.TipusNode.PAPER) return -2;
+        if (nodeOrigen.get_id() < 0 || nodeOrigen.get_id() >= this.paper.size()) return -3;
+        int error = 0;
+        switch (nodeDesti.get_tipus_node()) {
+            case AUTOR:
+                if (nodeDesti.get_id() < 0 || nodeDesti.get_id() >= this.autor.size()) error = -4;
+                else this.paperAutor.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 1.0);
+                break;
+            case CONFERENCIA:
+                if (nodeDesti.get_id() < 0 || nodeDesti.get_id() >= this.conferencia.size()) error = -4;
+                else this.paperConferencia.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 1.0);
+                break;
+            case TERME:
+                if (nodeDesti.get_id() < 0 || nodeDesti.get_id() >= this.terme.size()) error = -4;
+                else this.paperTerme.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 1.0);
+                break;
+            default:
+                error = -5;
+        }
+        return error;
+    }
+
+    //Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
+    //Post: Afegeix un '0' en la posició corresponent de la matriu paper_(TipusNodeDestí)
+    // Errors:
+    //      -1 = Un dels arguments té valor nul.
+    //      -2 = El node origen no es de tipus paper.
+    //      -3 = No hi ha cap node de tipus paper amb el id del node origen.
+    //      -4 = L'identificador del node desti no existeix.
+    //      -5 = El node desti no es del tipus Autor, Conferencia o Terme.
+    public int eliminar_aresta(Node nodeOrigen, Node nodeDesti) {
+        if (nodeOrigen == null || nodeDesti == null) return -1;
+        if (nodeOrigen.get_tipus_node() != Node.TipusNode.PAPER) return -2;
+        if (nodeOrigen.get_id() < 0 || nodeOrigen.get_id() >= this.paper.size()) return -3;
+        int error = 0;
+        switch (nodeDesti.get_tipus_node()) {
+            case AUTOR:
+                if (nodeDesti.get_id() < 0 || nodeDesti.get_id() >= this.autor.size()) error = -4;
+                else this.paperAutor.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 0.0);
+                break;
+            case CONFERENCIA:
+                if (nodeDesti.get_id() < 0 || nodeDesti.get_id() >= this.conferencia.size()) error = -4;
+                else this.paperConferencia.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 0.0);
+                break;
+            case TERME:
+                if (nodeDesti.get_id() < 0 || nodeDesti.get_id() >= this.terme.size()) error = -4;
+                else this.paperTerme.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 0.0);
+                break;
+            default:
+                error = -5;
+        }
+
+        return error;
     }
 
     //Pre: Cert

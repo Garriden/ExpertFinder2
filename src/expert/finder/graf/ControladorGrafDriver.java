@@ -28,6 +28,9 @@ public class ControladorGrafDriver {
         System.out.println("3\tModificar nom node");
         System.out.println("4\tConsultar node");
         System.out.println("5\tGet Nodes");
+        System.out.println("6\tAfegir Relacio");
+        System.out.println("7\tEliminar Relacio");
+        System.out.println("8\tConsultar Relacio");
         System.out.println("0\tSortir");
     }
 
@@ -37,8 +40,31 @@ public class ControladorGrafDriver {
             String id = node.substring(0, node.indexOf('|'));
             String nom = node.substring(node.indexOf('|')+1, node.indexOf('|',node.indexOf('|')+1));
             String tipus = node.substring(node.indexOf('|',node.indexOf('|')+1)+1, node.length());
-            System.out.println(Integer.valueOf(id)+1 + "\t\t" + nom + "\t\t\t\t\t" + tipus);
+            System.out.printf("%s\t%-100s%-50s", Integer.valueOf(id)+1, nom, tipus);
+            System.out.println();
         }
+        System.out.println();
+    }
+
+    public static void llistar_relacions(ArrayList<String> relacions) {
+        for (int i = 0; i < relacions.size(); ++i) {
+            String node = relacions.get(i);
+
+            int posicioBarra1 = node.indexOf('|');
+            int posicioBarra2 = node.indexOf('|',posicioBarra1+1);
+            int posicioBarra3 = node.indexOf('|',posicioBarra2+1);
+
+            String id = node.substring(0, posicioBarra1);
+            String nom = node.substring(posicioBarra1+1, posicioBarra2);
+            String tipus = node.substring(posicioBarra2+1, posicioBarra3);
+            String relacionat = node.substring(posicioBarra3+1, node.length());
+
+            System.out.printf("%s\t%-40s%-40s", Integer.valueOf(id)+1,nom,tipus);
+            if (relacionat.equalsIgnoreCase("RELACIONAT")) System.out.print("Relacionat: Si");
+            else System.out.print("Relacionat: No");
+            System.out.println();
+        }
+        System.out.println();
     }
 
     public static void afegir_node() {
@@ -116,13 +142,69 @@ public class ControladorGrafDriver {
 
     }
 
+    public static void afegir_relacio() {
+        lector.nextLine();
+        try {
+            llistar_nodes(controladorGraf.get_nodes("PAPER"));
+            System.out.println("Escriu l'identificador del paper per consultar els nodes amb que esta relacionat: ");
+            int idOrigen = lector.nextInt();
+            System.out.println("Escriu el tipus de node desti: ");
+            lector.nextLine();
+            String tipusNode = lector.nextLine();
+            ArrayList<String> relacions = controladorGraf.consultar_relacio(idOrigen-1, tipusNode);
+            llistar_relacions(relacions);
+            System.out.println("Escriu l'identificador del node desti per eliminar la relacio: ");
+            int idDesti = lector.nextInt();
+            controladorGraf.afegir_relacio(idOrigen-1, idDesti-1, tipusNode);
+            System.out.println("S'ha afegit correctament");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void eliminar_relacio() {
+        lector.nextLine();
+        try {
+            llistar_nodes(controladorGraf.get_nodes("PAPER"));
+            System.out.println("Escriu l'identificador del paper per consultar els nodes amb que esta relacionat: ");
+            int idOrigen = lector.nextInt();
+            System.out.println("Escriu el tipus de node desti: ");
+            lector.nextLine();
+            String tipusNode = lector.nextLine();
+            ArrayList<String> relacions = controladorGraf.consultar_relacio(idOrigen-1, tipusNode);
+            llistar_relacions(relacions);
+            System.out.println("Escriu l'identificador del node desti per eliminar la relacio: ");
+            int idDesti = lector.nextInt();
+            controladorGraf.eliminar_relacio(idOrigen-1, idDesti-1, tipusNode);
+            System.out.println("S'ha eliminat correctament");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void consultar_relacio() {
+        lector.nextLine();
+        try {
+            llistar_nodes(controladorGraf.get_nodes("PAPER"));
+            System.out.println("Escriu l'identificador del paper per consultar els nodes amb que esta relacionat: ");
+            int id = lector.nextInt();
+            lector.nextLine();
+            System.out.println("Escriu el tipus de node desti: ");
+            String tipusNode = lector.nextLine();
+            ArrayList<String> relacions = controladorGraf.consultar_relacio(id-1, tipusNode);
+            llistar_relacions(relacions);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public static void main(String[] argv) {
         try {
             controladorGraf = new ControladorGraf(true, "C:\\Users\\Phenom\\Downloads\\DBLP_four_area\\");
             int opcio = 1;
             while (opcio != 0) {
                 menu();
-                opcio = llegir_enter(0,5);
+                opcio = llegir_enter(0,8);
                 switch (opcio) {
                     case 1:
                         afegir_node();
@@ -138,6 +220,15 @@ public class ControladorGrafDriver {
                         break;
                     case 5:
                         get_nodes();
+                        break;
+                    case 6:
+                        afegir_relacio();
+                        break;
+                    case 7:
+                        eliminar_relacio();
+                        break;
+                    case 8:
+                        consultar_relacio();
                         break;
                 }
             }
