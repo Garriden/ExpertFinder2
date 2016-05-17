@@ -10,9 +10,10 @@ import java.util.ArrayList;
  */
 
 public class ControladorPersistenciaCami {
-    public ArrayList<String> importar_camins(String rutaFitxer) throws IOException {
+    public ArrayList<String> importar_camins(String rutaFitxer) throws IOException, IllegalArgumentException {
+        if (!rutaFitxer.contains(".txt")) throw new IllegalArgumentException("Error: La ruta del fitxer a d'apuntar a un fitxer amb extenció .txt");
         Path ruta = Paths.get(rutaFitxer);
-        BufferedReader reader = null;
+        BufferedReader reader;
         try {
              reader = Files.newBufferedReader(ruta);
         } catch (IOException e) {
@@ -26,7 +27,7 @@ public class ControladorPersistenciaCami {
             int posicioTab = cami.indexOf("|");
             if (posicioTab == -1) {
                 throw new IOException("Error: El format d'entrada del fitxer on estan enmmagatzemats els camins no es " +
-                        "correcte [camins]|[descripcio].");
+                        "correcte, te que seguir el seguent format: [camins]|[descripcio][Salt de linea].");
             }
             camins.add(cami);
             cami = reader.readLine();
@@ -36,8 +37,9 @@ public class ControladorPersistenciaCami {
         return camins;
     }
 
-    public ArrayList<String> importar_camins_objecte(String rutaFitxer) throws IOException, ClassNotFoundException{
-        FileInputStream fitxerObjecte = new FileInputStream(rutaFitxer + "camins.sav");
+    public ArrayList<String> importar_camins_objecte(String rutaFitxer) throws IOException, ClassNotFoundException, IllegalArgumentException{
+        if (!rutaFitxer.contains(".sav")) throw new IllegalArgumentException("Error: La ruta del fitxer a d'apuntar a un fitxer amb extenció .sav");
+        FileInputStream fitxerObjecte = new FileInputStream(rutaFitxer);
         ObjectInputStream objectInputStream;
         ArrayList<String> camins;
         try {
@@ -57,8 +59,9 @@ public class ControladorPersistenciaCami {
         return camins;
     }
 
-    public void exportar_camins_objecte(String rutaFitxer, ArrayList<String> camins) throws IOException {
-        FileOutputStream fitxerObjecte = new FileOutputStream(rutaFitxer+"camins.sav");
+    public void exportar_camins_objecte(String rutaFitxer, ArrayList<String> camins) throws IOException, IllegalArgumentException {
+        if (!rutaFitxer.contains(".sav")) throw new IllegalArgumentException("Error: La ruta del fitxer a d'apuntar a un fitxer amb extenció .sav");
+        FileOutputStream fitxerObjecte = new FileOutputStream(rutaFitxer);
         ObjectOutputStream objectOutputStream;
         try {
             objectOutputStream = new ObjectOutputStream(fitxerObjecte);

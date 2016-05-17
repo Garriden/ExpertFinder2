@@ -1,5 +1,6 @@
 package expert.finder.cami;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -30,6 +31,8 @@ public class ControladorCamiDriver {
         System.out.println("8\t Concatenar cami");
         System.out.println("9\t Invertir cami");
         System.out.println("10\t Validar cami");
+        System.out.println("11\t Importar camins");
+        System.out.println("12\t Exportar camins");
         System.out.println("0\t Sortir");
     }
 
@@ -211,11 +214,39 @@ public class ControladorCamiDriver {
         else System.out.println("No hi ha camins.");
     }
 
+    public static void importar_camins() {
+        System.out.println("Escriu la ruta absoluta on esta ubicat el fitxer amb extensio .txt o .sav de la base de dades de camins: ");
+        String ruta = lector.nextLine();
+        try {
+            controladorCami.importar_camins(ruta);
+            System.out.println("Importacio completada");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void exportar_camins() {
+        System.out.println("Escriu la ruta absoluta on esta ubicat el fitxer amb extensio .txt o .sav de la base de dades de camins: ");
+        String ruta = lector.nextLine();
+        try {
+            controladorCami.exportar_camins(ruta);
+            System.out.println("Exportacio completada");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public static void main(String[] argv) {
         int opcio = 1;
         while (opcio != 0) {
             menu();
-            opcio = llegir_enter(0, 10);
+            opcio = llegir_enter(0, 12);
             switch (opcio) {
                 case 1:
                     afegir_cami();
@@ -246,6 +277,12 @@ public class ControladorCamiDriver {
                     break;
                 case 10:
                     validar_cami();
+                    break;
+                case 11:
+                    importar_camins();
+                    break;
+                case 12:
+                    exportar_camins();
                     break;
             }
         }

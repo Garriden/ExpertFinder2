@@ -10,7 +10,6 @@ import java.util.Scanner;
 public class ControladorPersistenciaCamiDriver {
     public static Scanner scan = new Scanner(System.in);
     public static ControladorPersistenciaCami controladorPersistenciaCami = new ControladorPersistenciaCami();
-    public static ControladorCami controladorCami;
     public static ArrayList<String> camins;
 
     public static void menu() {
@@ -36,18 +35,11 @@ public class ControladorPersistenciaCamiDriver {
         try {
             camins = controladorPersistenciaCami.importar_camins(ruta);
             System.out.println("Importacio completada");
-            System.out.println("Inicializtem el controlador de camins amb els camins exportats i llistem el contingut; ");
-            try {
-                controladorCami = new ControladorCami(camins);
-                camins = controladorCami.get_camins();
-                System.out.println("Camins disponibles: " + camins.size());
-                for (int i = 0; i < camins.size(); ++i) System.out.println(camins.get(i));
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            } catch (NullPointerException e) {
-                System.out.println(e.getMessage());
-            }
+            System.out.println("Camins disponibles: " + camins.size());
+            for (int i = 0; i < camins.size(); ++i) System.out.println(camins.get(i));
         } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -59,20 +51,13 @@ public class ControladorPersistenciaCamiDriver {
         try {
             camins = controladorPersistenciaCami.importar_camins_objecte(ruta);
             System.out.println("Importacio completada");
-            System.out.println("Inicializtem el controlador de camins amb els camins exportats i llistem el contingut; ");
-            try {
-                controladorCami = new ControladorCami(camins);
-                camins = controladorCami.get_camins();
-                System.out.println("Camins disponibles: " + camins.size());
-                for (int i = 0; i < camins.size(); ++i) System.out.println(camins.get(i));
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            } catch (NullPointerException e) {
-                System.out.println(e.getMessage());
-            }
+            System.out.println("Camins disponibles: " + camins.size());
+            for (int i = 0; i < camins.size(); ++i) System.out.println(camins.get(i));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -82,18 +67,19 @@ public class ControladorPersistenciaCamiDriver {
         System.out.println("Introdueix la ruta ABSOLUTA on exportar el fitxer de camins (Ej: C:\\Prop\\): ");
         String ruta = scan.nextLine();
         try {
-            camins = controladorCami.get_camins();
             controladorPersistenciaCami.exportar_camins_objecte(ruta, camins);
             System.out.println("Exportacio completada");
         } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public static void main(String[] args) {
-        controladorCami = new ControladorCami();
+        camins = new ArrayList<>();
         for (int i = 0; i < 6; ++i) {
-            controladorCami.afegir_cami("APAPAPAPAPA", "Esto es un camino de prueba" + i);
+            camins.add("APAPAPAPAPA|Esto es un camino de prueba" + i);
         }
         int opcio = 1;
         while (opcio != 0) {

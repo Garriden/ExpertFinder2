@@ -1,5 +1,6 @@
 package expert.finder.cami;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -16,27 +17,35 @@ public class ControladorCami {
         this.camins = new ArrayList<>();
     }
 
-    // Pre:  Cert.
-    // Post: S'ha inicialitzat el controlador amb tots els camins passats per parametre. Cada cami de la estructura de
+    // Pre:  rutaFitxer != null, la ruta ja conte el fitxer de la base de dades al que apunta.
+    // Post: S'ha inicialitzat el controlador o afegit tots els camins de la base de dades ubicada en la ruta passada per parametre. Cada cami de la estructura de
     //       dades té que seguir el seguent format: [cami]|[descripcio]
     // Cost: O(n)
-    public ControladorCami(ArrayList<String> camins) throws NullPointerException, IllegalArgumentException {
+    public void importar_camins (String rutaFitxer) throws IllegalArgumentException, IOException, ClassNotFoundException {
+        ControladorPersistenciaCami controladorPersistenciaCami = new ControladorPersistenciaCami();
+        ArrayList<String> camins;
+        if (rutaFitxer.contains(".sav")) camins = controladorPersistenciaCami.importar_camins(rutaFitxer);
+        else camins = controladorPersistenciaCami.importar_camins_objecte(rutaFitxer);
         this.camins = new ArrayList<>(camins.size());
         for (int i = 0; i < camins.size(); ++i) {
             String cami = camins.get(i);
-            if (cami == null) throw new NullPointerException("Error: El cami numero " + i+1 + " no pot tindre un valor nul");
-            if (cami.indexOf('|') == -1) throw new IllegalArgumentException("Error: El cami té que seguir un format: [cami]|[descripcio]");
             this.afegir_cami(cami.substring(0, cami.indexOf('|')), cami.substring(cami.indexOf('|')+1, cami.length()));
         }
     }
 
-    // Pre:  Cert.
+    // Pre:  rutaFitxer != null, la ruta ja conte el fitxer de la base de dades al que apunta.
+    // Post: S'ha exportat tots els camins del controlador al fitxer de bases de dades especificat en la ruta del fitxer.
+    // Cost: O(n)
+    public void exportar_camins (String rutaFitxer) throws IOException, IllegalArgumentException {
+        ControladorPersistenciaCami controladorPersistenciaCami = new ControladorPersistenciaCami();
+        controladorPersistenciaCami.exportar_camins_objecte(rutaFitxer, get_camins());
+    }
+
+    // Pre:  cami != null; descripcio != null
     // Post: S'ha afegit un nou cami al controlador si C no existia previament. En cas que existeixi el cami retorna una
     //       excepcio.
     // Cost: O(1)
-    public void afegir_cami(String cami, String descripcio) throws NullPointerException, IllegalArgumentException {
-        if (cami == null) throw new NullPointerException("Error: El cami no pot tindre un valor nul");
-        if (descripcio == null) throw new NullPointerException("Error: La descripcio no pot tindre un valor nul");
+    public void afegir_cami(String cami, String descripcio) throws IllegalArgumentException {
         if (!Cami.cami_valid(cami)) throw new IllegalArgumentException("Error: No es pot afegir un cami perquè el cami indicat no es valid.");
         Cami c = new Cami(cami, descripcio);
         this.camins.add(c);
@@ -51,23 +60,21 @@ public class ControladorCami {
         this.camins.remove(posicio);
     }
 
-    // Pre:  Cert.
+    // Pre:  novaDescripcio != null.
     // Post: S'ha modificat la descripció d'un cami amb la nova descripció pasada per parametre.
     // Cost: O(1)
-    public void modificar_descripcio(int posicio, String novaDescripcio) throws ArrayIndexOutOfBoundsException, NullPointerException {
+    public void modificar_descripcio(int posicio, String novaDescripcio) throws ArrayIndexOutOfBoundsException {
         if (posicio < 0 || posicio >= camins.size())
             throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida retornada per el controlador");
-        if (novaDescripcio == null) throw new NullPointerException("Error: La descripcio no pot tindre un valor nul");
         this.camins.get(posicio).set_descripcio(novaDescripcio);
     }
 
-    // Cert: Cert.
+    // Cert: cami != null.
     // Post: S'ha modificat el "cami" d'un cami en la posicio pasada per parametre.
     // Cost: O(1)
-    public void modificar_cami(int posicio, String cami) throws ArrayIndexOutOfBoundsException, NullPointerException {
+    public void modificar_cami(int posicio, String cami) throws ArrayIndexOutOfBoundsException {
         if (posicio < 0 || posicio >= camins.size())
             throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida retornada per el controlador");
-        if (cami == null) throw new NullPointerException("Error: El cami no pot tindre un valor nul");
         if (!Cami.cami_valid(cami)) throw new IllegalArgumentException("Error: No es pot afegir un cami perquè el cami indicat no es valid.");
         this.camins.get(posicio).set_cami(cami);
     }
@@ -99,9 +106,9 @@ public class ControladorCami {
     // Post: Retorna un boolea que ens indica si el cami origen es concatenable o no amb el cami desti.
     // Cost: O(1)
     public boolean es_concatenable(int posicioCamiOrigen, int posicioCamiDesti) throws ArrayIndexOutOfBoundsException {
-        if (posicioCamiOrigen < 0 || posicioCamiOrigen >= camins.size())
+        if (posicioCamiOrigen < 0 || posicioCamiOrigen >= this.camins.size())
             throw new ArrayIndexOutOfBoundsException("Error: la posicio origen té que esta compresa entre el 1 i la mida retornada per el controlador");
-        if (posicioCamiDesti < 0 || posicioCamiDesti >= camins.size())
+        if (posicioCamiDesti < 0 || posicioCamiDesti >= this.camins.size())
             throw new ArrayIndexOutOfBoundsException("Error: la posicio desti té que esta compresa entre el 1 i la mida retornada per el controlador");
         Cami camiOrigen = this.camins.get(posicioCamiOrigen);
         Cami camiDesti = this.camins.get(posicioCamiDesti);
@@ -113,9 +120,9 @@ public class ControladorCami {
     //       camins retorna una excepcio.
     // Cost: O(n)
     public void concatenar_cami(int posicioCamiOrigen, int posicioCamiDesti) throws ArrayIndexOutOfBoundsException, IllegalArgumentException{
-        if (posicioCamiOrigen < 0 || posicioCamiOrigen >= camins.size())
+        if (posicioCamiOrigen < 0 || posicioCamiOrigen >= this.camins.size())
             throw new ArrayIndexOutOfBoundsException("Error: la posicio origen té que esta compresa entre el 1 i la mida retornada per el controlador");
-        if (posicioCamiDesti < 0 || posicioCamiDesti >= camins.size())
+        if (posicioCamiDesti < 0 || posicioCamiDesti >= this.camins.size())
             throw new ArrayIndexOutOfBoundsException("Error: la posicio desti té que esta compresa entre el 1 i la mida retornada per el controlador");
         if (!es_concatenable(posicioCamiOrigen, posicioCamiDesti)) throw new IllegalArgumentException("Error: Aquests dos camins son incompatibles per concatenar.");
         Cami camiOrigen = this.camins.get(posicioCamiOrigen);
@@ -128,7 +135,7 @@ public class ControladorCami {
     // Post: Inverteix el cami en la posicio pasada per paràmetre.
     // Cost: O(n)
     public void invertir_cami(int posicio)  throws ArrayIndexOutOfBoundsException  {
-        if (posicio < 0 || posicio >= camins.size())
+        if (posicio < 0 || posicio >= this.camins.size())
             throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida retornada per el controlador");
         Cami c = this.camins.get(posicio).invertir();
         this.camins.add(c);
