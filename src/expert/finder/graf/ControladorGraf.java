@@ -20,10 +20,15 @@ public class ControladorGraf {
         throw new IllegalArgumentException("Error: El tipus de node que has sel·leccionat es incorrecte.");
     }
 
-    public ControladorGraf(boolean nouGraf, String rutaFitxer) throws IOException {
+    public void importar(boolean nouGraf, String rutaFitxer) throws IOException {
         ControladorPersistenciaGraf controladorPersistenciaGraf = new ControladorPersistenciaGraf();
         if (nouGraf) this.graf = controladorPersistenciaGraf.importar_graf_nou(rutaFitxer);
         else this.graf = controladorPersistenciaGraf.importar_graf_salvat(rutaFitxer);
+    }
+
+    public void exportar(String rutaFitxer) throws IOException {
+        ControladorPersistenciaGraf controladorPersistenciaGraf = new ControladorPersistenciaGraf();
+        controladorPersistenciaGraf.exportar(rutaFitxer, this.graf);
     }
 
     public void afegir_node(String nom, String tipusNode) throws IllegalArgumentException {
@@ -121,11 +126,15 @@ public class ControladorGraf {
             if (tipus == Node.TipusNode.TERME) valor = this.graf.get_paper_terme().get_valor(idNodeOrigen, n.get_id());
             else if (tipus == Node.TipusNode.AUTOR) valor = this.graf.get_paper_autor().get_valor(idNodeOrigen, n.get_id());
             else valor = this.graf.get_paper_conferencia().get_valor(idNodeOrigen, n.get_id());
-            if (valor == 1.0) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|" + n.get_tipus_node() + "|RELACIONAT");
-            else nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|" + n.get_tipus_node() + "|NO_RELACIONAT");
+            if (valor == 1.0) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|" + n.get_tipus_node() + "|S");
+            else nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|" + n.get_tipus_node() + "|N");
         }
 
         return nodesCodificats;
+    }
+
+    public Graf get_graf() {
+        return this.graf;
     }
 
 }

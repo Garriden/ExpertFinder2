@@ -18,7 +18,7 @@ public class ControladorPersistenciaGraf {
     private Graf graf;
 
     private ArrayList<Node> importar_node(String ruta, String nomFitxer, Node.TipusNode tipusNode) throws IOException {
-        File rutaFitxerNodes = new File(ruta+nomFitxer+".txt");
+        File rutaFitxerNodes = new File(ruta+"\\"+nomFitxer+".txt");
         File rutaTaulaId = new File(ruta+nomFitxer+"taula.txt");
         BufferedReader fitxerNode;
         BufferedWriter fitxerTaula;
@@ -82,7 +82,7 @@ public class ControladorPersistenciaGraf {
     }
 
     private Matriu importarRelacions(String ruta, String nomFitxer, Node.TipusNode tipusNode) throws IOException {
-        File rutaFitxerRelacions = new File(ruta+nomFitxer+".txt");
+        File rutaFitxerRelacions = new File(ruta+"\\"+nomFitxer+".txt");
         BufferedReader fitxerRelacions;
 
         try {

@@ -24,12 +24,16 @@ public class ControladorCami {
     public void importar_camins (String rutaFitxer) throws IllegalArgumentException, IOException, ClassNotFoundException {
         ControladorPersistenciaCami controladorPersistenciaCami = new ControladorPersistenciaCami();
         ArrayList<String> camins;
-        if (rutaFitxer.contains(".sav")) camins = controladorPersistenciaCami.importar_camins(rutaFitxer);
-        else camins = controladorPersistenciaCami.importar_camins_objecte(rutaFitxer);
-        this.camins = new ArrayList<>(camins.size());
+        if (rutaFitxer.contains(".sav")) camins = controladorPersistenciaCami.importar_camins_objecte(rutaFitxer);
+        else if (rutaFitxer.contains(".txt")) camins = controladorPersistenciaCami.importar_camins(rutaFitxer);
+        else throw new IllegalArgumentException("Error: El fitxer te que tindre extencio .txt o .sav");
         for (int i = 0; i < camins.size(); ++i) {
             String cami = camins.get(i);
-            this.afegir_cami(cami.substring(0, cami.indexOf('|')), cami.substring(cami.indexOf('|')+1, cami.length()));
+            try {
+                this.afegir_cami(cami.substring(0, cami.indexOf('|')), cami.substring(cami.indexOf('|')+1, cami.length()));
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Error: Algun/s dels camins que hi ha en el fitxer que vols importar no son valids");
+            }
         }
     }
 
@@ -46,7 +50,7 @@ public class ControladorCami {
     //       excepcio.
     // Cost: O(1)
     public void afegir_cami(String cami, String descripcio) throws IllegalArgumentException {
-        if (!Cami.cami_valid(cami)) throw new IllegalArgumentException("Error: No es pot afegir un cami perquè el cami indicat no es valid.");
+        if (!Cami.cami_valid(cami)) throw new IllegalArgumentException("Error: No es pot afegir el cami perquè el cami indicat no es valid.");
         Cami c = new Cami(cami, descripcio);
         this.camins.add(c);
     }
@@ -56,7 +60,7 @@ public class ControladorCami {
     // Cost: O(1)
     public void eliminar_cami(int posicio) throws ArrayIndexOutOfBoundsException {
         if (posicio < 0 || posicio >= camins.size())
-            throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida retornada per el controlador");
+            throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida de la taula");
         this.camins.remove(posicio);
     }
 
@@ -65,7 +69,7 @@ public class ControladorCami {
     // Cost: O(1)
     public void modificar_descripcio(int posicio, String novaDescripcio) throws ArrayIndexOutOfBoundsException {
         if (posicio < 0 || posicio >= camins.size())
-            throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida retornada per el controlador");
+            throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida de la taula");
         this.camins.get(posicio).set_descripcio(novaDescripcio);
     }
 
@@ -74,7 +78,7 @@ public class ControladorCami {
     // Cost: O(1)
     public void modificar_cami(int posicio, String cami) throws ArrayIndexOutOfBoundsException {
         if (posicio < 0 || posicio >= camins.size())
-            throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida retornada per el controlador");
+            throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida de la taula");
         if (!Cami.cami_valid(cami)) throw new IllegalArgumentException("Error: No es pot afegir un cami perquè el cami indicat no es valid.");
         this.camins.get(posicio).set_cami(cami);
     }
@@ -84,7 +88,7 @@ public class ControladorCami {
     // Cost: O(1)
     public String get_cami(int posicio) throws ArrayIndexOutOfBoundsException {
         if (posicio < 0 || posicio >= camins.size())
-            throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida retornada per el controlador");
+            throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida de la taula");
         Cami c = this.camins.get(posicio);
         return (c.get_cami() + "|" + c.get_descripcio());
     }
@@ -107,9 +111,9 @@ public class ControladorCami {
     // Cost: O(1)
     public boolean es_concatenable(int posicioCamiOrigen, int posicioCamiDesti) throws ArrayIndexOutOfBoundsException {
         if (posicioCamiOrigen < 0 || posicioCamiOrigen >= this.camins.size())
-            throw new ArrayIndexOutOfBoundsException("Error: la posicio origen té que esta compresa entre el 1 i la mida retornada per el controlador");
+            throw new ArrayIndexOutOfBoundsException("Error: la posicio origen té que esta compresa entre el 1 i la mida de la taula");
         if (posicioCamiDesti < 0 || posicioCamiDesti >= this.camins.size())
-            throw new ArrayIndexOutOfBoundsException("Error: la posicio desti té que esta compresa entre el 1 i la mida retornada per el controlador");
+            throw new ArrayIndexOutOfBoundsException("Error: la posicio desti té que esta compresa entre el 1 i la mida de la taula");
         Cami camiOrigen = this.camins.get(posicioCamiOrigen);
         Cami camiDesti = this.camins.get(posicioCamiDesti);
         return camiOrigen.es_concatenable(camiDesti);

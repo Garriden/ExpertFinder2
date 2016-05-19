@@ -1,3 +1,5 @@
+package expert.finder.consulta;
+
 import expert.finder.node.Node;
 
 import java.util.Scanner;
@@ -8,6 +10,7 @@ import java.util.Scanner;
  */
 public class ConsultaDriver {
     public static void main(String[] argv) {
+        /*
         System.out.println("TEST CLASE CONSULTA");
         System.out.println("Creem una consulta nova:");
         System.out.println("Insereix el camp de la descripcio:");
@@ -32,24 +35,24 @@ public class ConsultaDriver {
                 case 1:
                     System.out.println("Insereix el camp de la descripcio:");
                     s=capt.next();
-                    test.setDescripcio(s);
+                    test.set_descripcio(s);
                     break;
                 case 2:
                     System.out.println("Insereix el camp graudeRellevancia del resultat(per simplificar)");
                     s=capt.next();
                     Resultat rs=new Resultat();
                     rs.afegir_tuple(new Node(12, "example", Node.TipusNode.AUTOR), Double.parseDouble(s));
-                    test.setResultado(rs);
+                    test.set_resultado(rs);
                     break;
                 case 3:
-                    System.out.println("La descripcio es "+test.getDescripcio());
+                    System.out.println("La descripcio es "+test.get_descripcio());
                     break;
                 case 4:
-                    System.out.println("El grau de rellevancia es "+test.getResultat().get_tuple(0).get_grau_rellevancia());
+                    System.out.println("El grau de rellevancia es "+test.get_resultat().get_tuple(0).get_grau_rellevancia());
                     break;
 
             }
         }
-        capt.close();
+        capt.close();*/
     }
 }

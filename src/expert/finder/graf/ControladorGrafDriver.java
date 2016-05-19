@@ -199,8 +199,6 @@ public class ControladorGrafDriver {
     }
 
     public static void main(String[] argv) {
-        try {
-            controladorGraf = new ControladorGraf(true, "C:\\Users\\Phenom\\Downloads\\DBLP_four_area\\");
             int opcio = 1;
             while (opcio != 0) {
                 menu();
@@ -232,8 +230,5 @@ public class ControladorGrafDriver {
                         break;
                 }
             }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
     }
 }

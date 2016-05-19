@@ -1,4 +1,4 @@
-/**
+package expert.finder.consulta; /**
  * Created by Ruben Bagan Benavides on 24/04/2016.
  */
 
@@ -10,6 +10,7 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ResultatDriver {
+    /*
     public static Scanner scan = new Scanner(System.in);
     public static Resultat resultat = new Resultat();
     public static int idNode = 0;
@@ -162,5 +163,5 @@ public class ResultatDriver {
             }
         }
 
-    }
+    }*/
 }

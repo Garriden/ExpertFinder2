@@ -1,3 +1,5 @@
+package expert.finder.consulta;
+
 import expert.finder.node.Node;
 import expert.finder.utils.Tuple;
 
@@ -29,7 +31,7 @@ public class Resultat {
         return taula.size();
     }
 
-    // Pre:  0 <= pos < Resultat.Mida
+    // Pre:  0 <= pos < expert.finder.consulta.Resultat.Mida
     // Post: Retorna la tuple i-èssima del resultat.
     // Cost: O(1)
     public Tuple get_tuple(int pos) {
@@ -49,23 +51,37 @@ public class Resultat {
         return copia_taula;
     }
 
-    // Pre:  0 <= pos < Resultat.Mida
+    // Pre:  0 <= pos < expert.finder.consulta.Resultat.Mida
     // Post: S'ha elimiant la tuple i-èssima del resultat.
     // Cost: O(1)
     public void eliminar_tuple(int pos){
         taula.remove(pos);
     }
 
-    // Pre:  0 <= grauRellevancia <= 1, 0 <= error <= 1
+    // Pre:  0 <= grauRellevancia
     // Post: S'han eliminat les tuples del resultat que no estan dins de l'interval de grauRellevancia +/- error.
     // Cost: O(n)
-    public void filtrar_resultat(double grauRellevancia, double error){
-        double min = grauRellevancia - error;
-        double max = grauRellevancia + error;
-        if (min < 0) min = 0;
-        if (max > 1) max = 1;
+    public void filtrar_resultat(double grauRellevancia){
+        for(int i = 0; i < taula.size(); ++i){
+            if(taula.get(i).get_grau_rellevancia() < grauRellevancia - 0.05 ||
+                    taula.get(i).get_grau_rellevancia() > grauRellevancia + 0.05) taula.remove(i);
+        }
+    }
+
+    public void filtrar_resultat(double grauRellevancia, int rang) {
+        double min = grauRellevancia;
+        double max = rang;
+        if (grauRellevancia > rang) {
+            min = rang;
+            max = grauRellevancia;
+        }
+
         for(int i = 0; i < taula.size(); ++i){
             if(taula.get(i).get_grau_rellevancia() < min || taula.get(i).get_grau_rellevancia() > max) taula.remove(i);
         }
+    }
+
+    public void filtrar_resultat(double grauRellevancia, int min, int max) {
+
     }
 }
