@@ -1,6 +1,9 @@
 //  Created Ruben Bagan
 package expert.finder.consulta;
 
+import expert.finder.cami.Cami;
+import expert.finder.cami.ControladorCami;
+import expert.finder.graf.ControladorGraf;
 import expert.finder.node.Node;
 import expert.finder.utils.Matriu;
 
