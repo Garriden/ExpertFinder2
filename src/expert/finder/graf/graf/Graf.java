@@ -1,4 +1,4 @@
-package expert.finder.graf;
+package expert.finder.graf.graf;
 import expert.finder.node.Node;
 import expert.finder.utils.Matriu;
 
