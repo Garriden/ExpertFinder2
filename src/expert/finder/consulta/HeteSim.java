@@ -1,6 +1,4 @@
 package expert.finder.consulta;
-import expert.finder.cami.Cami;
-import expert.finder.graf.Graf;
 import expert.finder.node.Node;
 import expert.finder.utils.Matriu;
 

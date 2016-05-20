@@ -76,7 +76,7 @@ public class ControladorCami {
     // Cert: cami != null.
     // Post: S'ha modificat el "cami" d'un cami en la posicio pasada per parametre.
     // Cost: O(1)
-    public void modificar_cami(int posicio, String cami) throws ArrayIndexOutOfBoundsException {
+    public void modificar_cami(int posicio, String cami) throws ArrayIndexOutOfBoundsException, IllegalArgumentException {
         if (posicio < 0 || posicio >= camins.size())
             throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida de la taula");
         if (!Cami.cami_valid(cami)) throw new IllegalArgumentException("Error: No es pot afegir un cami perquè el cami indicat no es valid.");

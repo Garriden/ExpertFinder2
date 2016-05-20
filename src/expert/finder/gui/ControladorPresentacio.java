@@ -5,8 +5,6 @@
  */
 package expert.finder.gui;
 
-import expert.finder.cami.ControladorCami;
-import expert.finder.graf.ControladorGraf;
 import java.io.IOException;
 import java.util.ArrayList;
 

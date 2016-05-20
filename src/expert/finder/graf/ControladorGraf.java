@@ -3,7 +3,6 @@ package expert.finder.graf;
 import expert.finder.node.Node;
 
 import java.io.IOException;
-import java.nio.channels.IllegalChannelGroupException;
 import java.util.ArrayList;
 
 /**
@@ -69,7 +68,7 @@ public class ControladorGraf {
         ArrayList<String> nodesCodificats = new ArrayList<>(nodes.size());
         for (int i = 0; i < nodes.size(); ++i) {
             Node n = nodes.get(i);
-            nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|" + n.get_tipus_node());
+            nodesCodificats.add(n.get_id()+1 + "|" + n.get_nom());
         }
 
         return nodesCodificats;
@@ -126,8 +125,8 @@ public class ControladorGraf {
             if (tipus == Node.TipusNode.TERME) valor = this.graf.get_paper_terme().get_valor(idNodeOrigen, n.get_id());
             else if (tipus == Node.TipusNode.AUTOR) valor = this.graf.get_paper_autor().get_valor(idNodeOrigen, n.get_id());
             else valor = this.graf.get_paper_conferencia().get_valor(idNodeOrigen, n.get_id());
-            if (valor == 1.0) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|" + n.get_tipus_node() + "|S");
-            else nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|" + n.get_tipus_node() + "|N");
+            if (valor == 1.0) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|Si");
+            else nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|No");
         }
 
         return nodesCodificats;

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class ControladorPersistenciaCami {
     public ArrayList<String> importar_camins(String rutaFitxer) throws IOException, IllegalArgumentException {
         if (!rutaFitxer.contains(".txt")) throw new IllegalArgumentException("Error: La ruta del fitxer a d'apuntar a un fitxer amb extenció .txt");
+        if (rutaFitxer.charAt(rutaFitxer.length()-1) != '\\') rutaFitxer = rutaFitxer + "\\";
         Path ruta = Paths.get(rutaFitxer);
         BufferedReader reader;
         try {
@@ -39,6 +40,7 @@ public class ControladorPersistenciaCami {
 
     public ArrayList<String> importar_camins_objecte(String rutaFitxer) throws IOException, ClassNotFoundException, IllegalArgumentException{
         if (!rutaFitxer.contains(".sav")) throw new IllegalArgumentException("Error: La ruta del fitxer a d'apuntar a un fitxer amb extenció .sav");
+        if (rutaFitxer.charAt(rutaFitxer.length()-1) != '\\') rutaFitxer = rutaFitxer + "\\";
         FileInputStream fitxerObjecte = new FileInputStream(rutaFitxer);
         ObjectInputStream objectInputStream;
         ArrayList<String> camins;
@@ -61,6 +63,7 @@ public class ControladorPersistenciaCami {
 
     public void exportar_camins_objecte(String rutaFitxer, ArrayList<String> camins) throws IOException, IllegalArgumentException {
         if (!rutaFitxer.contains(".sav")) throw new IllegalArgumentException("Error: La ruta del fitxer a d'apuntar a un fitxer amb extenció .sav");
+        if (rutaFitxer.charAt(rutaFitxer.length()-1) != '\\') rutaFitxer = rutaFitxer + "\\";
         FileOutputStream fitxerObjecte = new FileOutputStream(rutaFitxer);
         ObjectOutputStream objectOutputStream;
         try {
