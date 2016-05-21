@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="BotonEnrere" min="-2" max="-2" attributes="0"/>
+                  <Component id="bConsultaTipoIII" min="-2" max="-2" attributes="0"/>
+                  <Component id="bConsultaTipoII" min="-2" max="-2" attributes="0"/>
+                  <Component id="bConsultaTipoI" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="204" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+              <Component id="bConsultaTipoI" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="bConsultaTipoII" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="bConsultaTipoIII" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="95" max="32767" attributes="0"/>
+              <Component id="BotonEnrere" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JButton" name="bConsultaTipoI">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Afegir Consulta Tipus I"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bConsultaTipoIActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="bConsultaTipoII">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Afegir Consulta Tipus II"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bConsultaTipoIIActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="bConsultaTipoIII">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Afegir Consulta Tipus III"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bConsultaTipoIIIActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="BotonEnrere">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Enrere"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BotonEnrereActionPerformed"/>
+      </Events>
+    </Component>
+  </SubComponents>
+</Form>

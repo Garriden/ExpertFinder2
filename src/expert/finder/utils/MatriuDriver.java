@@ -101,7 +101,7 @@ public class MatriuDriver {
         Matriu a = demanar_matriu("Introdueix l'identificador de la matriu A: ");
         Matriu b = demanar_matriu("Introdueix l'identificador de la matriu B: ");
         if (a.get_nombre_columnes() == b.get_nombre_files()) {
-            System.out.println("expert.finder.consulta.Resultat de la multiplicacio: ");
+            System.out.println("Resultat de la multiplicacio: ");
             print_matriu(a.multiplicar(b));
         }
         else {
@@ -113,7 +113,7 @@ public class MatriuDriver {
         Matriu a = demanar_matriu("Introdueix l'identificador de la matriu A: ");
         Matriu b = demanar_matriu("Introdueix l'identificador de la matriu B: ");
         if (a.get_nombre_columnes() == b.get_nombre_columnes() && a.get_nombre_files() == b.get_nombre_files()){
-            System.out.println("expert.finder.consulta.Resultat de la suma: ");
+            System.out.println("Resultat de la suma: ");
             print_matriu(a.sumar(b));
         }
         else {
@@ -125,7 +125,7 @@ public class MatriuDriver {
         Matriu a = demanar_matriu("Introdueix l'identificador de la matriu A: ");
         Matriu b = demanar_matriu("Introdueix l'identificador de la matriu B: ");
         if (a.get_nombre_columnes() == b.get_nombre_columnes() && a.get_nombre_files() == b.get_nombre_files()) {
-            System.out.println("expert.finder.consulta.Resultat de la resta: ");
+            System.out.println("Resultat de la resta: ");
             print_matriu(a.restar(b));
         }
         else {
@@ -135,19 +135,19 @@ public class MatriuDriver {
 
     public static  void transposar() {
         Matriu m = demanar_matriu("Introdueix l'identificador de la matriu: ");
-        System.out.println("expert.finder.consulta.Resultat de la transposada: ");
+        System.out.println("Resultat de la transposada: ");
         print_matriu(m.transposar());
     }
 
     public static  void normalitzar_files() {
         Matriu m = demanar_matriu("Introdueix l'identificador de la matriu: ");
-        System.out.println("expert.finder.consulta.Resultat de la normalitzada per files: ");
+        System.out.println("Resultat de la normalitzada per files: ");
         print_matriu(m.normalitzar_fila());
     }
 
     public static  void normalitzar_columnes() {
         Matriu m = demanar_matriu("Introdueix l'identificador de la matriu: ");
-        System.out.println("expert.finder.consulta.Resultat de la normalitzada per columnes: ");
+        System.out.println("Resultat de la normalitzada per columnes: ");
         print_matriu(m.normalitzar_columna());
     }
 

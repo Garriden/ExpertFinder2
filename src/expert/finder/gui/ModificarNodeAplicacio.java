@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package expert.finder.gui;
-import expert.finder.gui.ModificarNode;
 
 /**
  *

@@ -77,6 +77,11 @@ public class Menu extends javax.swing.JFrame {
         });
 
         BotonGestioConsultes.setText("Gestio Consultes");
+        BotonGestioConsultes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonGestioConsultesActionPerformed(evt);
+            }
+        });
 
         BotonSortir.setText("Sortir");
         BotonSortir.addActionListener(new java.awt.event.ActionListener() {
@@ -180,6 +185,13 @@ public class Menu extends javax.swing.JFrame {
         gestionGrafo.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BotonGestioGrafActionPerformed
+
+    private void BotonGestioConsultesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonGestioConsultesActionPerformed
+        // TODO add your handling code here:
+        GestioConsulta menu = new GestioConsulta(this.controladorPresentacio);
+        menu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BotonGestioConsultesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonGestioCamins;

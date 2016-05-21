@@ -1,3 +1,5 @@
+package expert.finder.consulta;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 

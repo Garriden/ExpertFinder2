@@ -77,7 +77,7 @@ public class ControladorConsulta {
         ArrayList<String> consultesCodificades = new ArrayList<>(this.consultes.size());
         for (int i = 0; i < this.consultes.size(); ++i) {
             Consulta c = this.consultes.get(i);
-            String consultaCodificada = i+1 + "|" + c.get_tipus_consulta() + "|" + c.get_descripcio();
+            String consultaCodificada = c.get_tipus_consulta() + "|" + c.get_descripcio();
             consultesCodificades.add(consultaCodificada);
         }
 
@@ -157,12 +157,16 @@ public class ControladorConsulta {
         String tipusNode = "Autor";
         if (cami.charAt(cami.length()-1) == 'T') tipusNode = "Terme";
         else if (cami.charAt(cami.length()-1) == 'C') tipusNode = "Conferencia";
+        
         for (int i = 0 ; i < matriu.get_nombre_columnes(); ++i) {
             String node = controladorGraf.consultar_node(i, tipusNode);
-            node = node + "|" + matriu.get_valor(c.get_node_origen().get_id(),i);
+            double valor = matriu.get_valor(0,i);
+            if (valor != 0.0) {
+                System.out.println();
+            }
+            node = node + "|" + String.valueOf(valor);
             if (c.get_tipus_consulta().equalsIgnoreCase("Tipus II") || c.get_tipus_consulta().equalsIgnoreCase("Tipus III")) {
-                if (matriu.get_valor(c.get_node_origen().get_id(), i) >= c.get_grau_rellevancia() - 0.05 &&
-                        matriu.get_valor(c.get_node_origen().get_id(), i) <= c.get_grau_rellevancia() + 0.05) {
+                if (valor >= c.get_grau_rellevancia() - 0.05 && valor <= c.get_grau_rellevancia() + 0.05) {
                     resultat.add(node);
                 }
             }

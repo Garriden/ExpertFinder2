@@ -53,7 +53,7 @@ public class ControladorGraf {
         Node.TipusNode tipus = stringToTipusNode(tipusNode);
         Node n = this.graf.get_node(posicio, tipus);
         if (n == null) throw new IllegalArgumentException("Error: No existeix cap node amb aquest identificador o no es del tipus node correcte.");
-        String node = n.get_id() + "|" + n.get_nom() + "|" + n.get_tipus_node();
+        String node = n.get_id() + "|" + n.get_nom();
         return node;
     }
 

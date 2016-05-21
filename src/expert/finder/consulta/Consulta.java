@@ -1,7 +1,7 @@
 package expert.finder.consulta;
 
 import expert.finder.cami.Cami;
-import expert.finder.node.Node;
+import expert.finder.node.*;
 
 /**
  *

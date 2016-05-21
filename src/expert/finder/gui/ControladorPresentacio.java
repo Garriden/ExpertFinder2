@@ -5,6 +5,9 @@
  */
 package expert.finder.gui;
 
+import expert.finder.cami.ControladorCami;
+import expert.finder.consulta.ControladorConsulta;
+import expert.finder.graf.ControladorGraf;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -15,10 +18,12 @@ import java.util.ArrayList;
 public class ControladorPresentacio {
     private final ControladorGraf controladorGraf;
     private final ControladorCami controladorCami;
+    private final ControladorConsulta controladorConsulta;
         
     public ControladorPresentacio() {
         this.controladorGraf = new ControladorGraf();
         this.controladorCami = new ControladorCami();
+        this.controladorConsulta = new ControladorConsulta(this.controladorGraf, this.controladorCami);
     }
         
     public void importar_graf(String rutaFitxer, boolean esNou) throws IOException {
@@ -91,6 +96,21 @@ public class ControladorPresentacio {
         this.controladorGraf.eliminar_relacio(idNodeOrigen, idNodeDesti, tipusNodeDesti);
     }
 
+    public void afegir_consulta_tipusI(String descripcio, String tipusNode, int posicioNode, int posicioCami) {
+        this.controladorConsulta.afegir_consulta_tipusI(descripcio, tipusNode, posicioNode, posicioCami);
+    }
+    
+    public ArrayList<String> get_consultes() {
+        return this.controladorConsulta.get_consultes();
+    }
+    
+    public void eliminar_consulta(int posicio) {
+        this.controladorConsulta.eliminar_consulta(posicio);
+    }
+    
+    public ArrayList<String> executar_consulta(int posicioConsulta) {
+        return this.controladorConsulta.executar_consulta(posicioConsulta);
+    }
     
     
     public void run() {
