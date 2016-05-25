@@ -10,14 +10,14 @@ import java.util.ArrayList;
  */
 
 public class Graf implements Serializable{
-    private Matriu paperAutor;
-    private Matriu paperConferencia;
-    private Matriu paperTerme;
+    protected Matriu paperAutor;
+    protected Matriu paperConferencia;
+    protected Matriu paperTerme;
 
-    private ArrayList<Node> paper;
-    private ArrayList<Node> conferencia;
-    private ArrayList<Node> autor;
-    private ArrayList<Node> terme;
+    protected ArrayList<Node> paper;
+    protected ArrayList<Node> conferencia;
+    protected ArrayList<Node> autor;
+    protected ArrayList<Node> terme;
 
 
     public Graf(Matriu paperAutor, Matriu paperConferencia, Matriu paperTerme, ArrayList<Node> paper,

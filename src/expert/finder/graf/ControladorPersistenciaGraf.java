@@ -15,26 +15,17 @@ public class ControladorPersistenciaGraf {
     private ArrayList<Integer> paperId;
     private ArrayList<Integer> termeId;
     private ArrayList<Integer> conferenciaId;
-    private Graf graf;
 
     private ArrayList<Node> importar_node(String ruta, String nomFitxer, Node.TipusNode tipusNode) throws IOException {
         if (ruta.charAt(ruta.length()-1) != '\\') ruta = ruta + "\\";
         File rutaFitxerNodes = new File(ruta+nomFitxer+".txt");
-        File rutaTaulaId = new File(ruta+nomFitxer+"taula.txt");
         BufferedReader fitxerNode;
-        BufferedWriter fitxerTaula;
 
         try {
             fitxerNode = new BufferedReader(new InputStreamReader(new FileInputStream(rutaFitxerNodes),"ISO-8859-15"));
         } catch (IOException e) {
             throw new IOException("Error: No es pot obrir el fitxer: " + nomFitxer + ".txt en la ruta: " + rutaFitxerNodes.getAbsolutePath() + " perque" +
                     " no existeix o esta bloquejat per un altre programa.");
-        }
-
-        try {
-            fitxerTaula = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(rutaTaulaId),"ISO-8859-15"));
-        } catch (IOException e) {
-            throw new IOException("Error: No s'ha pogut crear la taula de ID's en la ruta: " + ruta);
         }
 
         String node = fitxerNode.readLine();
@@ -54,11 +45,6 @@ public class ControladorPersistenciaGraf {
             Node n = new Node(idNode, (node.substring(posicioTab+1, node.length())), tipusNode);
             nodes.add(n);
 
-            fitxerTaula.write(node.substring(0, posicioTab));
-            fitxerTaula.write('\t');
-            fitxerTaula.write(String.valueOf(idNode));
-            fitxerTaula.newLine();
-
             switch (tipusNode) {
                 case AUTOR:
                     this.autorId.add(Integer.valueOf(node.substring(0, posicioTab)));
@@ -76,13 +62,12 @@ public class ControladorPersistenciaGraf {
             node = fitxerNode.readLine();
             ++idNode;
         }
+        
         fitxerNode.close();
-        fitxerTaula.close();
-
         return nodes;
     }
 
-    private Matriu importarRelacions(String ruta, String nomFitxer, Node.TipusNode tipusNode) throws IOException {
+    private Matriu importar_relacions(String ruta, String nomFitxer, Node.TipusNode tipusNode) throws IOException {
         if (ruta.charAt(ruta.length()-1) != '\\') ruta = ruta + "\\";
         File rutaFitxerRelacions = new File(ruta+nomFitxer+".txt");
         BufferedReader fitxerRelacions;
@@ -135,6 +120,7 @@ public class ControladorPersistenciaGraf {
             m.set_valor(idOrigen, idDesti, 1.0);
             relacio = fitxerRelacions.readLine();
         }
+        
         fitxerRelacions.close();
         return m;
     }
@@ -152,20 +138,20 @@ public class ControladorPersistenciaGraf {
         ArrayList<Node> conferencies = importar_node(ruta, "conf", Node.TipusNode.CONFERENCIA);
         ArrayList<Node> termes = importar_node(ruta, "term", Node.TipusNode.TERME);
 
-        Matriu paper_autor = importarRelacions(ruta, "paper_author", Node.TipusNode.AUTOR);
-        Matriu paper_conf = importarRelacions(ruta, "paper_conf", Node.TipusNode.CONFERENCIA);
-        Matriu paper_term = importarRelacions(ruta, "paper_term", Node.TipusNode.TERME);
+        Matriu paper_autor = importar_relacions(ruta, "paper_author", Node.TipusNode.AUTOR);
+        Matriu paper_conf = importar_relacions(ruta, "paper_conf", Node.TipusNode.CONFERENCIA);
+        Matriu paper_term = importar_relacions(ruta, "paper_term", Node.TipusNode.TERME);
 
-        this.graf = new Graf(paper_autor, paper_conf, paper_term, papers, termes, autors, conferencies);
-        return this.graf;
+        return new Graf(paper_autor, paper_conf, paper_term, papers, termes, autors, conferencies);
     }
 
     public Graf importar_graf_salvat(String ruta) throws IOException {
         FileInputStream fitxer = new FileInputStream(ruta);
         ObjectInputStream ois;
+        Graf graf;
         try {
             ois = new ObjectInputStream(fitxer);
-            this.graf = (Graf) ois.readObject();
+            graf = (Graf) ois.readObject();
         } catch (IOException e) {
             throw new IOException("Error: No s'ha pogut importar el graf selvat de la ruta: " + ruta +
                     "perque o no existeix, o es utilitzat per un altre programa.");
@@ -176,7 +162,7 @@ public class ControladorPersistenciaGraf {
 
         ois.close();
         fitxer.close();
-        return this.graf;
+        return graf;
     }
 
     public void exportar(String ruta , Graf graf) throws IOException {

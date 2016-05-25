@@ -50,7 +50,7 @@ public class ControladorGraf {
     public String consultar_node(int posicio, String tipusNode) throws IllegalArgumentException {
         Node.TipusNode tipus = stringToTipusNode(tipusNode);
         Node n = this.graf.get_node(posicio, tipus);
-        String node = n.get_nom();
+        String node = n.get_id() + "|" + n.get_nom();
         return node;
     }
 
@@ -65,7 +65,7 @@ public class ControladorGraf {
         ArrayList<String> nodesCodificats = new ArrayList<>(nodes.size());
         for (int i = 0; i < nodes.size(); ++i) {
             Node n = nodes.get(i);
-            nodesCodificats.add(n.get_nom());
+            nodesCodificats.add(n.get_id() + "|" + n.get_nom());
         }
 
         return nodesCodificats;
@@ -92,24 +92,24 @@ public class ControladorGraf {
         for (int i = 0; i < nodes.size(); ++i) {
             Node n = nodes.get(i);
             double valor = this.graf.get_paper_autor().get_valor(idNodeOrigen, n.get_id());
-            if (valor == 1.0 && relacionats) nodesCodificats.add(n.get_nom() + "|Autor");
-            else if (valor == 0.0) nodesCodificats.add(n.get_nom() + "|Autor");
+            if (valor == 1.0 && relacionats) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|Autor");
+            else if (valor == 0.0 && !relacionats) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|Autor");
         }
         
         nodes = this.graf.get_terme();
         for (int i = 0; i < nodes.size(); ++i) {
             Node n = nodes.get(i);
             double valor = this.graf.get_paper_terme().get_valor(idNodeOrigen, n.get_id());
-            if (valor == 1.0 && relacionats) nodesCodificats.add(n.get_nom() + "|Terme");
-            else if (valor == 0.0) nodesCodificats.add(n.get_nom() + "|Terme");
+            if (valor == 1.0 && relacionats) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|Terme");
+            else if (valor == 0.0 && !relacionats) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|Terme");
         }
         
         nodes = this.graf.get_conferencia();        
         for (int i = 0; i < nodes.size(); ++i) {
             Node n = nodes.get(i);
             double valor = this.graf.get_paper_conferencia().get_valor(idNodeOrigen, n.get_id());
-            if (valor == 1.0 && relacionats) nodesCodificats.add(n.get_nom() + "|Conferencia");
-            else if (valor == 0.0) nodesCodificats.add(n.get_nom() + "|Conferencia");
+            if (valor == 1.0 && relacionats) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|Conferencia");
+            else if (valor == 0.0 && !relacionats) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|Conferencia");
         }
         
         return nodesCodificats;
