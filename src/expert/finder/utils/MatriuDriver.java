@@ -145,12 +145,6 @@ public class MatriuDriver {
         print_matriu(m.normalitzar_fila());
     }
 
-    public static  void normalitzar_columnes() {
-        Matriu m = demanar_matriu("Introdueix l'identificador de la matriu: ");
-        System.out.println("Resultat de la normalitzada per columnes: ");
-        print_matriu(m.normalitzar_columna());
-    }
-
     public static  void obtenir_fila_iessima() {
         Matriu m = demanar_matriu("Introdueix l'identificador de la matriu: ");
         System.out.println("IIntrodueix la fila i-èssima que vols obtenir [1,"+ m.get_nombre_files() + "]: ");
@@ -295,11 +289,8 @@ public class MatriuDriver {
         print_matriu(a.transposar());
         System.out.println("Normalitza la matriu A per files");
         print_matriu(a.normalitzar_fila());
-        System.out.println("Normalitza la matyrui A per Columnes");
+        System.out.println("Normalitza la matriu A per Columnes");
         print_matriu(a.normalitzar_columna());
-
-        Set<Matriu.Index> index = a.get_index_matriu();
-        System.out.println();
     }
 
     public static void main(String[] args) {
@@ -329,7 +320,6 @@ public class MatriuDriver {
                         normalitzar_files();
                         break;
                     case 7:
-                        normalitzar_columnes();
                         break;
                     case 8:
                         obtenir_fila_iessima();
