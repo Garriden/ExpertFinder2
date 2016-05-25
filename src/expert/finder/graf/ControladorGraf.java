@@ -53,6 +53,22 @@ public class ControladorGraf {
         String node = n.get_id() + "|" + n.get_nom();
         return node;
     }
+    
+    public boolean existeix_node(String nomNode, String tipusNode) throws IllegalArgumentException {
+        Node.TipusNode tipus = stringToTipusNode(tipusNode);
+        ArrayList<Node> nodes;
+        if (tipus == Node.TipusNode.AUTOR) nodes = this.graf.get_autor();
+        else if (tipus == Node.TipusNode.PAPER) nodes = this.graf.get_paper();
+        else if (tipus == Node.TipusNode.TERME) nodes = this.graf.get_terme();
+        else nodes = this.graf.get_conferencia();
+        
+        for (int i = 0; i < nodes.size(); ++i) {
+            String nom = nodes.get(i).get_nom();
+            if (nom.equalsIgnoreCase(nomNode)) return true;            
+        }
+        
+        return false;        
+    }
 
     public ArrayList<String> get_nodes(String tipusNode) throws IllegalArgumentException {
         Node.TipusNode tipus = stringToTipusNode(tipusNode);
