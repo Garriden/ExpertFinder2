@@ -131,6 +131,11 @@ public class ControladorGraf {
         return nodesCodificats;
     }
 
+    public Node get_copia_node(int idNode, Node.TipusNode tipusNode) throws IllegalArgumentException {
+        Node node = this.graf.get_node(idNode, tipusNode);        
+        return new Node(node.get_id(), node.get_nom(), node.get_tipus_node());
+    }
+    
     public Graf get_graf() {
         return this.graf;
     }
