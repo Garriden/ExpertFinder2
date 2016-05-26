@@ -7,38 +7,37 @@ import java.io.Serializable;
  */
 
 public class Node implements Serializable{
+    public enum TipusNode {
+            AUTOR, CONFERENCIA, PAPER, TERME
+    }
 
-		public enum TipusNode {
-			AUTOR, CONFERENCIA, PAPER, TERME
-		}
-		
-		private TipusNode tipus;
-		private String nom;
-		private int id;
+    private TipusNode tipus;
+    private String nom;
+    private int id;
 
-		public Node(int id, String nom, TipusNode tipus){
-			this.id = id;
-			this.nom = nom;
-			this.tipus = tipus;
-		}
+    public Node(int id, String nom, TipusNode tipus){
+            this.id = id;
+            this.nom = nom;
+            this.tipus = tipus;
+    }
 
-		public int get_id(){
-			return id;
-		}
+    public int get_id(){
+            return id;
+    }
 
-		public String get_nom(){
-			return nom;
-		}
+    public String get_nom(){
+            return nom;
+    }
 
-		public TipusNode get_tipus_node(){
-			return tipus;
-		}
-		
-		public void set_nom(String nom){
-			this.nom = nom;
-		}
+    public TipusNode get_tipus_node(){
+            return tipus;
+    }
 
-		public void set_id(int id) {
-			this.id = id;
-		}
+    public void set_nom(String nom){
+            this.nom = nom;
+    }
+
+    public void set_id(int id) {
+            this.id = id;
+    }
 }
