@@ -148,7 +148,7 @@ public class HeteSim {
             m2 = aux.multiplicar(m2);
         }
         m1 = m1.normalitzar_fila();
-        m2 = m2.normalitzar_columna();
+        //m2 = m2.normalitzar_columna();
 
         m1 = m1.multiplicar(m2);
         return m1;
