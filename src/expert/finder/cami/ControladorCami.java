@@ -107,7 +107,7 @@ public class ControladorCami {
         else camiCodificat += "No";        
         return camiCodificat;
     }
-
+    
     // Pre:  Cert.
     // Post: Retorna una llista de tots els camins disponibles codificats com: [cami]|[descripcio]|[teClausura]|[clausuraActualitzada]
     // Cost: O(n)
@@ -186,6 +186,7 @@ public class ControladorCami {
     }
     */
 
+    /*
     // Pre:  Cert
     // Post: Retorna un boolea que ens indica si el cami pasat per paràmetre vàlid o no.
     // Cost: O(1).
@@ -198,5 +199,15 @@ public class ControladorCami {
     // Cost: O(1)
     public int get_nombre_camins() {
         return this.camins.size();
+    }
+    */
+    
+    // Pre:  Cert
+    // Post: Retorna una referencia a un cami clausura en la posicio pasada per parametre.
+    // Cert: O(1)
+    public CamiClausura get_cami_sense_codificar (int posicio) {
+        if (posicio < 0 || posicio >= camins.size())
+            throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida de la taula");
+        return this.camins.get(posicio);
     }
 }
