@@ -6,6 +6,7 @@
 package expert.finder.gui;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -26,8 +27,7 @@ public class EliminarRelacio extends javax.swing.JFrame {
         if (taulaPaper.getSelectedRow() != -1) {
             String column_names[]= {"Id","Nom","Relacionat"};
             DefaultTableModel table_model = new DefaultTableModel(column_names, 0);
-            String tipusNode = comboTipo.getSelectedItem().toString();
-            ArrayList<String> relacions = controladorPresentacio.consultar_relacio(taulaPaper.getSelectedRow(), tipusNode);        
+            ArrayList<String> relacions = controladorPresentacio.consultar_relacio(taulaPaper.getSelectedRow(), true);        
             for(int i = 0; i < relacions.size(); ++i){
                 String relacio = relacions.get(i);
                 int posicioTab1 = relacio.indexOf('|');
@@ -67,7 +67,6 @@ public class EliminarRelacio extends javax.swing.JFrame {
         taulaPaper = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        comboTipo = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         taulaDades = new javax.swing.JTable();
         bCercar = new javax.swing.JButton();
@@ -102,13 +101,6 @@ public class EliminarRelacio extends javax.swing.JFrame {
 
         jLabel2.setText("Tipus node destí:");
 
-        comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AUTOR", "CONFERENCIA", "TERME" }));
-        comboTipo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboTipoActionPerformed(evt);
-            }
-        });
-
         taulaDades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -140,7 +132,7 @@ public class EliminarRelacio extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(EliminarButton))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 11, Short.MAX_VALUE)
+                                .addGap(0, 12, Short.MAX_VALUE)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(169, 169, 169)
@@ -152,8 +144,6 @@ public class EliminarRelacio extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(66, 66, 66)
                         .addComponent(jLabel2)
-                        .addGap(47, 47, 47)
-                        .addComponent(comboTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(bCercar)))
                 .addContainerGap())
@@ -167,7 +157,6 @@ public class EliminarRelacio extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(comboTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bCercar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -185,9 +174,15 @@ public class EliminarRelacio extends javax.swing.JFrame {
         if (taulaPaper.getSelectedRow() != 1 && taulaDades.getSelectedRow() != -1) {
             int idOrigen = taulaPaper.getSelectedRow();
             int idDesti = taulaDades.getSelectedRow();
-            String tipusNodeDesti = comboTipo.getSelectedItem().toString();
-            controladorPresentacio.eliminar_relacio(idOrigen, idDesti, tipusNodeDesti);
-            inicialitzar_taula_desti();            
+            ArrayList<String> relacions = controladorPresentacio.consultar_relacio(taulaPaper.getSelectedRow(), true); 
+            String relacio = relacions.get(idDesti);
+            int posicioTab1 = relacio.indexOf('|');
+            int posicioTab2 = relacio.indexOf('|',posicioTab1+1);
+            String id = relacio.substring(0, posicioTab1);
+            String tipusNodeDesti = relacio.substring(posicioTab2+1);
+            controladorPresentacio.eliminar_relacio(idOrigen, Integer.parseInt(id), tipusNodeDesti); 
+            inicialitzar_taula_desti();    
+            JOptionPane.showMessageDialog(this, "S'ha eliminat la relació"); 
         } 
     }//GEN-LAST:event_EliminarButtonActionPerformed
 
@@ -196,10 +191,6 @@ public class EliminarRelacio extends javax.swing.JFrame {
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_EnrereButtonActionPerformed
-
-    private void comboTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTipoActionPerformed
-        inicialitzar_taula_desti();
-    }//GEN-LAST:event_comboTipoActionPerformed
 
     private void bCercarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCercarActionPerformed
         // TODO add your handling code here:        
@@ -210,7 +201,6 @@ public class EliminarRelacio extends javax.swing.JFrame {
     private javax.swing.JButton EliminarButton;
     private javax.swing.JButton EnrereButton;
     private javax.swing.JButton bCercar;
-    private javax.swing.JComboBox<String> comboTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

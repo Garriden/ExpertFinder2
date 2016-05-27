@@ -109,8 +109,8 @@ public class GestioConsulta extends javax.swing.JFrame {
 
     private void BotonConsultarConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonConsultarConsultasActionPerformed
         // TODO add your handling code here:
-        new ConsultarConsulta(this.controladorPresentacio).setVisible(true);
-        this.dispose();
+        //new ConsultarConsulta(this.controladorPresentacio).setVisible(true);
+        //this.dispose();
     }//GEN-LAST:event_BotonConsultarConsultasActionPerformed
 
     private void BotonEnrereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonEnrereActionPerformed

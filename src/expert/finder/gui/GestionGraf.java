@@ -34,8 +34,6 @@ public class GestionGraf extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         bEnrere = new javax.swing.JButton();
         AfegirNodeButton = new javax.swing.JButton();
-        EliminarNodeButton = new javax.swing.JButton();
-        ModificarNodeButton = new javax.swing.JButton();
         AfegirRelacioButton = new javax.swing.JButton();
         EliminarRelacioButton = new javax.swing.JButton();
         bConsultarNode = new javax.swing.JButton();
@@ -59,20 +57,6 @@ public class GestionGraf extends javax.swing.JFrame {
             }
         });
 
-        EliminarNodeButton.setText("Eliminar node");
-        EliminarNodeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EliminarNodeButtonActionPerformed(evt);
-            }
-        });
-
-        ModificarNodeButton.setText("Modificar node");
-        ModificarNodeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ModificarNodeButtonActionPerformed(evt);
-            }
-        });
-
         AfegirRelacioButton.setText("Afegir relació");
         AfegirRelacioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -80,7 +64,7 @@ public class GestionGraf extends javax.swing.JFrame {
             }
         });
 
-        EliminarRelacioButton.setText("Eliminar relació");
+        EliminarRelacioButton.setText("Consultar relació");
         EliminarRelacioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EliminarRelacioButtonActionPerformed(evt);
@@ -102,55 +86,46 @@ public class GestionGraf extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(bConsultarNode, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
-                            .addComponent(AfegirNodeButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(AfegirRelacioButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jSeparator1)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(EliminarNodeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(ModificarNodeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGap(23, 23, 23)
-                                        .addComponent(jLabel1)))
-                                .addGap(0, 46, Short.MAX_VALUE))
+                                .addComponent(AfegirNodeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bConsultarNode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(EliminarRelacioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(AfegirRelacioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(EliminarRelacioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(86, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(bEnrere)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addContainerGap())))
+                                .addGap(155, 155, 155)
+                                .addComponent(jLabel1))
+                            .addComponent(bEnrere))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jLabel1)
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(AfegirNodeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ModificarNodeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EliminarNodeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(bConsultarNode, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bConsultarNode, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AfegirNodeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(EliminarRelacioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AfegirRelacioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AfegirRelacioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(EliminarRelacioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(bEnrere)
-                .addGap(18, 18, 18))
+                .addContainerGap())
         );
 
         pack();
@@ -169,23 +144,9 @@ public class GestionGraf extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_AfegirNodeButtonActionPerformed
 
-    private void EliminarNodeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarNodeButtonActionPerformed
-        // TODO add your handling code here:
-        EliminarNode menu = new EliminarNode(this.controladorPresentacio);
-        menu.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_EliminarNodeButtonActionPerformed
-
-    private void ModificarNodeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarNodeButtonActionPerformed
-        // TODO add your handling code here:
-        ModificarNode menu = new ModificarNode(this.controladorPresentacio);
-        menu.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_ModificarNodeButtonActionPerformed
-
     private void AfegirRelacioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AfegirRelacioButtonActionPerformed
         // TODO add your handling code here:
-        AfegirRelacio menu = new AfegirRelacio(this.controladorPresentacio);;
+        ConsultarRelacio menu = new ConsultarRelacio(this.controladorPresentacio);
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_AfegirRelacioButtonActionPerformed
@@ -207,9 +168,7 @@ public class GestionGraf extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AfegirNodeButton;
     private javax.swing.JButton AfegirRelacioButton;
-    private javax.swing.JButton EliminarNodeButton;
     private javax.swing.JButton EliminarRelacioButton;
-    private javax.swing.JButton ModificarNodeButton;
     private javax.swing.JButton bConsultarNode;
     private javax.swing.JButton bEnrere;
     private javax.swing.JLabel jLabel1;
