@@ -107,8 +107,8 @@ public class ControladorCami {
     // Cost: O(n)
     public ArrayList<String> get_camins() {
         ArrayList<String> caminsCodificats = new ArrayList<>(this.camins.size());
-        for (int i = 0; i < this.camins.size(); ++i) {
-            caminsCodificats.add(this.camins.get(i).codificar_cami());
+        for (CamiClausura camin : this.camins) {
+            caminsCodificats.add(camin.codificar_cami());
         }
 
         return caminsCodificats;
@@ -123,8 +123,8 @@ public class ControladorCami {
             throw new IllegalArgumentException("Error: No es pot modificar el cami perquè la nova descripcio té " +
                     "valor nul");
         }
-        for (int i = 0; i < this.camins.size(); ++i) {
-            if (this.camins.get(i).get_descripcio().equalsIgnoreCase(descripcio)) {
+        for (CamiClausura camin : this.camins) {
+            if (camin.get_descripcio().equalsIgnoreCase(descripcio)) {
                 return true;
             }
         }
@@ -135,8 +135,8 @@ public class ControladorCami {
     // Post: Actualitza l'estat de totes las matrius de clausura de tots els camins enmmagatzemats en el controlador.
     // Cost: O(n^2)
     public void graf_node_modificat(char tipusNode) {
-        for (int i = 0; i < this.camins.size(); ++i) {
-            this.camins.get(i).actualitzar_clausura(tipusNode);
+        for (CamiClausura camin : this.camins) {
+            camin.actualitzar_clausura(tipusNode);
         }
     }
         
@@ -144,8 +144,8 @@ public class ControladorCami {
     // Post: Actualitza l'estat de totes las matrius de clausura de tots els camins enmmagatzemats en el controlador.
     // Cost: O(n)
     public void graf_relacio_modificat() {
-        for (int i = 0; i < this.camins.size(); ++i) {
-            this.camins.get(i).actualitzar_clausura('P');
+        for (CamiClausura camin : this.camins) {
+            camin.actualitzar_clausura('P');
         }        
     }
     
