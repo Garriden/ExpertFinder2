@@ -1,0 +1,59 @@
+////////////////////// CONTROLADOR CAMI
+
+
+    /*
+    // Pre:  Cert.
+    // Post: Retorna un boolea que ens indica si el cami origen es concatenable o no amb el cami desti.
+    // Cost: O(1)
+    public boolean es_concatenable(int posicioCamiOrigen, int posicioCamiDesti) throws ArrayIndexOutOfBoundsException {
+        if (posicioCamiOrigen < 0 || posicioCamiOrigen >= this.camins.size())
+            throw new ArrayIndexOutOfBoundsException("Error: la posicio origen té que esta compresa entre el 1 i la mida de la taula");
+        if (posicioCamiDesti < 0 || posicioCamiDesti >= this.camins.size())
+            throw new ArrayIndexOutOfBoundsException("Error: la posicio desti té que esta compresa entre el 1 i la mida de la taula");
+        Cami camiOrigen = this.camins.get(posicioCamiOrigen);
+        Cami camiDesti = this.camins.get(posicioCamiDesti);
+        return camiOrigen.es_concatenable(camiDesti);
+    }
+
+    // Pre:  Cert.
+    // Post: Concatena el cami de la posció origen amb el cami de la posició desti. En cas que no es pugui concatenar els dos
+    //       camins retorna una excepcio.
+    // Cost: O(n)
+    public void concatenar_cami(int posicioCamiOrigen, int posicioCamiDesti) throws ArrayIndexOutOfBoundsException, IllegalArgumentException{
+        if (posicioCamiOrigen < 0 || posicioCamiOrigen >= this.camins.size())
+            throw new ArrayIndexOutOfBoundsException("Error: la posicio origen té que esta compresa entre el 1 i la mida retornada per el controlador");
+        if (posicioCamiDesti < 0 || posicioCamiDesti >= this.camins.size())
+            throw new ArrayIndexOutOfBoundsException("Error: la posicio desti té que esta compresa entre el 1 i la mida retornada per el controlador");
+        if (!es_concatenable(posicioCamiOrigen, posicioCamiDesti)) throw new IllegalArgumentException("Error: Aquests dos camins son incompatibles per concatenar.");
+        Cami camiOrigen = this.camins.get(posicioCamiOrigen);
+        Cami camiDesti = this.camins.get(posicioCamiDesti);
+        Cami c = camiOrigen.concatenar(camiDesti);
+        this.camins.add(c);
+    }
+
+    // Pre:  Cert
+    // Post: Inverteix el cami en la posicio pasada per paràmetre.
+    // Cost: O(n)
+    public void invertir_cami(int posicio)  throws ArrayIndexOutOfBoundsException  {
+        if (posicio < 0 || posicio >= this.camins.size())
+            throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida retornada per el controlador");
+        Cami c = this.camins.get(posicio).invertir();
+        this.camins.add(c);
+    }
+    */
+
+    /*
+    // Pre:  Cert
+    // Post: Retorna un boolea que ens indica si el cami pasat per paràmetre vàlid o no.
+    // Cost: O(1).
+    public boolean validar_cami(String cami) {
+        return Cami.cami_valid(cami);
+    }
+
+    // Pre:  Cert
+    // Post: Retorna el nobmre de camins enmmagatzemats en el controlador.
+    // Cost: O(1)
+    public int get_nombre_camins() {
+        return this.camins.size();
+    }
+    */
