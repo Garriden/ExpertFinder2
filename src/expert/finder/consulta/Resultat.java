@@ -2,13 +2,14 @@ package expert.finder.consulta;
 
 import expert.finder.node.Node;
 import expert.finder.utils.Tuple;
+import java.io.Serializable;
 
 import java.util.ArrayList;
 /**
- * Created by Edgar Perez, Col·laboracio : Ruben Bagan Benavides
+ * Created by Ruben Bagan Benavides
  */
 
-public class Resultat {
+public class Resultat implements Serializable {
     private ArrayList<Tuple> taula;
 
     // Pre:  Cert
@@ -31,31 +32,25 @@ public class Resultat {
         return taula.size();
     }
 
-    // Pre:  0 <= pos < Resultat.Mida
+    // Pre:  0 <= posicio < Resultat.Mida
     // Post: Retorna la tuple i-èssima del resultat.
     // Cost: O(1)
-    public Tuple get_tuple(int pos) {
-        return taula.get(pos);
+    public Tuple get_tuple(int posicio) {
+        return taula.get(posicio);
     }
 
     // Pre:  Cert
-    // Post: Retorna una copia de profunditat de les tuples del resultat.
+    // Post: Retorna una referencia a l'ArrayList de tuples d'un resultat.
     // Cost: O(n)
     public ArrayList<Tuple> get_tuples() {
-        ArrayList<Tuple> copia_taula = new ArrayList<>();
-        for (int i = 0; i < this.taula.size(); ++i) {
-            Node node_taula = this.taula.get(i).get_node();
-            Node n = new Node(node_taula.get_id(), node_taula.get_nom(), node_taula.get_tipus_node());
-            copia_taula.add(new Tuple(n, this.taula.get(i).get_grau_rellevancia()));
-        }
-        return copia_taula;
+        return this.taula;
     }
 
-    // Pre:  0 <= pos < Resultat.Mida
+    // Pre:  0 <= posicio < Resultat.Mida
     // Post: S'ha elimiant la tuple i-èssima del resultat.
     // Cost: O(1)
-    public void eliminar_tuple(int pos){
-        taula.remove(pos);
+    public void eliminar_tuple(int posicio){
+        taula.remove(posicio);
     }
 
     // Pre:  0 <= grauRellevancia
@@ -67,21 +62,18 @@ public class Resultat {
                     taula.get(i).get_grau_rellevancia() > grauRellevancia + 0.05) taula.remove(i);
         }
     }
-
-    public void filtrar_resultat(double grauRellevancia, int rang) {
-        double min = grauRellevancia;
-        double max = rang;
-        if (grauRellevancia > rang) {
-            min = rang;
-            max = grauRellevancia;
-        }
-
-        for(int i = 0; i < taula.size(); ++i){
-            if(taula.get(i).get_grau_rellevancia() < min || taula.get(i).get_grau_rellevancia() > max) taula.remove(i);
-        }
-    }
-
-    public void filtrar_resultat(double grauRellevancia, int min, int max) {
-
+    
+    public ArrayList<String> codificar_resultat() {
+        ArrayList<String> resultatsCodificat = new ArrayList<>(this.taula.size());
+        for (int i = 0; i < this.taula.size(); ++i) {
+            Tuple tuple = this.taula.get(i);
+            String resultat = tuple.get_node().get_id()
+                    + "|" + tuple.get_node().get_nom() 
+                    + "|" + tuple.get_node().get_tipus_node()
+                    + "|" + tuple.get_grau_rellevancia();
+            resultatsCodificat.add(resultat);
+        } 
+        
+        return resultatsCodificat;    
     }
 }

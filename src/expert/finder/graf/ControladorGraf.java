@@ -38,23 +38,36 @@ public class ControladorGraf {
     public void eliminar_node(int posicio, String tipusNode) throws IllegalArgumentException {
         Node.TipusNode tipus = stringToTipusNode(tipusNode);
         Node n = this.graf.get_node(posicio, tipus);
-        if (n == null) throw new IllegalArgumentException("Error: No existeix cap node amb aquest identificador o no es del tipus node correcte.");
-        else this.graf.eliminar_node(n);
+        this.graf.eliminar_node(n);
     }
 
     public void modificar_nom_node(int posicio, String nouNom, String tipusNode) throws IllegalArgumentException {
         Node.TipusNode tipus = stringToTipusNode(tipusNode);
         Node n = new Node(posicio, nouNom, tipus);
-        int error = this.graf.actualizar_node(n);
-        if (error == 1) throw new IllegalArgumentException("Error: No existeix cap node amb aquest identificador.");
+        this.graf.actualizar_node(n);
     }
 
     public String consultar_node(int posicio, String tipusNode) throws IllegalArgumentException {
         Node.TipusNode tipus = stringToTipusNode(tipusNode);
         Node n = this.graf.get_node(posicio, tipus);
-        if (n == null) throw new IllegalArgumentException("Error: No existeix cap node amb aquest identificador o no es del tipus node correcte.");
         String node = n.get_id() + "|" + n.get_nom();
         return node;
+    }
+    
+    public boolean existeix_node(String nomNode, String tipusNode) throws IllegalArgumentException {
+        Node.TipusNode tipus = stringToTipusNode(tipusNode);
+        ArrayList<Node> nodes;
+        if (tipus == Node.TipusNode.AUTOR) nodes = this.graf.get_autor();
+        else if (tipus == Node.TipusNode.PAPER) nodes = this.graf.get_paper();
+        else if (tipus == Node.TipusNode.TERME) nodes = this.graf.get_terme();
+        else nodes = this.graf.get_conferencia();
+        
+        for (int i = 0; i < nodes.size(); ++i) {
+            String nom = nodes.get(i).get_nom();
+            if (nom.equalsIgnoreCase(nomNode)) return true;            
+        }
+        
+        return false;        
     }
 
     public ArrayList<String> get_nodes(String tipusNode) throws IllegalArgumentException {
@@ -68,7 +81,7 @@ public class ControladorGraf {
         ArrayList<String> nodesCodificats = new ArrayList<>(nodes.size());
         for (int i = 0; i < nodes.size(); ++i) {
             Node n = nodes.get(i);
-            nodesCodificats.add(n.get_id()+1 + "|" + n.get_nom());
+            nodesCodificats.add(n.get_id() + "|" + n.get_nom());
         }
 
         return nodesCodificats;
@@ -77,61 +90,52 @@ public class ControladorGraf {
     public void afegir_relacio(int idNodeOrigen, int idNodeDesti, String tipusNodeDesti) throws IllegalArgumentException{
         Node.TipusNode tipus = stringToTipusNode(tipusNodeDesti);
         Node nodeOrigen = this.graf.get_node(idNodeOrigen, Node.TipusNode.PAPER);
-        if (nodeOrigen == null) throw new IllegalArgumentException("Error: No existeix cap node origen amb aquest identificador o no es del tipus node correcte.");
         Node nodeDesti = this.graf.get_node(idNodeDesti, tipus);
-        if (nodeDesti == null) throw new IllegalArgumentException("Error: No existeix cap node desti amb aquest identificador o no es del tipus node correcte.");
-        int error = this.graf.afegir_aresta(nodeOrigen, nodeDesti);
-        switch (error) {
-            case -3:
-                throw new IllegalArgumentException("Error: No hi ha cap node origen de tipus paper amb aquest identificador.");
-            case -4:
-                throw new IllegalArgumentException("Error: No hi ha cap node desti amb aquest identificador.");
-            case -5:
-                throw new IllegalArgumentException("Error: El node desti no es del tipus Autor, Conferencia o Terme.");
-        }
+        this.graf.afegir_aresta(nodeOrigen, nodeDesti);
     }
 
     public void eliminar_relacio(int idNodeOrigen, int idNodeDesti, String tipusNodeDesti) throws IllegalArgumentException {
         Node.TipusNode tipus = stringToTipusNode(tipusNodeDesti);
         Node nodeOrigen = this.graf.get_node(idNodeOrigen, Node.TipusNode.PAPER);
-        if (nodeOrigen == null) throw new IllegalArgumentException("Error: No existeix cap node origen amb aquest identificador o no es del tipus node correcte.");
         Node nodeDesti = this.graf.get_node(idNodeDesti, tipus);
-        if (nodeDesti == null) throw new IllegalArgumentException("Error: No existeix cap node desti amb aquest identificador o no es del tipus node correcte.");
-        int error = this.graf.eliminar_aresta(nodeOrigen, nodeDesti);
-        switch (error) {
-            case -3:
-                throw new IllegalArgumentException("Error: No hi ha cap node origen de tipus paper amb aquest identificador.");
-            case -4:
-                throw new IllegalArgumentException("Error: No hi ha cap node desti amb aquest identificador.");
-            case -5:
-                throw new IllegalArgumentException("Error: El node desti no es del tipus Autor, Conferencia o Terme.");
-        }
+        this.graf.eliminar_aresta(nodeOrigen, nodeDesti);
     }
+    
 
-    public ArrayList<String> consultar_relacio(int idNodeOrigen, String tipusNodeDesti) throws IllegalArgumentException {
-        Node.TipusNode tipus = stringToTipusNode(tipusNodeDesti);
-        Node nodeOrigen = this.graf.get_node(idNodeOrigen, Node.TipusNode.PAPER);
-        if (nodeOrigen == null) throw new IllegalArgumentException("Error: No existeix cap node origen amb aquest identificador o no es del tipus node correcte.");
-
-        ArrayList<Node> nodes;
-        if (tipus == Node.TipusNode.AUTOR) nodes = this.graf.get_autor();
-        else if (tipus == Node.TipusNode.TERME) nodes = this.graf.get_terme();
-        else nodes = this.graf.get_conferencia();
-
-        ArrayList<String> nodesCodificats = new ArrayList<>(nodes.size());
+    public ArrayList<String> consultar_relacio(int idNodeOrigen, boolean relacionats) throws IllegalArgumentException {
+        ArrayList<String> nodesCodificats = new ArrayList<>();
+        ArrayList<Node> nodes = this.graf.get_autor();
         for (int i = 0; i < nodes.size(); ++i) {
             Node n = nodes.get(i);
-            double valor;
-            if (tipus == Node.TipusNode.TERME) valor = this.graf.get_paper_terme().get_valor(idNodeOrigen, n.get_id());
-            else if (tipus == Node.TipusNode.AUTOR) valor = this.graf.get_paper_autor().get_valor(idNodeOrigen, n.get_id());
-            else valor = this.graf.get_paper_conferencia().get_valor(idNodeOrigen, n.get_id());
-            if (valor == 1.0) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|Si");
-            else nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|No");
+            double valor = this.graf.get_paper_autor().get_valor(idNodeOrigen, n.get_id());
+            if (valor == 1.0 && relacionats) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|Autor");
+            else if (valor == 0.0 && !relacionats) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|Autor");
         }
-
+        
+        nodes = this.graf.get_terme();
+        for (int i = 0; i < nodes.size(); ++i) {
+            Node n = nodes.get(i);
+            double valor = this.graf.get_paper_terme().get_valor(idNodeOrigen, n.get_id());
+            if (valor == 1.0 && relacionats) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|Terme");
+            else if (valor == 0.0 && !relacionats) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|Terme");
+        }
+        
+        nodes = this.graf.get_conferencia();        
+        for (int i = 0; i < nodes.size(); ++i) {
+            Node n = nodes.get(i);
+            double valor = this.graf.get_paper_conferencia().get_valor(idNodeOrigen, n.get_id());
+            if (valor == 1.0 && relacionats) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|Conferencia");
+            else if (valor == 0.0 && !relacionats) nodesCodificats.add(n.get_id() + "|" + n.get_nom() + "|Conferencia");
+        }
+        
         return nodesCodificats;
     }
 
+    public Node get_copia_node(int idNode, Node.TipusNode tipusNode) throws IllegalArgumentException {
+        Node node = this.graf.get_node(idNode, tipusNode);        
+        return new Node(node.get_id(), node.get_nom(), node.get_tipus_node());
+    }
+    
     public Graf get_graf() {
         return this.graf;
     }

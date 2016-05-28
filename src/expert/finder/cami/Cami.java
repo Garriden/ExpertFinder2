@@ -8,12 +8,12 @@ import java.io.Serializable;
  */
 
 public class Cami implements Serializable{
-    private String cami;
-    private String descripcio;
+    protected String cami;
+    protected String descripcio;
 
-    public Cami(String cami, String Descripcio) {
+    public Cami(String cami, String descripcio) {
         this.cami = cami;
-        this.descripcio = Descripcio;
+        this.descripcio = descripcio;
     }
 
     public void set_cami(String cami) {

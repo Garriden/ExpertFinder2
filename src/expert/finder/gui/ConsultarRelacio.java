@@ -6,16 +6,19 @@
 package expert.finder.gui;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Admin
  */
-public class AfegirRelacio extends javax.swing.JFrame {
+public class ConsultarRelacio extends javax.swing.JFrame {
     private final ControladorPresentacio controladorPresentacio;
     
-    public AfegirRelacio(ControladorPresentacio controladorPresentacio) {
+    public ConsultarRelacio(ControladorPresentacio controladorPresentacio) {
         initComponents();
         this.controladorPresentacio = controladorPresentacio;        
         this.setLocationRelativeTo(null);
@@ -24,12 +27,17 @@ public class AfegirRelacio extends javax.swing.JFrame {
     
     private void inicialitzar_taula_desti() {
         if (taulaPaper.getSelectedRow() != -1) {
-            String column_names[]= {"Id","Nom"};
+            String column_names[]= {"Id","Nom","Relacionat"};
             DefaultTableModel table_model = new DefaultTableModel(column_names, 0);
             ArrayList<String> relacions = controladorPresentacio.consultar_relacio(taulaPaper.getSelectedRow(), false);        
             for(int i = 0; i < relacions.size(); ++i){
-                String node = relacions.get(i);
-                table_model.addRow(new Object [] {String.valueOf(i+1), node});
+                String relacio = relacions.get(i);
+                int posicioTab1 = relacio.indexOf('|');
+                int posicioTab2 = relacio.indexOf('|',posicioTab1+1);
+                String id = relacio.substring(0, posicioTab1);
+                String nom = relacio.substring(posicioTab1+1, posicioTab2);
+                String tipusNode = relacio.substring(posicioTab2+1);
+                table_model.addRow(new Object [] {id, nom, tipusNode});
             }
 
             taulaDades.setModel(table_model);
@@ -43,7 +51,9 @@ public class AfegirRelacio extends javax.swing.JFrame {
         ArrayList<String> nodes = controladorPresentacio.get_nodes(tipusNode);        
         for(int i = 0; i < nodes.size(); ++i){
             String node = nodes.get(i);
-            table_model.addRow(new Object [] {String.valueOf(i+1), node});
+            String id = node.substring(0, node.indexOf('|'));
+            String nom = node.substring(node.indexOf('|')+1, node.length());            
+            table_model.addRow(new Object [] {id, nom});
         }
         
         taulaPaper.setModel(table_model);
@@ -56,7 +66,6 @@ public class AfegirRelacio extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         taulaPaper = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        comboTipo = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         taulaDades = new javax.swing.JTable();
@@ -76,14 +85,7 @@ public class AfegirRelacio extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(taulaPaper);
 
-        jLabel1.setText("Tipus node destí:");
-
-        comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AUTOR", "CONFERENCIA", "TERME" }));
-        comboTipo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboTipoActionPerformed(evt);
-            }
-        });
+        jLabel1.setText("Nodes amb els cuals no hi ha relació:");
 
         jLabel2.setText("Taula PAPER:");
 
@@ -104,7 +106,7 @@ public class AfegirRelacio extends javax.swing.JFrame {
             }
         });
 
-        AfegirB.setText("Afegir");
+        AfegirB.setText("Afegir relació");
         AfegirB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AfegirBActionPerformed(evt);
@@ -127,9 +129,7 @@ public class AfegirRelacio extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(114, 114, 114)
                         .addComponent(jLabel1)
-                        .addGap(85, 85, 85)
-                        .addComponent(comboTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 229, Short.MAX_VALUE)
                         .addComponent(bBuscar))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(67, 67, 67)
@@ -137,7 +137,7 @@ public class AfegirRelacio extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(EnrereB)
@@ -153,7 +153,6 @@ public class AfegirRelacio extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(bBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -168,10 +167,6 @@ public class AfegirRelacio extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
           
-    private void comboTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTipoActionPerformed
-        inicialitzar_taula_desti();
-    }//GEN-LAST:event_comboTipoActionPerformed
-
     private void EnrereBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnrereBActionPerformed
         GestionGraf menu = new GestionGraf(this.controladorPresentacio);
         menu.setVisible(true);
@@ -182,9 +177,15 @@ public class AfegirRelacio extends javax.swing.JFrame {
         if (taulaPaper.getSelectedRow() != 1 && taulaDades.getSelectedRow() != -1) {
             int idOrigen = taulaPaper.getSelectedRow();
             int idDesti = taulaDades.getSelectedRow();
-            String tipusNodeDesti = taulaDades.getModel().getValueAt(idDesti, 2).toString();
-            controladorPresentacio.afegir_relacio(idOrigen, idDesti, tipusNodeDesti);
-            inicialitzar_taula_desti();            
+            ArrayList<String> relacions = controladorPresentacio.consultar_relacio(taulaPaper.getSelectedRow(), false); 
+            String relacio = relacions.get(idDesti);
+            int posicioTab1 = relacio.indexOf('|');
+            int posicioTab2 = relacio.indexOf('|',posicioTab1+1);
+            String id = relacio.substring(0, posicioTab1);
+            String tipusNodeDesti = relacio.substring(posicioTab2+1);
+            controladorPresentacio.afegir_relacio(idOrigen, Integer.parseInt(id), tipusNodeDesti);
+            inicialitzar_taula_desti();   
+            JOptionPane.showMessageDialog(this, "S'ha afegit la relació"); 
         }        
     }//GEN-LAST:event_AfegirBActionPerformed
 
@@ -197,7 +198,6 @@ public class AfegirRelacio extends javax.swing.JFrame {
     private javax.swing.JButton AfegirB;
     private javax.swing.JButton EnrereB;
     private javax.swing.JButton bBuscar;
-    private javax.swing.JComboBox<String> comboTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

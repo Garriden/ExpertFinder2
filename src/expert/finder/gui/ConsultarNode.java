@@ -6,6 +6,7 @@
 package expert.finder.gui;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -52,6 +53,8 @@ public class ConsultarNode extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         bEnrere = new javax.swing.JButton();
         comboTipo = new javax.swing.JComboBox<>();
+        EliminarButton = new javax.swing.JButton();
+        ModificarButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,17 +85,39 @@ public class ConsultarNode extends javax.swing.JFrame {
             }
         });
 
+        EliminarButton.setText("Eliminar node");
+        EliminarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarButtonActionPerformed(evt);
+            }
+        });
+
+        ModificarButton.setText("Modificar node");
+        ModificarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModificarButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
-                    .addComponent(bEnrere)
-                    .addComponent(comboTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+                            .addComponent(comboTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(bEnrere)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                        .addComponent(EliminarButton)
+                        .addGap(40, 40, 40)
+                        .addComponent(ModificarButton)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -102,7 +127,10 @@ public class ConsultarNode extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(bEnrere)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bEnrere)
+                    .addComponent(EliminarButton)
+                    .addComponent(ModificarButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -121,7 +149,31 @@ public class ConsultarNode extends javax.swing.JFrame {
         inicialitzar_taula();
     }//GEN-LAST:event_comboTipoActionPerformed
 
+    private void EliminarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarButtonActionPerformed
+       int fila = jTable1.getSelectedRow();
+        if (fila != -1) {
+            controladorPresentacio.eliminar_node(fila, comboTipo.getSelectedItem().toString());
+            ((DefaultTableModel)jTable1.getModel()).removeRow(fila);            
+            JOptionPane.showMessageDialog(this, "S'ha eliminat el node"); 
+        }        
+        
+    }//GEN-LAST:event_EliminarButtonActionPerformed
+
+    private void ModificarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarButtonActionPerformed
+        int fila = jTable1.getSelectedRow();
+        if (fila != -1) {
+            String tipusNode = comboTipo.getSelectedItem().toString();
+            String nom = (jTable1.getModel().getValueAt(fila,1)).toString();
+            
+            ModificarNodeAplicacio menu = new ModificarNodeAplicacio(this.controladorPresentacio, fila, nom, tipusNode);
+            menu.setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_ModificarButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton EliminarButton;
+    private javax.swing.JButton ModificarButton;
     private javax.swing.JButton bEnrere;
     private javax.swing.JComboBox<String> comboTipo;
     private javax.swing.JScrollPane jScrollPane1;

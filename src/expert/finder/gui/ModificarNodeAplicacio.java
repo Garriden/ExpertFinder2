@@ -97,7 +97,7 @@ public class ModificarNodeAplicacio extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void EnrereButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnrereButtonActionPerformed
-        ModificarNode menu = new ModificarNode(this.controladorPresentacio);
+        ConsultarNode menu = new ConsultarNode(this.controladorPresentacio);
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_EnrereButtonActionPerformed
@@ -105,7 +105,7 @@ public class ModificarNodeAplicacio extends javax.swing.JFrame {
     private void ModificarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarButtonActionPerformed
         String nomNou = jTextField1.getText();
         controladorPresentacio.modificar_nom_node(this.posicio,nomNou,this.tipusNode); 
-        ModificarNode menu = new ModificarNode(this.controladorPresentacio);
+        ConsultarNode menu = new ConsultarNode(this.controladorPresentacio);
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_ModificarButtonActionPerformed

@@ -188,7 +188,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void BotonGestioConsultesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonGestioConsultesActionPerformed
         // TODO add your handling code here:
-        GestioConsulta menu = new GestioConsulta(this.controladorPresentacio);
+        GuiGestionConsulta menu = new GuiGestionConsulta(this.controladorPresentacio);
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BotonGestioConsultesActionPerformed
