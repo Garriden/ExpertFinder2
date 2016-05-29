@@ -16,16 +16,20 @@ public class ControladorPersistenciaGraf {
     private ArrayList<Integer> termeId;
     private ArrayList<Integer> conferenciaId;
 
+    // Pre:  ruta != null, nomFitxer != null, Tipus node té que ser un tipus valid
+    // Post: Retorna una llista de nodes del tipus passat per paramtre importats del fitxer resultant de la ruta +
+    //       nomFitxer.
+    // Cost: O(n) on N es el nombre d'entrades del fitxer
     private ArrayList<Node> importar_node(String ruta, String nomFitxer, Node.TipusNode tipusNode) throws IOException {
-        if (ruta.charAt(ruta.length()-1) != '\\') ruta = ruta + "\\";
+        if (ruta.charAt(ruta.length()-1) != '\\' && ruta.charAt(ruta.length()-1) != '/') ruta = ruta + "/";
         File rutaFitxerNodes = new File(ruta+nomFitxer+".txt");
         BufferedReader fitxerNode;
 
         try {
             fitxerNode = new BufferedReader(new InputStreamReader(new FileInputStream(rutaFitxerNodes),"ISO-8859-15"));
         } catch (IOException e) {
-            throw new IOException("Error: No es pot obrir el fitxer: " + nomFitxer + ".txt en la ruta: " + rutaFitxerNodes.getAbsolutePath() + " perque" +
-                    " no existeix o esta bloquejat per un altre programa.");
+            throw new IOException("Error: No es pot obrir el fitxer: " + nomFitxer + ".txt en la ruta: "  +
+                    rutaFitxerNodes.getAbsolutePath() + " perque no existeix o esta bloquejat per un altre programa.");
         }
 
         String node = fitxerNode.readLine();
@@ -67,16 +71,20 @@ public class ControladorPersistenciaGraf {
         return nodes;
     }
 
+    // Pre:  ruta != null, nomFitxer != null, Tipus node té que ser un tipus valid
+    // Post: Retorna una matriu esparsa amb les relacions entre paper x node que es del tipus (autor,terme,
+    //       conferencia) amb les relacions indicades en el fitxer resultant de ruta + nomFitxer
+    // Cost: O(n) on N es el nombre d'entrades del fitxer
     private Matriu importar_relacions(String ruta, String nomFitxer, Node.TipusNode tipusNode) throws IOException {
-        if (ruta.charAt(ruta.length()-1) != '\\') ruta = ruta + "\\";
+        if (ruta.charAt(ruta.length()-1) != '\\' && ruta.charAt(ruta.length()-1) != '/') ruta = ruta + "/";
         File rutaFitxerRelacions = new File(ruta+nomFitxer+".txt");
         BufferedReader fitxerRelacions;
 
         try {
             fitxerRelacions = new BufferedReader(new InputStreamReader(new FileInputStream(rutaFitxerRelacions),"ISO-8859-15"));
         } catch (IOException e) {
-            throw new IOException("Error: No es pot obrir el fitxer: " + nomFitxer + ".txt en la ruta: " + rutaFitxerRelacions.getAbsolutePath() + " perque" +
-                    " no existeix o esta bloquejat per un altre programa.");
+            throw new IOException("Error: No es pot obrir el fitxer: " + nomFitxer + ".txt en la ruta:  " +
+                    rutaFitxerRelacions.getAbsolutePath() + " perque no existeix o esta bloquejat per un altre programa.");
         }
 
         String relacio = fitxerRelacions.readLine();
@@ -125,6 +133,9 @@ public class ControladorPersistenciaGraf {
         return m;
     }
 
+    // Pre:  Cert
+    // Post: Inicialitza el controlador del graf
+    // Cost: O(1)
     public ControladorPersistenciaGraf() {
         this.autorId = new ArrayList<>();
         this.paperId = new ArrayList<>();
@@ -132,7 +143,15 @@ public class ControladorPersistenciaGraf {
         this.conferenciaId = new ArrayList<>();
     }
 
-    public Graf importar_graf_nou(String ruta) throws IOException {
+    // Pre:  Cert
+    // Post: Retorna una referencia a un graf inicialitzat amb els nodes existents en els diferents fitxers
+    //       de nodes i conté les relacions especificades en els fitxers paper x [autor,terme,conferencia]
+    // Cost: O(n) on n es el nombre d'entrades
+    public Graf importar_graf_nou(String ruta) throws IOException, IllegalArgumentException {
+        if (ruta == null) {
+            throw new IllegalArgumentException("Error: La ruta no pot tenir un valor nul");
+        }
+
         ArrayList<Node> autors = importar_node(ruta, "author", Node.TipusNode.AUTOR);
         ArrayList<Node> papers = importar_node(ruta, "paper", Node.TipusNode.PAPER);
         ArrayList<Node> conferencies = importar_node(ruta, "conf", Node.TipusNode.CONFERENCIA);
@@ -145,6 +164,8 @@ public class ControladorPersistenciaGraf {
         return new Graf(paper_autor, paper_conf, paper_term, papers, termes, autors, conferencies);
     }
 
+    // Pre:  Cert
+    // Post: Retorna una referencia a un graf guardat com a objecte
     public Graf importar_graf_salvat(String ruta) throws IOException {
         FileInputStream fitxer = new FileInputStream(ruta);
         ObjectInputStream ois;
@@ -153,11 +174,11 @@ public class ControladorPersistenciaGraf {
             ois = new ObjectInputStream(fitxer);
             graf = (Graf) ois.readObject();
         } catch (IOException e) {
-            throw new IOException("Error: No s'ha pogut importar el graf selvat de la ruta: " + ruta + "perque o no " +
-                    "existeix, o es utilitzat per un altre programa.");
+            throw new IOException("Error: No s'ha pogut importar el graf selvat de la ruta (" + ruta + "( perque o no" +
+                    " existeix, o es utilitzat per un altre programa.");
         } catch (ClassNotFoundException e) {
-            throw new IOException("Error: El fitxer binari on esta enmmagatzemat el graf en la ruta: " + ruta + "no s'ha " +
-                    "pogut obtenir el graf perquè el contingut del fitxer no es un graf.");
+            throw new IOException("Error: El fitxer binari on esta enmmagatzemat el graf en la ruta (" + ruta + ") " +
+                    "no s'ha pogut obtenir el graf perquè el contingut del fitxer no es un graf.");
         }
 
         ois.close();
@@ -165,7 +186,15 @@ public class ControladorPersistenciaGraf {
         return graf;
     }
 
+    // Pre:  Cert
+    // Post: Enmmagatzema el graf passat com a referencia per parametre a la ruta absoluta.
     public void exportar(String ruta , Graf graf) throws IOException {
+        if (ruta == null) {
+            throw new IllegalArgumentException("Error: La ruta no pot tenir un valor nul");
+        }
+        if (graf == null) {
+            throw new IllegalArgumentException("Error: La referencia al graf no pot ser nul·la");
+        }
         FileOutputStream fout = new FileOutputStream(ruta);
         ObjectOutputStream oos;
         try {

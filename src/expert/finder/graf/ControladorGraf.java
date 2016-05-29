@@ -21,8 +21,8 @@ public class ControladorGraf {
     }
 
     // Pre:  Cert.
-    // Post: S'inicialitza el graf del controlador amb el contingut de la base de dades o d'un altre graf guardat com
-    //       a objecte.
+    // Post: S'inicialitza el graf del controlador a partir del contingut de la base de dades o d'un altre graf
+    //       guardat com a objecte.
     // Cost: O(n)
     public void importar(boolean nouGraf, String rutaFitxer) throws IOException {
         ControladorPersistenciaGraf controladorPersistenciaGraf = new ControladorPersistenciaGraf();

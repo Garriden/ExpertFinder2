@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by Ruben Bagan Benavides
+ * Created by  Marc Garrido Col·laboracio: Ruben Bagan Benavides
  */
 
 public class Graf implements Serializable{
@@ -26,8 +26,8 @@ public class Graf implements Serializable{
 
 
     // Pre:  Cap dels parametres té valor nul
-    // Post: S'inicialitza un graf, amb els nodes terme, autor , paper i conferencia. S'inicialitza les relacions
-    //       paper x autor, paper x terme i paper x conferencia.
+    // Post: S'inicialitza el graf, els nodes tenen una referencia als nodes terme, autor , paper i conferencia
+    //       passats per paramtre. S'inicialitza les relacions paper x autor, paper x terme i paper x conferencia.
     // Cost: O(1)
     public Graf(Matriu paperAutor, Matriu paperConferencia, Matriu paperTerme, ArrayList<Node> paper,
                 ArrayList<Node> terme, ArrayList<Node> autor, ArrayList<Node> conferencia)
@@ -81,7 +81,7 @@ public class Graf implements Serializable{
 
     //Pre:  Cert
     //Post: S'elimina del graf implícit el node del tipus del node passat per parametre. Al eliminar un node si es de
-    //      tipus paper s'elimina tambe totes les relacions que té amb els altres autors, igual que si es de tipus autor,
+    //      tipus paper s'elimina tambe totes les relacions que té amb els altres nodes, igual que si es de tipus autor,
     //      conferencia o terme.
     //Cost: O(n)
     public void eliminar_node(Node node) throws IllegalArgumentException {
@@ -198,8 +198,8 @@ public class Graf implements Serializable{
     }
 
     // Pre:  Cert
-    // Post: Retorna una referencia a un node amb identificador i del tipus passat per parametre (autor, terme,
-    //       conferencia, paper) del graf implícit.
+    // Post: Retorna una referencia a un node amb identificador i tipus passats per parametre (autor, terme, conferencia,
+    //       paper) del graf implícit.
     // Cost: O(1)
     public Node get_node(int id, Node.TipusNode tipus) throws IllegalArgumentException {
         if (tipus == null) {
@@ -247,8 +247,9 @@ public class Graf implements Serializable{
         return node;
     }
 
-    // Pre:  Cert.
-    // Post: Afegeix un '1' en la posició corresponent de la matriu paper_(TipusNodeDestí)
+    // Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
+    // Post: Actualitza el valor de la relació del graf implícit entre el node origen (paper) i el node desti (terme,
+    //       autor, conferencia) amb valor '1'.
     // Cost: O(1)
     public void afegir_aresta(Node nodeOrigen, Node nodeDesti) throws IllegalArgumentException {
         if (nodeOrigen == null || nodeDesti == null) {
@@ -297,7 +298,8 @@ public class Graf implements Serializable{
     }
 
     // Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
-    // Post: Afegeix un '0' en la posició corresponent de la matriu paper_(TipusNodeDestí)
+    // Post: Actualitza el valor de la relació del graf implícit entre el node origen (paper) i el node desti (terme,
+    //       autor, conferencia) amb valor '0'.
     // Cost: O(1);
     public void eliminar_aresta(Node nodeOrigen, Node nodeDesti) throws IllegalArgumentException {
         if (nodeOrigen == null || nodeDesti == null) {
