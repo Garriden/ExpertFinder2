@@ -65,9 +65,10 @@ public class ControladorPersistenciaCami {
         return camins;
     }
     
-    public void exportar_camins_objecte(String rutaFitxer, ArrayList<String> camins) throws IOException {
-        if (rutaFitxer.charAt(rutaFitxer.length()-1) != '/' || rutaFitxer.charAt(rutaFitxer.length()-1) != '\\') {
-            rutaFitxer = rutaFitxer + "/";
+    public void exportar_camins_objecte(String rutaFitxer, ArrayList<String> camins) throws IOException, IllegalArgumentException {
+        if (!rutaFitxer.contains(".sav")) {
+            throw new IllegalArgumentException("Error: La ruta del fitxer te que ser absoluta i a mes el fitxer on " +
+                    "apunta te que ser amb extencio .sav");
         }
         FileOutputStream fitxerObjecte = new FileOutputStream(rutaFitxer);
         ObjectOutputStream objectOutputStream;
