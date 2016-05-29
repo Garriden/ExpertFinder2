@@ -28,9 +28,7 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
-                      <Component id="comboTipo" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="35" max="32767" attributes="0"/>
+                      <EmptySpace pref="229" max="32767" attributes="0"/>
                       <Component id="bBuscar" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
@@ -42,7 +40,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="89" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
@@ -61,7 +59,6 @@
               <Component id="jScrollPane1" min="-2" pref="126" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="comboTipo" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="bBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -102,25 +99,8 @@
     </Container>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Tipus node dest&#xed;:"/>
+        <Property name="text" type="java.lang.String" value="Nodes amb els cuals no hi ha relaci&#xf3;:"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="comboTipo">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="3">
-            <StringItem index="0" value="AUTOR"/>
-            <StringItem index="1" value="CONFERENCIA"/>
-            <StringItem index="2" value="TERME"/>
-          </StringArray>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comboTipoActionPerformed"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
@@ -159,7 +139,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="AfegirB">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Afegir"/>
+        <Property name="text" type="java.lang.String" value="Afegir relaci&#xf3;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AfegirBActionPerformed"/>

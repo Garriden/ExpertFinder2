@@ -9,6 +9,12 @@ import java.util.ArrayList;
  * Created by Ruben Bagan Benavides on 13/05/2016.
  */
 
+/**
+ * Aquesta clase te la funcio d'importar i exportar camins amb un format: [cami]|[descripcio]|[clausura]|[actualitzada]
+ * Els camins importats es llegeixen a partir d'un fitxer guardat en format .txt o .sav i s'exporten amb un fitxer de
+ * tipus .sav
+ */
+
 public class ControladorPersistenciaCami {
     private ArrayList<String> importar_camins(String rutaFitxer) throws IOException {
         Path ruta = Paths.get(rutaFitxer);
@@ -43,7 +49,7 @@ public class ControladorPersistenciaCami {
 
         return camins;
     }
-    
+
     private ArrayList<String> importar_camins_objecte(String rutaFitxer) throws IOException, ClassNotFoundException {
         FileInputStream fitxerObjecte = new FileInputStream(rutaFitxer);
         ObjectInputStream objectInputStream;
@@ -64,7 +70,16 @@ public class ControladorPersistenciaCami {
         objectInputStream.close();
         return camins;
     }
-    
+
+    /**
+     * Exporta el contingut del vector de camins codificats passat per parametre els cuals segueixen el seguent format:
+     * [Cami]|[Descripcio]|[Clausura]|[Actualitzada]. El fitxer desti amb extencio .sav sera el que esta en la ruta
+     * passada per paramtre.
+     * @param rutaFitxer conte una ruta absoluta
+     * @param camins conte una llista de camins codificats.
+     * @throws IOException
+     * @throws IllegalArgumentException
+     */
     public void exportar_camins_objecte(String rutaFitxer, ArrayList<String> camins) throws IOException, IllegalArgumentException {
         if (!rutaFitxer.contains(".sav")) {
             throw new IllegalArgumentException("Error: La ruta del fitxer te que ser absoluta i a mes el fitxer on " +
@@ -82,7 +97,14 @@ public class ControladorPersistenciaCami {
         fitxerObjecte.close();
         objectOutputStream.close();
     }
-        
+
+    /**
+     *
+     * @param rutaFitxer
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public ArrayList<String> importar(String rutaFitxer) throws IOException, ClassNotFoundException {
         if (rutaFitxer == null) throw new IllegalArgumentException("Error Importar: La ruta del fitxer no pot tenir " +
                 "un valor nul");

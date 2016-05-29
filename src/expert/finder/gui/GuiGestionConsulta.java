@@ -117,9 +117,9 @@ public class GuiGestionConsulta extends javax.swing.JFrame {
 
     private void EliminarResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarResultadosActionPerformed
         // TODO add your handling code here:
-        //EliminarResultados menu = new EliminarResultados(this.controladorPresentacio);        
-        //menu.setVisible(true);
-        //this.dispose();
+        EliminarResultado menu = new EliminarResultado(this.controladorPresentacio);        
+        menu.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_EliminarResultadosActionPerformed
 
     private void tornarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tornarActionPerformed

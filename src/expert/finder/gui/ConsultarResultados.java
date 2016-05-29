@@ -122,7 +122,7 @@ public class ConsultarResultados extends javax.swing.JFrame {
         // TODO add your handling code here:
         int i = TableResultat.getSelectedRow();
         
-        GuiResultat menu = new GuiResultat(this.controladorPresentacio,i-1,false);
+        GuiResultat menu = new GuiResultat(this.controladorPresentacio,i,false);
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_veureActionPerformed
@@ -133,9 +133,9 @@ public class ConsultarResultados extends javax.swing.JFrame {
         DefaultTableModel table_model=new DefaultTableModel(column_names, 0);
         ArrayList<String> consultas = this.controladorPresentacio.get_consultes();
         for(int i = 0; i < this.controladorPresentacio.get_nombre_consultes(); ++i){
-            String descripcio = consultas.get(i);
-            descripcio = descripcio.substring(descripcio.indexOf('|')+1, descripcio.indexOf(i, descripcio.indexOf('|')));
-            table_model.addRow(new Object [] {i+1, descripcio}); 
+            String cons = consultas.get(i);
+            String descripcio = cons.substring(cons.indexOf('|')+1, cons.indexOf("|", cons.indexOf('|')+1));
+            table_model.addRow(new Object [] {descripcio}); 
         }
         
         TableResultat.setModel(table_model);

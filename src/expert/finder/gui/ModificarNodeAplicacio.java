@@ -5,6 +5,8 @@
  */
 package expert.finder.gui;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author marc.garrido.casas
@@ -103,11 +105,39 @@ public class ModificarNodeAplicacio extends javax.swing.JFrame {
     }//GEN-LAST:event_EnrereButtonActionPerformed
 
     private void ModificarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarButtonActionPerformed
-        String nomNou = jTextField1.getText();
-        controladorPresentacio.modificar_nom_node(this.posicio,nomNou,this.tipusNode); 
-        ConsultarNode menu = new ConsultarNode(this.controladorPresentacio);
-        menu.setVisible(true);
-        this.dispose();
+        try {
+            String nomNou = jTextField1.getText();
+            GestioGraf menu = new GestioGraf(this.controladorPresentacio);
+            boolean existeix = controladorPresentacio.existeix_node(nomNou,tipusNode);
+            if (existeix) {
+                 int opcio = JOptionPane.showConfirmDialog(
+                     this,
+                     "Aquest node està repetit, el vols afegir igualment?",
+                     "Node repetit !!!",
+                     JOptionPane.YES_NO_OPTION);
+                 if (opcio == 0) {
+                     controladorPresentacio.modificar_nom_node(this.posicio,nomNou,this.tipusNode); 
+                     JOptionPane.showMessageDialog(this, "S'ha modificat el node");
+                     menu.setVisible(true);
+                     this.dispose(); 
+                 }
+                 else {
+                     JOptionPane.showMessageDialog(this, "NO s'ha modificat el node");
+                     menu.setVisible(true);
+                     this.dispose(); 
+                 } 
+            }
+            else {
+                controladorPresentacio.modificar_nom_node(this.posicio,nomNou,this.tipusNode); 
+                ConsultarNode m = new ConsultarNode(this.controladorPresentacio);
+                JOptionPane.showMessageDialog(this, "S'ha modificat el node");
+                m.setVisible(true);
+                this.dispose();
+            }
+        }
+        catch(IllegalArgumentException ex) {           
+            JOptionPane.showMessageDialog(this, ex.getMessage());  
+        }
     }//GEN-LAST:event_ModificarButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

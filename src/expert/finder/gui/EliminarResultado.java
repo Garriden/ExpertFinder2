@@ -119,7 +119,7 @@ public class EliminarResultado extends javax.swing.JFrame {
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
         // TODO add your handling code here:
         int i = TableResultat.getSelectedRow();
-        this.controladorPresentacio.eliminar_consulta(i-1);
+        this.controladorPresentacio.eliminar_consulta(i);
         GuiGestionConsulta menu = new GuiGestionConsulta(this.controladorPresentacio);
         menu.setVisible(true);
         this.dispose();
@@ -131,9 +131,9 @@ public class EliminarResultado extends javax.swing.JFrame {
         DefaultTableModel table_model=new DefaultTableModel(column_names, 0);
         ArrayList<String> consultas = this.controladorPresentacio.get_consultes();
         for(int i = 0; i < this.controladorPresentacio.get_nombre_consultes(); ++i){
-            String descripcio = consultas.get(i);
-            descripcio = descripcio.substring(descripcio.indexOf('|')+1, descripcio.indexOf(i, descripcio.indexOf('|')));
-            table_model.addRow(new Object [] {i+1, descripcio}); 
+            String cons = consultas.get(i);
+            String descripcio = cons.substring(cons.indexOf('|')+1, cons.indexOf("|", cons.indexOf('|')+1));
+            table_model.addRow(new Object [] {descripcio}); 
         }
         
         TableResultat.setModel(table_model);

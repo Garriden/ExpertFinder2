@@ -138,36 +138,43 @@ public class ConsultarNode extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bEnrereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEnrereActionPerformed
-        // TODO add your handling code here:
-        GestionGraf gestioGraf = new GestionGraf(this.controladorPresentacio);
+        GestioGraf gestioGraf = new GestioGraf(this.controladorPresentacio);
         gestioGraf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_bEnrereActionPerformed
 
     private void comboTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTipoActionPerformed
-        // TODO add your handling code here:
         inicialitzar_taula();
     }//GEN-LAST:event_comboTipoActionPerformed
 
     private void EliminarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarButtonActionPerformed
        int fila = jTable1.getSelectedRow();
         if (fila != -1) {
-            controladorPresentacio.eliminar_node(fila, comboTipo.getSelectedItem().toString());
-            ((DefaultTableModel)jTable1.getModel()).removeRow(fila);            
-            JOptionPane.showMessageDialog(this, "S'ha eliminat el node"); 
+            try {
+                controladorPresentacio.eliminar_node(fila, comboTipo.getSelectedItem().toString());
+                ((DefaultTableModel)jTable1.getModel()).removeRow(fila);  
+                inicialitzar_taula();
+                JOptionPane.showMessageDialog(this, "S'ha eliminat el node"); 
+            }
+            catch(IllegalArgumentException ex) {           
+                JOptionPane.showMessageDialog(this, ex.getMessage());  
+            }
         }        
-        
     }//GEN-LAST:event_EliminarButtonActionPerformed
 
     private void ModificarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarButtonActionPerformed
         int fila = jTable1.getSelectedRow();
         if (fila != -1) {
-            String tipusNode = comboTipo.getSelectedItem().toString();
-            String nom = (jTable1.getModel().getValueAt(fila,1)).toString();
-            
-            ModificarNodeAplicacio menu = new ModificarNodeAplicacio(this.controladorPresentacio, fila, nom, tipusNode);
-            menu.setVisible(true);
-            this.dispose();
+            try {        
+                String tipusNode = comboTipo.getSelectedItem().toString();
+                String nom = (jTable1.getModel().getValueAt(fila,1)).toString();     
+                ModificarNodeAplicacio menu = new ModificarNodeAplicacio(this.controladorPresentacio, fila, nom, tipusNode);
+                menu.setVisible(true);
+                this.dispose();
+            }
+            catch(IllegalArgumentException ex) {           
+                JOptionPane.showMessageDialog(this, ex.getMessage());  
+            }
         }
     }//GEN-LAST:event_ModificarButtonActionPerformed
 

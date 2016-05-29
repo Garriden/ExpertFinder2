@@ -51,7 +51,7 @@ public class ControladorPresentacio {
     }
     
     public void afegir_cami(String cami, String descripcio) throws ArrayIndexOutOfBoundsException {
-        //controladorCami.afegir_cami(cami, descripcio, true, true);
+        controladorCami.afegir_cami(cami, descripcio, true);
     }
     
     public void modificar_cami(int posicio, String cami) throws ArrayIndexOutOfBoundsException, IllegalArgumentException{
@@ -65,39 +65,40 @@ public class ControladorPresentacio {
     public void eliminar_cami(int posicio){
         controladorCami.eliminar_cami(posicio);
     }
-        
+
     public ArrayList<String> get_nodes(String tipusNode) throws IllegalArgumentException {
         return this.controladorGraf.get_nodes(tipusNode);
     }
-    
+
     public void afegir_node(String nom, String tipusNode) {
         this.controladorGraf.afegir_node(nom, tipusNode);
     }
-    
+
     public void eliminar_node(int posicio, String tipusNode) {
         this.controladorGraf.eliminar_node(posicio, tipusNode);
     }
-    
+
     public void modificar_nom_node(int posicio, String nouNom, String tipusNode) {
         this.controladorGraf.modificar_nom_node(posicio, nouNom, tipusNode);
     }
-            
+
     public void afegir_relacio(int idNodeOrigen, int idNodeDesti, String tipusNodeDesti) throws IllegalArgumentException {
         this.controladorGraf.afegir_relacio(idNodeOrigen, idNodeDesti, tipusNodeDesti);
     }
-    
+
+    public boolean existeix_node(String nomNode, String tipusNode) throws IllegalArgumentException {
+        return this.controladorGraf.existeix_node(nomNode, tipusNode);
+    }
+
     public ArrayList<String> consultar_relacio(int idNodeOrigen, boolean relacionats) throws IllegalArgumentException {
         return this.controladorGraf.consultar_relacio(idNodeOrigen, relacionats);
     }
-    
+
     public void eliminar_relacio(int idNodeOrigen, int idNodeDesti, String tipusNodeDesti) {
         this.controladorGraf.eliminar_relacio(idNodeOrigen, idNodeDesti, tipusNodeDesti);
     }
 
-    public void afegir_consulta_tipusI(String descripcio, String tipusNode, int posicioNode, int posicioCami) {
-        //this.controladorConsulta.afegir_consulta_tipusI(descripcio, tipusNode, posicioNode, posicioCami);
-    }
-    
+
     public void eliminar_consulta(int posicio) {
         this.controladorConsulta.eliminar_consulta(posicio);
     }
@@ -113,28 +114,31 @@ public class ControladorPresentacio {
 
     public ArrayList<String> executa_consulta_tipo1(String idNodeOrigen, String idCami, String descripcio){
 
-        int idNodeO = Integer.parseInt(idNodeOrigen.substring(0, idNodeOrigen.indexOf('|')));
-        int idC = Integer.parseInt(idCami.substring(0, idCami.indexOf('|')));
-        return controladorConsulta.executar_consulta_tipusI(descripcio, idNodeO, idC);
+        int idNodeO = Integer.parseInt(idNodeOrigen);
+        int idC = Integer.parseInt(idCami);
+        return controladorConsulta.executar_consulta_tipusI(descripcio, idNodeO, idC-1);
     }
 
     public ArrayList<String> executa_consulta_tipo2(String idNodeOrigen, String idCami, double grauRellevancia, String descripcio){
 
-        int idNodeO = Integer.parseInt(idNodeOrigen.substring(0, idNodeOrigen.indexOf('|')));
-        int idC = Integer.parseInt(idCami.substring(0, idCami.indexOf('|')));
+        int idNodeO = Integer.parseInt(idNodeOrigen);
+        System.out.println(idCami);
+        int idC = Integer.parseInt(idCami);
 
-        return controladorConsulta.executar_consulta_tipusII(descripcio, idNodeO, idC, grauRellevancia);
+        return controladorConsulta.executar_consulta_tipusII(descripcio, idNodeO, idC-1, grauRellevancia);
     }
 
-    public ArrayList<String> executa_consulta_tipo3(String idNodeOrigen, String idCami, String idNodeDesti1, String idNodeDesti2, String descripcio){
+    public ArrayList<String> executa_consulta_tipo3(String idNodeOrigen, String idCami, String idNodeDesti1, String idNodeOrigen2, String descripcio){
 
-        int idNodeO = Integer.parseInt(idNodeOrigen.substring(0, idNodeOrigen.indexOf('|')));
-        int idC = Integer.parseInt(idCami.substring(0, idCami.indexOf('|')));
-        int idNodeD1 = Integer.parseInt(idNodeDesti1.substring(0, idNodeDesti1.indexOf('|')));
-        int idNodeD2 = Integer.parseInt(idNodeDesti2.substring(0, idNodeDesti2.indexOf('|')));
+        int idNodeO = Integer.parseInt(idNodeOrigen);
+        int idC = Integer.parseInt(idCami);
+        int idNodeD1 = Integer.parseInt(idNodeDesti1);
+        int idNodeO2 = Integer.parseInt(idNodeOrigen2);
 
-        return controladorConsulta.executar_consulta_tipusIII(descripcio, idNodeO, idC, idNodeD1, idNodeD2);
+        return controladorConsulta.executar_consulta_tipusIII(descripcio, idNodeO, idC-1, idNodeD1, idNodeO2);
     }
+    
+    
 
     public void eliminar_ultima_consulta_executada(){
         controladorConsulta.eliminar_ultima_consulta_executada();
@@ -145,8 +149,8 @@ public class ControladorPresentacio {
     }
 
     public void afegir_resultat_modificat(ArrayList<String> modificacio, int numeroConsulta){
-        //no esta hecho en controladorConsulta
-        //controladorConsulta.afegir_resultat_modificat(modificacio, numeroConsulta);
+        
+        controladorConsulta.afegir_resultat_modificat(modificacio, numeroConsulta);
     }
     
     public void run() {

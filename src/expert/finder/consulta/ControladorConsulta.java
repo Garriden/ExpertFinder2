@@ -22,7 +22,7 @@ public class ControladorConsulta {
         if (tipusNode == 'C') return Node.TipusNode.CONFERENCIA;
         throw new IllegalArgumentException("Error: El tipus de node no existeix, te que ser de tipus: Autor, Terme, Paper o Conferencia");
     }
-    
+
     private Node.TipusNode stringToTipusNode(String tipusNode) throws IllegalArgumentException {
         if (tipusNode.equalsIgnoreCase("AUTOR")) return Node.TipusNode.AUTOR;
         if (tipusNode.equalsIgnoreCase("TERME")) return Node.TipusNode.TERME;
@@ -30,7 +30,7 @@ public class ControladorConsulta {
         if (tipusNode.equalsIgnoreCase("CONFERENCIA")) return Node.TipusNode.CONFERENCIA;
         throw new IllegalArgumentException("Error: El tipus de node no existeix, te que ser de tipus: Autor, Terme, Paper o Conferencia");
     }
-    
+
     private Resultat generar_resultat(Matriu m, Node.TipusNode tipusDesti) {
         HashMap<Integer, HashMap<Integer, Double>> data = m.get_hashmap();
         Resultat resultat = new Resultat();
@@ -44,122 +44,130 @@ public class ControladorConsulta {
                 }
             }
         }
-        
+
         return resultat;
     }
-    
+
     private Resultat generar_resultat(ArrayList<String> resultatsCodificat) {
         Resultat resultat = new Resultat();
         for (int i = 0; i < resultatsCodificat.size(); ++i) {
             String resultatCodificat = resultatsCodificat.get(i);
             int posicioNom = resultatCodificat.indexOf('|');
-            int posicioTipus = resultatCodificat.indexOf('|',posicioNom);
-            int grau = resultatCodificat.indexOf('|',posicioTipus);
-            
+            int posicioTipus = resultatCodificat.indexOf('|',posicioNom+1);
+            int grau = resultatCodificat.indexOf('|',posicioTipus+1);
+
             int id = Integer.valueOf(resultatCodificat.substring(0, posicioNom));
             String nom = resultatCodificat.substring(posicioNom+1, posicioTipus);
             Node.TipusNode tipusNode = stringToTipusNode(resultatCodificat.substring(posicioTipus+1, grau));
-            double grauRellevancia = Double.valueOf(resultatCodificat.substring(grau+1, resultatCodificat.length())); 
-            
+            double grauRellevancia = Double.valueOf(resultatCodificat.substring(grau+1, resultatCodificat.length()));
+
             Node node = new Node(id, nom, tipusNode);
             resultat.afegir_tuple(node, grauRellevancia);
         }
-        
+
         return resultat;
     }
-    
+
     public ControladorConsulta(ControladorGraf controladorGraf, ControladorCami controladorCami) {
         this.hetesim = new HeteSim();
         this.consultes = new ArrayList<>();
         this.controladorGraf = controladorGraf;
         this.controladorCami = controladorCami;
     }
-    
+
     public ArrayList<String> executar_consulta_tipusI(String descripcio, int idNodeOrigen, int idCami) throws IllegalArgumentException {
         CamiClausura cami = this.controladorCami.get_cami_sense_codificar(idCami);
         Node.TipusNode tipusOrigen = camiToTipusNode(cami.get_cami().charAt(0));
         Node.TipusNode tipusDesti = camiToTipusNode(cami.get_cami().charAt(cami.get_longitud()-1));
-        
+
         Node nodeOrigen = this.controladorGraf.get_graf().get_node(idNodeOrigen, tipusOrigen);
         Matriu m = this.hetesim.relacio_node_matriu(nodeOrigen, cami, this.controladorGraf.get_graf());
         Resultat resultat = generar_resultat(m, tipusDesti);
-        
+
         Consulta consulta = new Consulta(descripcio, nodeOrigen.get_nom(), cami.get_cami());
         consulta.set_resultat(resultat);
         this.consultes.add(consulta);
-        
+
         return resultat.codificar_resultat();
     }
-    
+
     public ArrayList<String> executar_consulta_tipusII(String descripcio, int idNodeOrigen, int idCami, double grauRellevancia) throws IllegalArgumentException {
         CamiClausura cami = this.controladorCami.get_cami_sense_codificar(idCami);
         Node.TipusNode tipusOrigen = camiToTipusNode(cami.get_cami().charAt(0));
         Node.TipusNode tipusDesti = camiToTipusNode(cami.get_cami().charAt(cami.get_longitud()-1));
-        
+
         Node nodeOrigen = this.controladorGraf.get_graf().get_node(idNodeOrigen, tipusOrigen);
         Matriu m = this.hetesim.relacio_node_matriu(nodeOrigen, cami, this.controladorGraf.get_graf());
         Resultat resultat = generar_resultat(m, tipusDesti);
         resultat.filtrar_resultat(grauRellevancia);
-        
+
         Consulta consulta = new Consulta(descripcio, nodeOrigen.get_nom(), cami.get_cami(), grauRellevancia);
         consulta.set_resultat(resultat);
-        this.consultes.add(consulta);        
-        
-        return resultat.codificar_resultat();        
+        this.consultes.add(consulta);
+
+        return resultat.codificar_resultat();
     }
-    
-    public ArrayList<String> executar_consulta_tipusIII(String descripcio, int idNodeOrigen, int idCami, int idNodeDesti1, int idNodeDesti2) {        
+
+    public ArrayList<String> executar_consulta_tipusIII(String descripcio, int idNodeOrigen, int idCami, int idNodeDesti1, int idNodeDesti2) {
         CamiClausura cami = this.controladorCami.get_cami_sense_codificar(idCami);
         Node.TipusNode tipusOrigen = camiToTipusNode(cami.get_cami().charAt(0));
         Node.TipusNode tipusDesti1 = camiToTipusNode(cami.get_cami().charAt(cami.get_longitud()-1));
-        
+
         Node nodeOrigen = this.controladorGraf.get_graf().get_node(idNodeOrigen, tipusOrigen);
         Node nodeDesti1 = this.controladorGraf.get_graf().get_node(idNodeDesti1, tipusDesti1);
         double grauRellevancia = this.hetesim.grau_relacio(nodeOrigen, nodeDesti1, cami, this.controladorGraf.get_graf());
-        
-        Node nodeDesti2 = this.controladorGraf.get_graf().get_node(idNodeDesti2, tipusOrigen);        
+
+        Node nodeDesti2 = this.controladorGraf.get_graf().get_node(idNodeDesti2, tipusOrigen);
         Matriu m = this.hetesim.relacio_node_matriu(nodeDesti2, cami, this.controladorGraf.get_graf());
         Resultat resultat = generar_resultat(m, tipusDesti1);
         resultat.filtrar_resultat(grauRellevancia);
-        
+
         Consulta consulta = new Consulta(descripcio, nodeOrigen.get_nom(), nodeDesti1.get_nom(), nodeDesti2.get_nom(), cami.get_cami(), grauRellevancia);
         consulta.set_resultat(resultat);
-        this.consultes.add(consulta);       
-        
-        return resultat.codificar_resultat();        
+        this.consultes.add(consulta);
+
+        return resultat.codificar_resultat();
     }
-    
+
+
+    public void afegir_resultat_modificat(ArrayList<String> resultat, int posicioConsulta){
+        this.consultes.get(posicioConsulta).set_resultat(generar_resultat(resultat));
+    }
+
+
+
+
     public void eliminar_ultima_consulta_executada() {
         this.consultes.remove(this.consultes.size() - 1);
     }
-    
+
     public void ultima_consulta_modificada(ArrayList<String> resultatCodificat) {
         Consulta consulta = this.consultes.get(this.consultes.size() - 1);
         Resultat resultat = generar_resultat(resultatCodificat);
-        consulta.set_resultat(resultat);        
+        consulta.set_resultat(resultat);
     }
-    
+
     public int get_nombre_consultes() {
         return this.consultes.size();
     }
-    
+
     public ArrayList<String> get_resultat(int posicio) {
         return this.consultes.get(posicio).get_resultat().codificar_resultat();
     }
-    
+
     public ArrayList<String> get_consultes() {
         ArrayList<String> consultesCodificades = new ArrayList<>(this.consultes.size());
         for (int i = 0; i < this.consultes.size(); ++i) {
             Consulta consulta = this.consultes.get(i);
-            consultesCodificades.add(consulta.get_tipo_consulta() 
-                    + "|" + consulta.get_descripcio() 
+            consultesCodificades.add(consulta.get_tipo_consulta()
+                    + "|" + consulta.get_descripcio()
                     + "|" + consulta.get_node_origen()
                     + "|" + consulta.get_cami()
                     + "|" + consulta.get_node_desti()
                     + "|" + consulta.get_node_origen()
                     + "|" + consulta.get_grau_rellevancia());
         }
-        
+
         return consultesCodificades;
     }
 

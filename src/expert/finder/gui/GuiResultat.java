@@ -177,11 +177,15 @@ public class GuiResultat extends javax.swing.JFrame {
     private void consultaUmbralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaUmbralActionPerformed
         // TODO add your handling code here:
         ArrayList<String> consultes = this.controladorPresentacio.get_consultes();
-        String tipus = consultes.get(this.numeroConsulta);
-        tipus = tipus.substring(0, tipus.indexOf('|'));
-        if(tipus == "Tipo II"){
-            String grau = TableResultat.getModel().getValueAt(TableResultat.getSelectedRow(), 2).toString();
+        String tipo = consultes.get(this.numeroConsulta);
+        String tipus = tipo.substring(0, tipo.indexOf('|'));
+        System.out.println(tipus);
+        if("Tipo I".equals(tipus)){
+            System.out.println("entra");
+            String grau = TableResultat.getModel().getValueAt(TableResultat.getSelectedRow(), 1).toString();
+            System.out.println(grau);
             double grauR = Double.parseDouble(grau);
+            System.out.print(grauR);
             NuevaConsulta menu = new NuevaConsulta(this.controladorPresentacio, this.numeroConsulta, grauR);
             menu.setVisible(true);
             this.dispose();
@@ -222,7 +226,7 @@ public class GuiResultat extends javax.swing.JFrame {
             String nodeGrau = resultat.get(j);
             String nomNode = nodeGrau.substring(nodeGrau.indexOf('|')+1, nodeGrau.indexOf("|", nodeGrau.indexOf('|')+1));
             String grau = nodeGrau.substring(nodeGrau.lastIndexOf('|')+1, nodeGrau.length());
-            table_model.addRow(new Object [] {j+1, nomNode, grau}); 
+            table_model.addRow(new Object [] {nomNode, grau}); 
         }
         
         TableResultat.setModel(table_model);

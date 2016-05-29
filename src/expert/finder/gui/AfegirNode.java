@@ -106,7 +106,7 @@ public class AfegirNode extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void EnrereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnrereActionPerformed
-        GestionGraf menu = new GestionGraf(this.controladorPresentacio);
+        GestioGraf menu = new GestioGraf(this.controladorPresentacio);
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_EnrereActionPerformed
@@ -115,11 +115,32 @@ public class AfegirNode extends javax.swing.JFrame {
        String nom = jTextField1.getText();
        String tipusNode = jComboBox1.getSelectedItem().toString();
        try {
-            controladorPresentacio.afegir_node(nom,tipusNode);
-            JOptionPane.showMessageDialog(this, "S'ha afegit el node"); 
-            GestionGraf menu = new GestionGraf(this.controladorPresentacio);
-            menu.setVisible(true);
-            this.dispose();
+           GestioGraf menu = new GestioGraf(this.controladorPresentacio);
+           boolean existeix = controladorPresentacio.existeix_node(nom,tipusNode);
+           if (existeix) {
+                int opcio = JOptionPane.showConfirmDialog(
+                    this,
+                    "Aquest node està repetit, el vols afegir igualment?",
+                    "Node repetit !!!",
+                    JOptionPane.YES_NO_OPTION);
+                if (opcio == 0) {
+                    controladorPresentacio.afegir_node(nom,tipusNode);
+                    JOptionPane.showMessageDialog(this, "S'ha afegit el node");
+                    menu.setVisible(true);
+                    this.dispose(); 
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "NO s'ha afegit el node");
+                    menu.setVisible(true);
+                    this.dispose(); 
+                } 
+           }
+           else {
+               controladorPresentacio.afegir_node(nom,tipusNode);
+               JOptionPane.showMessageDialog(this, "S'ha afegit el node");
+               menu.setVisible(true);
+               this.dispose();
+           }
        } catch(IllegalArgumentException ex) {           
             JOptionPane.showMessageDialog(this, ex.getMessage());  
        }

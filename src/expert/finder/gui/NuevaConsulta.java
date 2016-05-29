@@ -30,6 +30,7 @@ public class NuevaConsulta extends javax.swing.JFrame {
     
     //nueva consulta desde el inicio
     public NuevaConsulta(ControladorPresentacio controladorPresentacio){
+        tipusConsulta = "Consulta Basica";
         initComponents();
         new_init_components();
         this.setLocationRelativeTo(null);
@@ -40,31 +41,32 @@ public class NuevaConsulta extends javax.swing.JFrame {
     
     // nueva consulta3 a partir del grado de relevancia de consulta anterior;
     public NuevaConsulta(ControladorPresentacio controladorPresentacio, int numeroResultat, double grauRellevancia) {
-        
+        this.controladorPresentacio = controladorPresentacio;
         initComponents();
-        ArrayList<String> consultes = controladorPresentacio.get_consultes();
+        ArrayList<String> consultes = this.controladorPresentacio.get_consultes();
         String consulta = consultes.get(numeroResultat);
-        tipusConsulta = "Consulta Umbral";
-        TipusBox.setSelectedItem("Consulta Umbral");
+        tipusConsulta = "Consulta Basica";
+        TipusBox.setSelectedItem("Consulta Basica");
         
-        int index = consulta.indexOf('|');
-        int index2 = consulta.indexOf("|", index+1);
-        cami = consulta.substring(index+1, index2);
-        
-        umbral_taula_camins();
-        
+        int primeraBarra = consulta.indexOf('|');
+        int segonaBarra = consulta.indexOf("|", primeraBarra+1);
+        int terceraBarra = consulta.indexOf("|", segonaBarra+1);
+        int cuartaBarra = consulta.indexOf("|", terceraBarra+1);
+        cami = consulta.substring(terceraBarra+1, cuartaBarra);
+
+        System.out.println(cami);
         
         umbral_init_components();
         
         this.setLocationRelativeTo(null);
-        this.controladorPresentacio = controladorPresentacio;
         
+        umbral_taula_camins();
         
         this.grauRellevancia = grauRellevancia;
             if(this.grauRellevancia > 0 && this.grauRellevancia < 1){ 
                 String gr = Double.toString(grauRellevancia);
                 GrauRellevancia.setText(String.valueOf(gr));
-                inicialitzar_taula_node_origen(false);
+                umbral_inicialitzar_taula_node_origen();
             }
             //sino vuelve a principal
             else{
@@ -141,13 +143,10 @@ public class NuevaConsulta extends javax.swing.JFrame {
 
         TableNodoOrigen.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id", "Nom"
             }
         ));
         jScrollPane2.setViewportView(TableNodoOrigen);
@@ -156,13 +155,10 @@ public class NuevaConsulta extends javax.swing.JFrame {
 
         TableNodoDestino.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id", "Nom"
             }
         ));
         jScrollPane3.setViewportView(TableNodoDestino);
@@ -171,18 +167,20 @@ public class NuevaConsulta extends javax.swing.JFrame {
 
         TableNuevoNodo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id", "Nom"
             }
         ));
         jScrollPane4.setViewportView(TableNuevoNodo);
 
-        GrauRellevancia.setText("jTextField1");
+        GrauRellevancia.setToolTipText("");
+        GrauRellevancia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GrauRellevanciaActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Grado de relevancia");
 
@@ -215,37 +213,39 @@ public class NuevaConsulta extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(torna)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(ejecutar))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(TipusBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel1))
-                                    .addGap(98, 98, 98)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2)
-                                        .addComponent(TextDescripcio, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(jLabel3)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel5)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel6)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(GrauRellevancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel7)))
-                        .addContainerGap(34, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(128, 128, 128)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel6)))
+                            .addComponent(GrauRellevancia, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(0, 0, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(select)
-                .addGap(74, 74, 74))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(TipusBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1))
+                                .addGap(98, 98, 98)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(TextDescripcio, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel3)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(torna)
+                            .addComponent(select))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(ejecutar)
+                                .addGap(356, 356, 356))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -259,32 +259,33 @@ public class NuevaConsulta extends javax.swing.JFrame {
                     .addComponent(TipusBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TextDescripcio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(select)
-                .addGap(17, 17, 17)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(GrauRellevancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ejecutar)
-                    .addComponent(torna))
-                .addContainerGap())
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(select)))
+                .addGap(42, 42, 42)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(GrauRellevancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(torna)
+                    .addComponent(ejecutar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -328,9 +329,7 @@ public class NuevaConsulta extends javax.swing.JFrame {
     private void selectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectActionPerformed
         // TODO add your handling code here:
         if (TableCami.getSelectedRow() != -1){
-            cami = TableCami.getModel().getValueAt(TableCami.getSelectedRow(), 2).toString() + "|" 
-                    + TableCami.getModel().getValueAt(TableCami.getSelectedRow(), 3).toString() + "|"
-                    + TableCami.getModel().getValueAt(TableCami.getSelectedRow(), 4).toString();
+            cami = TableCami.getModel().getValueAt(TableCami.getSelectedRow(), 0).toString();
                     
             tipusConsulta = (String)TipusBox.getSelectedItem();
             TipusBox.setEnabled(false);
@@ -354,9 +353,10 @@ public class NuevaConsulta extends javax.swing.JFrame {
         // TODO add your handling code here:
         ArrayList<String> resultat = new ArrayList<String>();
         
-        nodeOrigen = TableNodoOrigen.getModel().getValueAt(TableNodoOrigen.getSelectedRow(), 1).toString() + "|"
-                    + TableNodoOrigen.getModel().getValueAt(TableNodoOrigen.getSelectedRow(), 2).toString();
-        
+        nodeOrigen = TableNodoOrigen.getModel().getValueAt(TableNodoOrigen.getSelectedRow(), 0).toString();
+        System.out.println(cami);
+        System.out.println(nodeOrigen);
+        System.out.println(TextDescripcio.getText());
             switch(tipusConsulta){
                 case "Consulta Basica": 
                     resultat = this.controladorPresentacio.executa_consulta_tipo1(nodeOrigen, cami, TextDescripcio.getText());
@@ -366,10 +366,8 @@ public class NuevaConsulta extends javax.swing.JFrame {
                     resultat = this.controladorPresentacio.executa_consulta_tipo2(nodeOrigen, cami, grauRellevancia, TextDescripcio.getText());
                     break;
                 case "Consulta Tres Nodos":
-                    nodeDesti = TableNodoDestino.getModel().getValueAt(TableNodoDestino.getSelectedRow(), 1).toString()+ "|"
-                                + TableNodoOrigen.getModel().getValueAt(TableNodoDestino.getSelectedRow(), 2).toString();
-                    nodeNou = TableNuevoNodo.getModel().getValueAt(TableNuevoNodo.getSelectedRow(), 1).toString() + "|"
-                                + TableNuevoNodo.getModel().getValueAt(TableNuevoNodo.getSelectedRow(), 2).toString();
+                    nodeDesti = TableNodoDestino.getModel().getValueAt(TableNodoDestino.getSelectedRow(), 0).toString();
+                    nodeNou = TableNuevoNodo.getModel().getValueAt(TableNuevoNodo.getSelectedRow(), 0).toString();
                     resultat = this.controladorPresentacio.executa_consulta_tipo3(nodeOrigen, cami, nodeDesti, nodeNou, TextDescripcio.getText());
                     break;
             }
@@ -380,6 +378,10 @@ public class NuevaConsulta extends javax.swing.JFrame {
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_ejecutarActionPerformed
+
+    private void GrauRellevanciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GrauRellevanciaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GrauRellevanciaActionPerformed
 
     
     private void new_init_components(){
@@ -405,14 +407,19 @@ public class NuevaConsulta extends javax.swing.JFrame {
     private void umbral_taula_camins() {
         String column_names[]= {"Id","Cami","Descripcio", "Clausura"};
         DefaultTableModel table_model=new DefaultTableModel(column_names, 0);
+        ArrayList<String> camins = this.controladorPresentacio.get_camins();
+        boolean trobat = false;
+        for(int i = 0; i < camins.size() && !trobat; ++i){
+            String camiCodificat = camins.get(i);
+            
+            String cami1 = camiCodificat.substring(0, camiCodificat.indexOf('|'));
+            if(cami1.equals(cami)){
+                cami = Integer.toString(i+1);
+                table_model.addRow(new Object [] {cami, cami1, "cami unic", "Si"});
+                trobat = true;
+            }            
+        }
         
-        String camiCodificat = cami;
-            
-        String cami1 = camiCodificat.substring(0, camiCodificat.indexOf('|'));
-        String descripcio1 = camiCodificat.substring(camiCodificat.indexOf('|')+1, camiCodificat.indexOf("|", camiCodificat.indexOf('|')+1));
-            
-        table_model.addRow(new Object [] {1, cami1, descripcio1, "Si"});           
-                
         TableCami.setModel(table_model);
     }
     
@@ -436,6 +443,33 @@ public class NuevaConsulta extends javax.swing.JFrame {
     }
     
     
+    private void umbral_inicialitzar_taula_node_origen() {
+        
+            String column_names[]= {"Id","Nom"};
+            DefaultTableModel table_model = new DefaultTableModel(column_names, 0);
+            String cami1 = cami;
+            String tipusNode = "";
+            if (cami1.charAt(0) == 'P') tipusNode = "Paper";
+            else if (cami1.charAt(0) == 'T') tipusNode = "Terme";
+            else if (cami1.charAt(0) == 'C') tipusNode = "Conferencia";            
+            else tipusNode = "Autor";
+            
+            ArrayList<String> nodes = controladorPresentacio.get_nodes(tipusNode);        
+            for(int i = 0; i < nodes.size(); ++i){
+                String node = nodes.get(i);
+                String id = node.substring(0, node.indexOf('|'));
+                String nom = node.substring(node.indexOf('|')+1, node.length());            
+                table_model.addRow(new Object [] {id, nom});
+            }
+
+            TableNodoOrigen.setModel(table_model);
+        
+    }
+    
+    
+    
+    
+    
     private void inicialitzar_taula_node_origen(boolean nou) {
         
             String column_names[]= {"Id","Nom"};
@@ -455,7 +489,7 @@ public class NuevaConsulta extends javax.swing.JFrame {
                 table_model.addRow(new Object [] {id, nom});
             }
 
-            if(nou)TableNodoOrigen.setModel(table_model);
+            if(!nou)TableNodoOrigen.setModel(table_model);
             else TableNuevoNodo.setModel(table_model);
         
     }

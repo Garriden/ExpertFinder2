@@ -18,7 +18,7 @@ public class ModificarResultat extends javax.swing.JFrame {
 
     private final ControladorPresentacio controladorPresentacio;
     private int numeroConsulta;
-    private ArrayList<String> modificacio = new ArrayList<String>();
+    private ArrayList<String> modificacio;
     boolean modificat = false;
     
     /**
@@ -158,27 +158,30 @@ public class ModificarResultat extends javax.swing.JFrame {
 
     private void afegirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_afegirActionPerformed
         // TODO add your handling code here:
-        for(int i = 0; i <= TableResultat.getRowCount(); ++i){
-            String linea;
-            if(this.modificacio.get(i)!= null){ 
-                linea = this.modificacio.get(i);
-                linea = linea.substring(0, linea.indexOf("|")) + "|" +
-                                    TableResultat.getModel().getValueAt(i+1, 1).toString() + "|" +
-                                    linea.substring(linea.indexOf("|", linea.indexOf("|", linea.indexOf("|"))), linea.indexOf("|")) + "|" +
-                                    TableResultat.getModel().getValueAt(i+1, 2).toString();
-            }
-            else{
-                
-                linea = "-1|" + TableResultat.getModel().getValueAt(i+1, 1).toString() + "|" + 
-                        "inventado"+ "|" + TableResultat.getModel().getValueAt(i+1, 2).toString();
-            }
-                
+        ArrayList<String> resultat = new ArrayList<String> ();
+        int mida = this.modificacio.size();
+        for(int i = 0; i < mida; ++i){
             
-            this.modificacio.add(linea);       
+            String linea = this.modificacio.get(i);
+            System.out.println(linea);
+            int primeraBarra = linea.indexOf("|");
+            int segonaBarra = linea.indexOf("|", primeraBarra + 1);
+            int terceraBarra = linea.indexOf("|", segonaBarra + 1);
+            
+            String id = linea.substring(0, primeraBarra);
+
+            String tipus = linea.substring(segonaBarra+1, terceraBarra);
+            
+            String novalinea = id + "|" + TableResultat.getModel().getValueAt(i, 0).toString() 
+                                + "|" + tipus + "|" + TableResultat.getModel().getValueAt(i, 1).toString();
+            System.out.println(novalinea);
+
+            resultat.add(novalinea);
+            
             
         }
-        this.controladorPresentacio.afegir_resultat_modificat(modificacio,numeroConsulta);
-        GuiResultat menu = new GuiResultat(this.controladorPresentacio, numeroConsulta, true);
+        this.controladorPresentacio.afegir_resultat_modificat(resultat,numeroConsulta);
+        GuiResultat menu = new GuiResultat(this.controladorPresentacio, numeroConsulta, false);
         menu.setVisible(true);
         this.dispose();
         
@@ -212,7 +215,7 @@ public class ModificarResultat extends javax.swing.JFrame {
             String nodeGrau = modificacio.get(j);
             String nomNode = nodeGrau.substring(nodeGrau.indexOf('|')+1, nodeGrau.indexOf("|", nodeGrau.indexOf('|')+1));
             String grau = nodeGrau.substring(nodeGrau.lastIndexOf('|')+1, nodeGrau.length());
-            table_model.addRow(new Object [] {j+1, nomNode, grau}); 
+            table_model.addRow(new Object [] {nomNode, grau}); 
         }
         
         TableResultat.setModel(table_model);
