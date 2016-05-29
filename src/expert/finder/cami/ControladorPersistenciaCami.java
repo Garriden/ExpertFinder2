@@ -73,12 +73,13 @@ public class ControladorPersistenciaCami {
 
     /**
      * Exporta el contingut del vector de camins codificats passat per parametre els cuals segueixen el seguent format:
-     * [Cami]|[Descripcio]|[Clausura]|[Actualitzada]. El fitxer desti amb extencio .sav sera el que esta en la ruta
-     * passada per paramtre.
-     * @param rutaFitxer conte una ruta absoluta
-     * @param camins conte una llista de camins codificats.
-     * @throws IOException
-     * @throws IllegalArgumentException
+     * [Cami]|[Descripcio]|[Clausura]|[Actualitzada]. El nom del fitxer desti sera amb extencio .sav el cual esta
+     * inclos en la propia ruta del fitxer pasada per parametre.
+     * @param rutaFitxer conte una ruta absoluta del sistema la cual conte tambe el nom del fitxer amb extencio .sav;
+     *                   te que tindre valor != null.
+     * @param camins conte una llista dels camins codificats; te que tindre valor != null
+     * @throws IOException No es pot importa el fitxer .sav
+     * @throws IllegalArgumentException La ruta del fitxer no acaba amb extencio .sav
      */
     public void exportar_camins_objecte(String rutaFitxer, ArrayList<String> camins) throws IOException, IllegalArgumentException {
         if (!rutaFitxer.contains(".sav")) {
@@ -99,11 +100,14 @@ public class ControladorPersistenciaCami {
     }
 
     /**
-     *
-     * @param rutaFitxer
-     * @return
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * Retorna una llista de camins codificats amb el format: [Cami]|[Descripcio]|[Clausura]|[Actualitzada]. Els
+     * camins son llegits del fitxer que esta inclos en la ruta passada per parametre. Aquest fitxer te que tindre
+     * extencio .sav o .txt.
+     * @param rutaFitxer conte una ruta absoluta del sistema la cual conte tambe el nom del fitxer amb extencio .sav
+     *                   o .txt; te que tindre valor != null.
+     * @return Retorna una llista de camins codificats amb el format: [Cami]|[Descripcio]|[Clausura]|[Actualitzada]
+     * @throws IOException No es pot obrir el fitxer o el contingut del fitxer no es valid.
+     * @throws ClassNotFoundException El fitxer no te extencio .txt o .sav o la ruta te valor nul.
      */
     public ArrayList<String> importar(String rutaFitxer) throws IOException, ClassNotFoundException {
         if (rutaFitxer == null) throw new IllegalArgumentException("Error Importar: La ruta del fitxer no pot tenir " +

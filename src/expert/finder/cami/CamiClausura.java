@@ -179,7 +179,7 @@ public class CamiClausura extends Cami{
         }
 
         if (this.clausuraDesactualitzada) {
-            camiCodificat = camiCodificat + "Si";
+            camiCodificat = camiCodificat + "|Si";
         }
         else {
             camiCodificat = camiCodificat + "|No";

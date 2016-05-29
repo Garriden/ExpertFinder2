@@ -4,9 +4,14 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Created by Ruben Bagan Benavides on 05/05/2016.
+ * @Author Ruben Bagan Benavides
  */
 
+/**
+ * La funcio de la matriu es representar una matriu esparsa on nomes enmmagatzema valors diferents a 0.0. Ideal per
+ * representar matrius d'adjacencia molt grans on hi ha aproximadament un 80% de 0.0. Cuants menys 0.0 hi ha mes lent
+ * es i ineficient.
+ */
 public class Matriu implements Serializable {
     // S'enmmagatzema la matriu esparsa en aquesta estructura on nomes té valors diferents a 0.0.
     protected HashMap<Integer, HashMap<Integer, Double>> data;
@@ -18,19 +23,26 @@ public class Matriu implements Serializable {
     protected int nColumnes;
 
 
-    // Pre:  files > 0; columnes > 0
-    // Post: S'inicialitza una matriu esparsa amb les dimensiones files x columnes, tots els elements estan inicialitzats
-    //       a zero.
-    // Cost: O(1);
+    /**
+     * Inicialitza una matriu esparsa amb les dimensions passades per parametre. El valor per defecte de qualsevol
+     * element Mij es 0, in i es la fila, j la columna. El cost d'executar aquesta funcio es: O(1).
+     * @param files indica el numero de files que tindra la matriu; el nombre te que ser un valor positiu
+     * @param columnes indica el numero de columnes que tindra la matriu; el nombre te que ser un valor positiu
+     */
     public Matriu(int files, int columnes) {
         this.nFiles = files;
         this.nColumnes = columnes;
         this.data = new HashMap<>(files);
     }
 
-    // Pre:  0 <= fila < Matriu.fila; 0 <= columna < Matriu.columna
-    // Post: La matriu implicita té un nou valor igual a "valor" passat per parametre en la fila i columna pasades per paràmetre.
-    // Cost: O(1).
+    /**
+     * Modifica el valor que hi hi en la posicio Mij on i es la fila i j la columna per el nou valor passat per el
+     * parametre. El cost d'executar aquesta funcio es: O(1).
+     * @param fila conte la fila de la matriu. Te que ser >= 0 i no pot ser superior al numero de files de la matriu.
+     * @param columna conte la columna de la matriu. Te que ser >= 0 i no pot ser superior al numero de columnes de la
+     *                matriu.
+     * @param valor el valor que tindra la posicio Mij.
+     */
     public void set_valor(int fila, int columna, double valor) {
         HashMap<Integer, Double> columnaData = this.data.get(fila);
         if (columnaData != null) {
@@ -47,9 +59,14 @@ public class Matriu implements Serializable {
         }
     }
 
-    // Pre:  0 <= fila < Matriu.fila; 0 <= columna < Matriu.columna
-    // Post: Retorna el valor en la fila i columna pasades per paràmetre de la matriu implicita.
-    // Cost: O(1).
+    /**
+     * Retorna el valor que hi ha en la posicio Mij on i es la fila i j es la columna. El cost d'executar aquesta
+     * funcio es: O(1).
+     * @param fila conte la fila de la matriu. Te que ser >= 0 i no pot ser superior al numero de files de la matriu.
+     * @param columna conte la columna de la matriu. Te que ser >= 0 i no pot ser superior al numero de columnes de la
+     *                matriu.
+     * @return el valor que hi ha en la posicio Mij
+     */
     public double get_valor(int fila, int columna) {
         HashMap<Integer, Double> columnaData = this.data.get(fila);
         if (columnaData != null) {
@@ -60,57 +77,78 @@ public class Matriu implements Serializable {
         return 0.0;
     }
 
-    // Pre:  Cert.
-    // Post: Retorna el nombre de files que té la matriu implícita.
-    // Cost: O(1).
+    /**
+     * Retorna el nombre de files que te la matriu. El cost d'executar aquesta funcio es: O(1)
+     * @return Retorna el nombre de files que te la matriu.
+     */
     public int get_nombre_files() {
         return this.nFiles;
     }
 
-    // Pre:  Cert.
-    // Post: Retorna el nombre de columnes que té la matriu implícita.
-    // Cost: O(1).
+    /**
+     * Retorna el nombre de columnes que te la matriu. El cost d'executar aquesta funcio es: O(1)
+     * @return Retorna el nombre de columnes que te la matriu.
+     */
     public int get_nombre_columnes() {
         return this.nColumnes;
     }
 
-    // Pre:  0 <= fila < Matriu.Fila; data != NULL. La longitud de data té que ser igual al numero de columnes de la
-    //       matriu implícita.
-    // Post: La fila i-èssima de la matriu implícita té com a valors data.
-    // Cost: O(n)
+    /**
+     * Inicialitza una fila sencera de la matriu Mi0 on i es la fila pasada per parametre. Els valors que pren aquesta
+     * fila son els que hi ha en data. El tamany de data te que ser del mateix tamany que el nombre de columnes de la
+     * matriu. El cost d'executar aquesta funcio es: O(n) on n es el nombre de columnes.
+     * @param fila conte la fila de la matriu. Te que ser >= 0 i no pot ser superior al numero de files de la matriu.
+     * @param data conte els valors amb els que es modificara la fila; no pot apuntar a una referencia nul-la.
+     */
     public void set_fila_iessima(int fila , double[] data) {
         for (int i = 0; i < data.length; ++i) this.set_valor(fila, i, data[i]);
     }
 
-    // Pre:  0 <= columna < Matriu.columna; data != NULL. La longitud de data té que ser igual al numero de files de la
-    //       matriu implícita.
-    // Post: La columna i-èssima de la matriu implícita té com a valors data.
-    // Cost: O(n)
+    /**
+     * Inicialitza totes les columnes de totes les files de la matriu Mij on i es la fila i j la columna pasada per
+     * parametre. Els valors que pren cada columna de cada fila son els que hi ha en data. El tamany de data te que
+     * ser del mateix tamany que el nombre de files de la matriu. El cost d'executar aquesta funcio es: O(n) on n es
+     * el nombre de files.
+     * @param columna conte la columna que modificara per cada fila de la matriu. Te que ser >= 0 i no pot ser superior
+     *                al numero de columnes de la matriu.
+     * @param data conte els valors amb els que es modificara la cada columna; no pot apuntar a una referencia nul-la.
+     */
     public void set_columna_iessima(int columna, double[] data) {
         for (int i = 0; i < data.length; ++i) this.set_valor(i, columna, data[i]);
     }
 
-    // Pre:  0 <= fila < Matriu.fila
-    // Post: Retorna una Matriu C coma resultat de obtenir la fila i-èssima de la matriu implícita.
-    // Cost: O(n).
+    /**
+     * Retorna una matriu d'una unica fila i n columnes, que conte el contingut de la Mij on i es la fila pasada per
+     * parametre.  El cost d'executar aquesta funcio es: O(n) on n es el nombre de columnes.
+     * @param fila conte la fila de la matriu. Te que ser >= 0 i no pot ser superior al numero de files de la matriu.
+     * @return Retorna una matriu d'una unica fila i n columnes, que conte el contingut de la Mij on i es la fila
+     * pasada per parametre.
+     */
     public Matriu get_fila_iessima(int fila) {
         Matriu m = new Matriu(1, this.nColumnes);
         for (int i = 0; i < this.nColumnes; ++i) m.set_valor(0, i, this.get_valor(fila, i));
         return m;
     }
 
-    // Pre:  0 <= columna < Matriu.columna
-    // Post: Retorna una Matriu C coma resultat de obtenir la columna i-èssima de la matriu implícita.
-    // Cost: O(n).
+    /**
+     * Retorna una matriu de n files i una unica columna, que conte el contingut de la Mij on i es la fila i j es la
+     * columna passada per parametre. El cost d'executar aquesta funcio es: O(n) on n es el nombre de files.
+     * @param columna conte la columna de la matriu. Te que ser >= 0 i no pot ser superior al numero de columnes de la
+     *                matriu.
+     * @return Retorna una matriu de n files i una unica columna, que conte el contingut de la Mij on i es la fila i
+     * j es la columna passada per parametre.
+     */
     public Matriu get_columna_iessima(int columna) {
         Matriu m = new Matriu(this.nFiles, 1);
         for (int i = 0; i < this.nFiles; ++i) m.set_valor(i, 0, this.get_valor(i, columna));
         return m;
     }
 
-    // Pre:  0 <= fila < Matriu.fila; El nombre de files de la matriu >= 2.
-    // Post: S'ha eliminat de la matriu implícita la fila pasada com a paràmetre.
-    // Cost: O(n).
+    /**
+     * S'elimina de la matriu implicita la fila passada per parametre juntament amb totes les seves columnes. El cost
+     * d'executar aquesta funcio es: O(n) on n es el nombre de columnes de la fila.
+     * @param fila indica la fila de la matriu. Te que ser >= 0 i no pot ser superior al numero de files de la matriu.
+     */
     public void eliminar_fila(int fila) {
         this.data.remove(fila);
         HashMap<Integer, HashMap<Integer, Double>> copiaData = new HashMap<>();
@@ -127,6 +165,12 @@ public class Matriu implements Serializable {
         --this.nFiles;
     }
 
+    /**
+     * S'elimina de la matriu implicita la posicio de la fila passada per parametre juntament amb totes les seves
+     * columnes. El cost d'executar aquesta funcio es: O(n) on n es el nombre de columnes de la fila.
+     * @param columna indica la fila de la matriu. Te que ser >= 0 i no pot ser superior al numero de files de la
+     *                matriu.
+     */
     // Pre:  0 <= columna < Matriu.fila; El numero de columnes de la matriu >= 2.
     // Post: S'ha eliminat de la matriu implícita la columna pasada com a paràmetre.
     // Cost: O(n^2).

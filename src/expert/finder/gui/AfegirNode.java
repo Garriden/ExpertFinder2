@@ -131,8 +131,6 @@ public class AfegirNode extends javax.swing.JFrame {
                 }
                 else {
                     JOptionPane.showMessageDialog(this, "NO s'ha afegit el node");
-                    menu.setVisible(true);
-                    this.dispose(); 
                 } 
            }
            else {

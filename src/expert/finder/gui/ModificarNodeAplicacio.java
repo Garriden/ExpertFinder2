@@ -123,8 +123,6 @@ public class ModificarNodeAplicacio extends javax.swing.JFrame {
                  }
                  else {
                      JOptionPane.showMessageDialog(this, "NO s'ha modificat el node");
-                     menu.setVisible(true);
-                     this.dispose(); 
                  } 
             }
             else {

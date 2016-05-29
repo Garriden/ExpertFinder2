@@ -76,6 +76,7 @@ public class ControladorPresentacio {
 
     public void eliminar_node(int posicio, String tipusNode) {
         this.controladorGraf.eliminar_node(posicio, tipusNode);
+        this.controladorCami.graf_node_modificat(tipusNode.charAt(0));
     }
 
     public void modificar_nom_node(int posicio, String nouNom, String tipusNode) {
@@ -96,6 +97,7 @@ public class ControladorPresentacio {
 
     public void eliminar_relacio(int idNodeOrigen, int idNodeDesti, String tipusNodeDesti) {
         this.controladorGraf.eliminar_relacio(idNodeOrigen, idNodeDesti, tipusNodeDesti);
+        this.controladorCami.graf_relacio_modificat();
     }
 
 
