@@ -22,8 +22,6 @@ public class Tuple {
      * rellevancia. El cost d'executar aquesta funcio es: O(1)
      * @param node es una referencia a un node del graf. Node no pot apuntar a una referencia nul-la.
      * @param grauRellevancia es el grau de rellevancia del node. El valor del grau de rellevancia [0..1]
-     * @return Inicialitza el constructor amb aquest Node i grau de rellevancia.
-     *
      */
     public Tuple(Node node, double grauRellevancia){
         this.node = node;

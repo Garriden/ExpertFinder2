@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
- * Created by Ruben Bagan Benavides on 13/05/2016.
+ * @Author: Ruben Bagan Benavides
  */
 
 /**
@@ -14,7 +14,6 @@ import java.util.ArrayList;
  * Els camins importats es llegeixen a partir d'un fitxer guardat en format .txt o .sav i s'exporten amb un fitxer de
  * tipus .sav
  */
-
 public class ControladorPersistenciaCami {
     private ArrayList<String> importar_camins(String rutaFitxer) throws IOException {
         Path ruta = Paths.get(rutaFitxer);

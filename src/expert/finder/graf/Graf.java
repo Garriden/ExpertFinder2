@@ -7,15 +7,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by  Marc Garrido Col·laboracio: Ruben Bagan Benavides
+ * @Author: Marc Garrido Col·laboracio: Ruben Bagan Benavides
  */
 
+/**
+ * La funcio d'aquesta clase es la de representar un graf, composat per nodes i relaciones. Aquest graf contempla les
+ * seguents cardinalitats:
+ *      - un autor pot existir i no escriure cap paper.
+ *      - un paper sempre te que se escrit per un o mes autors.
+ *      - un paper nomes pot estar relacion amb una conferencia
+ *      - un paper pot tindre cap o molts termes
+ *      - un terme pot estar relacionat amb cap o molts papers
+ *      - una conferencia pot tindre cap o molts papers.
+ */
 public class Graf implements Serializable{
-    // Matriu esparsa d'adjecencia que conte les relacions paper x autor
+    /**
+     * Matriu esparsa d'adjecencia que conte les relacions paper x autor
+      */
     protected Matriu paperAutor;
-    // Matriu esparsa d'adjecencia que conte les relacions paper x conferencia
+    /**
+     * Matriu esparsa d'adjecencia que conte les relacions paper x conferencia
+     */
     protected Matriu paperConferencia;
-    // Matriu esparsa d'adjecencia que conte les relacions paper x terme
+    /**
+     * Matriu esparsa d'adjecencia que conte les relacions paper x terme
+     */
     protected Matriu paperTerme;
 
     // ArrayList's que contenen tots els nodes [paper,terme,conferencia,autor] ordenats per id.
@@ -25,10 +41,19 @@ public class Graf implements Serializable{
     protected ArrayList<Node> terme;
 
 
-    // Pre:  Cap dels parametres té valor nul
-    // Post: S'inicialitza el graf, els nodes tenen una referencia als nodes terme, autor , paper i conferencia
-    //       passats per paramtre. S'inicialitza les relacions paper x autor, paper x terme i paper x conferencia.
-    // Cost: O(1)
+    /**
+     * Inicialitza una instancia de graf amb tots els atributs inicialitzas amb els valors dels parametres. Cada
+     * atribut apunta a una referencia d'un parametre. El cost d'executar aquesta funcio es: O(1).
+     * @param paperAutor conte una referencia a una matriu amb les relacions paper x autor, no pot tenir valor nul.
+     * @param paperConferencia conte una referencia a una matriu amb les relacions paper x conferencia, no pot tenir
+     *                         valor nul.
+     * @param paperTerme conte una referencia a una matriu amb les relacions paper x terme, no pot tenir valor nul.
+     * @param paper conte una referencia a un llista de nodes de tipus paper ordenats per el seu identificador.
+     * @param terme conte una referencia a un llista de nodes de tipus terme ordenats per el seu identificador.
+     * @param autor conte una referencia a un llista de nodes de tipus autor ordenats per el seu identificador.
+     * @param conferencia conte una referencia a un llista de nodes de tipus conferencia ordenats per el seu
+     *                    identificador.
+     */
     public Graf(Matriu paperAutor, Matriu paperConferencia, Matriu paperTerme, ArrayList<Node> paper,
                 ArrayList<Node> terme, ArrayList<Node> autor, ArrayList<Node> conferencia)
     {
@@ -42,10 +67,15 @@ public class Graf implements Serializable{
         this.terme = terme;
     }
 
-    // Pre:  Cert
-    // Post: El graf implícit té un nou node en la seva llista de nodes del tipus especificat per el parametre
-    //       (autor, paper, conferencia o terme) i no té cap relació amb cap altre node.
-    // Cost: O(1)
+    /**
+     * Afageix un nou node al graf implicit amb nom i tipus de node amb els valors dels parametres. Aquest nou node no
+     * te cap relacio amb  altres nodes. Al afegir node de tipus diferent a paper s'incrementa en 1 les columnes de
+     * les matrius d'adjecencia, si aquest es un paper sincrementa la fila de cada matriu.  L'identificador d'aquest
+     * node l'inicialitza automaticament el graf. El cost d'executar aquesta funcio es: O(1).
+     * @param tipusNode el tipus del node te que ser un dels tipus valids: autor, paper, conferencia o terme
+     * @param nomNode conte el nom del node que s'afegeix el graf.
+     * @throws IllegalArgumentException Retorna un error si algun parametre es nul o no es del tipus correcte.
+     */
     public void afegir_node(Node.TipusNode tipusNode, String nomNode) throws IllegalArgumentException {
         if (tipusNode == null || nomNode == null) {
             throw new IllegalArgumentException("Error: El tipos del node i/o el nom del node no poden tenir valor nul");
@@ -79,11 +109,16 @@ public class Graf implements Serializable{
         }
     }
 
-    //Pre:  Cert
-    //Post: S'elimina del graf implícit el node del tipus del node passat per parametre. Al eliminar un node si es de
-    //      tipus paper s'elimina tambe totes les relacions que té amb els altres nodes, igual que si es de tipus autor,
-    //      conferencia o terme.
-    //Cost: O(n)
+    /**
+     * S'elimina del graf implícit un node igual al node passat per parametre. Al eliminar un node si es de tipus
+     * paper s'elimina tambe totes les relacions que te amb els altres nodes es a dir s'elimina una fila de cada
+     * matriu. Si el tipus es diferent a paper s'elimina la columna de la matriu corresponent. Si s'elimina un autor
+     * i aquest es l'ultim autor d'un paper o mes retorna un error i impadeix eliminar-lo. El cost d'executar aquesta
+     * funcio es: O(n).
+     * @param node conte informacio del node que s'ha d'eliminar. Aquest node no pot apunta a una referencia nul-la.
+     * @throws IllegalArgumentException Retorna un error si el parametre te valor nul, l'identificador del node no es
+     * valid, el tipus del node es incorrecte o no es pot eliminar el autor.
+     */
     public void eliminar_node(Node node) throws IllegalArgumentException {
         if (node == null) {
             throw new IllegalArgumentException("Error: El node no pot tenir valor nul");
@@ -153,11 +188,13 @@ public class Graf implements Serializable{
         }
     }
 
-
-    // Pre:  Cert
-    // Post: Modifica la descripcio del node del graf implicit per la descripcio del node passat per parametre amb
-    //       identificador i tipus igual que el node passat per paramtre.
-    // Cost: O(1)
+    /**
+     * Modifica la descripcio del node del graf implicit per la descripcio del node passat per parametre amb
+     * l'identificador i tipus igual que el node passat per paramtre. El cost d'executar aquesta funcio es: O(1).
+     * @param node conte informacio del node que s'ha de modificar. Aquest node no pot apunta a una referencia nul-la.
+     * @throws IllegalArgumentException retorna un error si el parametre te valor nul, l'identificador del node no es
+     * valid o el tipus del node es incorrecte.
+     */
     public void actualizar_node(Node node) throws IllegalArgumentException {
         if (node == null) {
             throw new IllegalArgumentException("Error: El node no pot tenir valor nul");
@@ -197,10 +234,15 @@ public class Graf implements Serializable{
         }
     }
 
-    // Pre:  Cert
-    // Post: Retorna una referencia a un node amb identificador i tipus passats per parametre (autor, terme, conferencia,
-    //       paper) del graf implícit.
-    // Cost: O(1)
+    /**
+     * Retorna una referencia a un node amb identificador i tipus passats per parametre (autor, terme, conferencia,
+     * paper) del graf implícit. El cost d'executar aquesta funcio es: O(1).
+     * @param id l'identificador del node te que ser major o igual que 0.
+     * @param tipus el tipus del node te que ser un dels tipus valids: autor, paper, conferencia o terme
+     * @return
+     * @throws IllegalArgumentException retorna un error si el parametre te valor nul, l'identificador del node no es
+     * valid o el tipus del node es incorrecte.
+     */
     public Node get_node(int id, Node.TipusNode tipus) throws IllegalArgumentException {
         if (tipus == null) {
             throw new IllegalArgumentException("Error: El tipus de node no pot tenir un valor nul");
@@ -247,10 +289,15 @@ public class Graf implements Serializable{
         return node;
     }
 
-    // Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
-    // Post: Actualitza el valor de la relació del graf implícit entre el node origen (paper) i el node desti (terme,
-    //       autor, conferencia) amb valor '1'.
-    // Cost: O(1)
+    /**
+     * Actualitza el valor de la relació del graf implícit entre el node origen (paper) i el node desti (terme,
+     * autor, conferencia) amb valor '1'. Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,
+     * Terme] El cost d'executar aquesta funcio es: O(1).
+     * @param nodeOrigen conte una referencia al node origen de tipus paper.
+     * @param nodeDesti conte una referencia al node desti d'un tipus diferent a paper.
+     * @throws IllegalArgumentException Error si el tipus origen no es de tipus paper, o els arguments tenen valor
+     * nul, l'identificador no es valid o perque no es poden afegir mes conferencies a un paper.
+     */
     public void afegir_aresta(Node nodeOrigen, Node nodeDesti) throws IllegalArgumentException {
         if (nodeOrigen == null || nodeDesti == null) {
             throw new IllegalArgumentException("Error: El node origen i/o el node desti no poden tenir valors nul");
@@ -297,10 +344,16 @@ public class Graf implements Serializable{
         }
     }
 
-    // Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
-    // Post: Actualitza el valor de la relació del graf implícit entre el node origen (paper) i el node desti (terme,
-    //       autor, conferencia) amb valor '0'.
-    // Cost: O(1);
+    /**
+     * Actualitza el valor de la relació del graf implícit entre el node origen (paper) i el node desti (terme,
+     * autor, conferencia) amb valor '0'. Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,
+     * Terme] El cost d'executar aquesta funcio es: O(1).
+     * @param nodeOrigen conte una referencia al node origen de tipus paper.
+     * @param nodeDesti conte una referencia al node desti d'un tipus diferent a paper.
+     * @throws IllegalArgumentException Error si el tipus origen no es de tipus paper, o els arguments tenen valor
+     * nul, l'identificador no es valid o perque no es poden eliminar conferencies perque un paper com a minim esta a
+     * una conferencia.
+     */
     public void eliminar_aresta(Node nodeOrigen, Node nodeDesti) throws IllegalArgumentException {
         if (nodeOrigen == null || nodeDesti == null) {
             throw new IllegalArgumentException("Error: El node origen i/o el node desti no poden tenir valors nul");
@@ -357,51 +410,59 @@ public class Graf implements Serializable{
         }
     }
 
-    // Pre:  Cert.
-    // Post: Retorna una referencia a la matriu paperAutor.
-    // Cost: O(1);
+    /**
+     * Retorna una referencia a la matriu d'adjcencencia paper x autor. El cost d'executar aquesta funcio es: O(1).
+     * @return Retorna una referencia a la matriu d'adjcencencia paper x autor
+     */
     public Matriu get_paper_autor() {
         return this.paperAutor;
     }
 
-    // Pre:  Cert.
-    // Post: Retorna una referencia a la matriu paperConferencia.
-    // Cost: O(1);
+    /**
+     * Retorna una referencia a la matriu d'adjcencencia paper x conferencia. El cost d'executar aquesta funcio es: O
+     * (1).
+     * @return Retorna una referencia a la matriu d'adjcencencia paper x conferencia
+     */
     public Matriu get_paper_conferencia() {
         return this.paperConferencia;
     }
 
-    // Pre:  Cert.
-    // Post: Retorna una referencia a la matriu paperTerme.
-    // Cost: O(1);
+    /**
+     * Retorna una referencia a la matriu d'adjcencencia paper x terme. El cost d'executar aquesta funcio es: O(1).
+     * @return Retorna una referencia a la matriu d'adjcencencia paper x terme
+     */
     public Matriu get_paper_terme() {
         return this.paperTerme;
     }
 
-    // Pre:  Cert.
-    // Post: Retorna una referencia a una llista de papers.
-    // Cost: O(1);
+    /**
+     * Retorna una referencia a la llista de nodes de tipus paper. El cost d'executar aquesta funcio es: O(1).
+     * @return Retorna una referencia a la llista de nodes de tipus paper.
+     */
     public ArrayList<Node> get_paper() {
         return this.paper;
     }
 
-    // Pre:  Cert.
-    // Post: Retorna una referencia a una llista de conferencies.
-    // Cost: O(1);
+    /**
+     * Retorna una referencia a la llista de nodes de tipus conferencia. El cost d'executar aquesta funcio es: O(1).
+     * @return Retorna una referencia a la llista de nodes de tipus conferencia.
+     */
     public ArrayList<Node> get_conferencia() {
         return this.conferencia;
     }
 
-    // Pre:  Cert.
-    // Post: Retorna una referencia a una llista de autors.
-    // Cost: O(1);
+    /**
+     * Retorna una referencia a la llista de nodes de tipus autor. El cost d'executar aquesta funcio es: O(1).
+     * @return Retorna una referencia a la llista de nodes de tipus autor.
+     */
     public ArrayList<Node> get_autor() {
         return this.autor;
     }
 
-    // Pre:  Cert.
-    // Post: Retorna una referencia a una llista de termes.
-    // Cost: O(1);
+    /**
+     * Retorna una referencia a la llista de nodes de tipus terme. El cost d'executar aquesta funcio es: O(1).
+     * @return Retorna una referencia a la llista de nodes de tipus terme.
+     */
     public ArrayList<Node> get_terme() {
         return this.terme;
     }
