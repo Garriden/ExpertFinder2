@@ -31,7 +31,7 @@ public class Tuple {
     }
 
     /**
-     * Retorna una referencia al node.
+     * Retorna una referencia al node. El cost d'executar aquesta funcio es: O(1).
      * @return Retorna una referencia al node.
      */
     public Node get_node() {
@@ -39,7 +39,7 @@ public class Tuple {
     }
 
     /**
-     * Retorna el grau de rellevancia del node d'aquesta tuple.
+     * Retorna el grau de rellevancia del node d'aquesta tuple. El cost d'executar aquesta funcio es: O(1).
      * @return Retorna el grau de rellevancia del node d'aquesta tuple.
      */
     public double get_grau_rellevancia() {
@@ -47,7 +47,8 @@ public class Tuple {
     }
 
     /**
-     * Modifica la referencia del node al que apunta la tupla a la nova referencia pasada per parametre.
+     * Modifica la referencia del node al que apunta la tupla a la nova referencia pasada per parametre. El cost
+     * d'executar aquesta funcio es: O(1).
      * @param node és una referencia a un node del graf. Node no pot apuntar a una referencia nul-la.
      */
     public void set_node(Node node) {
@@ -56,6 +57,7 @@ public class Tuple {
 
     /**
      * Modifica el grau de rellevancia que te la tuple per aquest node per el grau de rellevancia passat per paramtre.
+     * El cost d'executar aquesta funcio es: O(1).
      * @param grauRellevancia és el grau de rellevancia del node. El valor del grau de rellevancia [0..1].
      */
     public void set_grau_rellevancia(double grauRellevancia) {

@@ -10,27 +10,49 @@ package expert.finder.cami;
  * @author Ruben Bagan Benavides
  */
 
+/**
+ * La funcio d'aquesta clase es ampliar el contingut d'un cami. L'amplacio consta que un cami pot tenir una matriu de
+ * clausura associada i saber si esta actualitzada. Poder codificar un cami i construir un cami a partir d'un string
+ * codificat.
+ */
 public class CamiClausura extends Cami{
+    private static int idFitxerClausura = 1;
     protected boolean teClausura;
     protected boolean clausuraDesactualitzada;
 
-    // Pre:  cami != null, descripcio != null
-    // Post: S'inicialitza un cami amb els valors passats per parametre
-    // Cost: O(n)
+
+    /**
+     * Inicialitza una instancia d'un cami clausura on inicialitza els seus atributs com son: el cami, una
+     * descripcio, i saber si utilitza matriu de clausura. Per defecte la matriu de clausura esta actualitzada ja que
+     * no s'han pogut fer modificacions. El cost d'executar aquesta funcio es: O(n) on n es el numero de caracters
+     * del cami.
+     * @param cami es un string que conte la navegabilitat entre diferents nodes del graf. cami no apunta a una
+     *             referencia nul-la.
+     * @param descripcio proporciona una descripcio de quina es la navegabilitat del cami. descripcio no apunta a una
+     *                   referencia nul-la
+     * @param teClausura indica si el cami tindra una matriu de clausura associada.
+     * @throws IllegalArgumentException El cami passat per parametre que intentes afegir no es cami valid.
+     */
     public CamiClausura(String cami, String descripcio, boolean teClausura) throws IllegalArgumentException {
         super(cami, descripcio);
         if (!this.cami_valid(this.cami)) {
-            throw new IllegalArgumentException("Error: El cami que intentes afegir no es un camó vàlid.");
+            throw new IllegalArgumentException("Error: El cami que intentes afegir no es un cami vàlid.");
         }
         this.teClausura = teClausura;
         this.clausuraDesactualitzada = false;
+        ++this.idFitxerClausura;
     }
 
-    // Pre:  Camicodificat != null. El cami codificat té que estar codificat de la següent forma:
-    //       [Cami]|[Descripcio]|[Clausura]|[Actualitzada]
-    // Post: S'inicialitza un cami amb els valors codificats del parametre.
-    // Cost: O(n);
-    public CamiClausura(String camiCodificat) {
+    /**
+     * Inicialitza una instancia d'un cami clausura on inicialitza els seus atributs com son: el cami, una
+     * descripcio, i saber si utilitza matriu de clausura. Per defecte la matriu de clausura esta actualitzada ja que
+     * no s'han pogut fer modificacions. A diferencia del constructor amb parametres, aquest rep els parametres
+     * codificats amb el següent format: [cami]|[descripcio]|[clausura]|[actualitzada] El cost d'executar aquesta
+     * funcio es: O(n) on n es el numero de caracters del cami.
+     * @param camiCodificat conte un cami codificat amb el format: [cami]|[descripcio]|[clausura]|[actualitzada]
+     * @throws IllegalArgumentException El cami passat per parametre que intentes afegir no es cami valid.
+     */
+    public CamiClausura(String camiCodificat) throws IllegalArgumentException {
         super("N/A","N/A");
         int posicioDescripcio = camiCodificat.indexOf('|');
         int posicioClausura = camiCodificat.indexOf('|', posicioDescripcio);
@@ -54,72 +76,98 @@ public class CamiClausura extends Cami{
         this.descripcio = descripcio;
         this.teClausura = clausura;
         this.clausuraDesactualitzada = actualitzada;
+        ++this.idFitxerClausura;
     }
-    
-    // Pre:  Cert.
-    // Post: Retorna un boolea indicant si aquest camí utilitza una matriu de clausura.
-    // Cost: O(1)
+
+    /**
+     * Retorna una boolea indicant si el cami utilitza matriu de clausura. El cost d'executar aquesta funcio es: O(1)
+     * @return Retorna una boolea indicant si el cami utilitza matriu de clausura.
+     */
     public boolean te_clausura() {
         return this.teClausura;
     }
-    
-    // Pre:  Cert.
-    // Post: Actualitza el boolea indicant si utilitza matrius de clausura o no.
-    // Cost: O(1)
+
+    /**
+     * Actualitza si el cami utilitza o no matriu de clausura. El cost d'executar aquesta funcio es: O(1)
+     * @param teClausura Indica si el cami utilitza o no matriu de clausura.
+     */
     public void set_clausura(boolean teClausura) {
         this.teClausura = teClausura;
     }
-    
-    // Pre: Cert.
-    // Post: Retorna un boolea que indicant si la matriu de clausura esta actualitzada o no
-    // Cost: O(1)
+
+    /**
+     * Retorna una boolea indicant si el cami que utilitza matriu de clausura esta actualitzada o no. El cost
+     * d'executar aquesta funcio es: O(1)
+     * @return Retorna una boolea indicant si el cami utilitza matriu de clausura esta actualitzada o no.
+     */
     public boolean clausura_desactualitzada() {
         return this.clausuraDesactualitzada;
     }
 
-    // Pre:  El camí implicit té que tindre la opció de matriu de clausura habilitada.
-    // Post: Actualitza el boolea incicant si la matriu de clausura esta actualitzada o no.
-    // Cost: O(1)
+    /**
+     * Actualitza el boolea incicant si la matriu de clausura esta actualitzada o no. El camí implicit té que tindre
+     * la opció de matriu de clausura habilitada. El cost d'executar aquesta funcio es: O(1)
+     * @param recalcularClausura Indica si el cami te actualitzada o no la matriu de clausura.
+     */
+
     public void set_actualitzar_clausura(boolean recalcularClausura) {
-        if (recalcularClausura) {
+        if (this.teClausura && recalcularClausura) {
             this.clausuraDesactualitzada = true;
         }
     }
 
-    // Pre:  Cert
-    // Post: Actualitza el cami del camí implicit per un camí vàlid passat per paràmetre.
-    // Cost: Omegea(1) ~ O(n)
-    public void set_cami(String cami) {
+    /**
+     * Retorna l'identificado del fitxer on esta enmmagatzemada la matriu de clausura del cami. El cost d'executar
+     * aquesta funcio es: O(1)
+     * @return Retorna l'identificado del fitxer on esta enmmagatzemada la matriu de clausura del cami.
+     */
+    public int get_id_fitxer_clausura() {
+        return idFitxerClausura;
+    }
+
+    /**
+     * Actualitza el cami del cami implicit per el nou cami passat per parametre. El cost d'executar aquesta funcio
+     * es: Omega(1) ~ O(n) on n es el numero de caracters del cami.
+     * @param cami Conte el nou cami que sera substituit. No pot tindre un valor nul
+     * @throws IllegalArgumentException El cami que intentes afegir no es un camó vàlid.
+     */
+    public void set_cami(String cami) throws IllegalArgumentException {
         if (!this.cami_valid(this.cami)) {
             throw new IllegalArgumentException("Error: El cami que intentes afegir no es un camó vàlid.");
         }
         super.set_cami(cami);
     }
 
-    // Pre:  tipusNode = {'P','T','C','A'}; El cami implícit utilitza matrius de clausura.
-    // Post: Actualitza el boolea que indica si la matriu de clausura esta desactualitzada o no depenen si el cami conte
-    //       algun node del tipus passat per parametre.
-    // Cost: Omega(1) ~ O(n)
+    /**
+     * Actualitza el boolea que indica si la matriu de clausura esta desactualitzada o no depenen si el cami conte
+     * algun node del tipus passat per parametre. El cost d'executar aquesta funcio es: Omega(1) ~ O(n) on n es el
+     * numero de caracters del cami implicit.
+     * @param tipusNode conte una lletra capital de cada tipus de node = {'P','T','C','A'}; El cami implícit utilitza
+     *                  matrius de clausura.
+     */
     public void actualitzar_clausura(char tipusNode) {
-        if (tipusNode == 'P') {
-            this.clausuraDesactualitzada = true;
-        }
-        else {
-            int i = 0;
-            while (i < cami.length() && this.cami.charAt(i) != tipusNode) {
-                ++i;
-            }
-
-            if (i < cami.length()) {
+        if (this.teClausura) {
+            if (tipusNode == 'P') {
                 this.clausuraDesactualitzada = true;
+            } else {
+                int i = 0;
+                while (i < cami.length() && this.cami.charAt(i) != tipusNode) {
+                    ++i;
+                }
+
+                if (i < cami.length()) {
+                    this.clausuraDesactualitzada = true;
+                }
             }
         }
     }
 
-    // Pre:  Cert
-    // Post: Retorna una string amb la tota la informació codificada. El format de la codificació es el següent:
-    //       [Cami]|[Descripcio]|[Clausura]|[Actualitzada]
-    // Cost: O(1)
+    /**
+     * Retorna una string amb la tota la informació codificada. El format de la codificació es el següent:
+     *         [Cami]|[Descripcio]|[Clausura]|[Actualitzada]. El cost d'executar aquesta funcio es: O(1)
+     * @return Retorna una string amb la tota la informació codificada. El format de la codificació es el següent:
+     *         [Cami]|[Descripcio]|[Clausura]|[Actualitzada]
+     */
     public String codificar_cami() {
         String camiCodificat = this.cami + "|" + this.descripcio;
 
