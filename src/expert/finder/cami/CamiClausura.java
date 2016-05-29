@@ -105,8 +105,8 @@ public class CamiClausura extends Cami{
     }
 
     /**
-     * Actualitza el boolea incicant si la matriu de clausura esta actualitzada o no. El camí implicit té que tindre
-     * la opció de matriu de clausura habilitada. El cost d'executar aquesta funcio es: O(1)
+     * Actualitza el boolea incicant si la matriu de clausura esta actualitzada o no. El camí implicit te que tindre
+     * la opcio de matriu de clausura habilitada. El cost d'executar aquesta funcio es: O(1)
      * @param recalcularClausura Indica si el cami te actualitzada o no la matriu de clausura.
      */
 
@@ -142,7 +142,7 @@ public class CamiClausura extends Cami{
      * Actualitza el boolea que indica si la matriu de clausura esta desactualitzada o no depenen si el cami conte
      * algun node del tipus passat per parametre. El cost d'executar aquesta funcio es: Omega(1) ~ O(n) on n es el
      * numero de caracters del cami implicit.
-     * @param tipusNode conte una lletra capital de cada tipus de node = {'P','T','C','A'}; El cami implícit utilitza
+     * @param tipusNode conte una lletra capital de cada tipus de node = {'P','T','C','A'}; El cami implicit utilitza
      *                  matrius de clausura.
      */
     public void actualitzar_clausura(char tipusNode) {
@@ -163,9 +163,9 @@ public class CamiClausura extends Cami{
     }
 
     /**
-     * Retorna una string amb la tota la informació codificada. El format de la codificació es el següent:
+     * Retorna una string amb la tota la informacio codificada. El format de la codificacio es el seguent:
      *         [Cami]|[Descripcio]|[Clausura]|[Actualitzada]. El cost d'executar aquesta funcio es: O(1)
-     * @return Retorna una string amb la tota la informació codificada. El format de la codificació es el següent:
+     * @return Retorna una string amb la tota la informacio codificada. El format de la codificacio es el seguent:
      *         [Cami]|[Descripcio]|[Clausura]|[Actualitzada]
      */
     public String codificar_cami() {

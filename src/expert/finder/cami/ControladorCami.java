@@ -4,9 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Created by Ruben Bagan Benavides
+ *
+ * @author Ruben Bagan Benavides
  */
 
+/**
+ * La funció d'aquesta classe es comunicar-se amb el controlador de persistencia de camins, subministrar l'informacio
+ * necessaria al controlador grafic i es l'unica que genera instancies de cami.
+ */
 public class ControladorCami {
     private ArrayList<CamiClausura> camins;
 
