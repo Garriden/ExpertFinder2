@@ -51,11 +51,11 @@ public class ControladorPresentacio {
     }
     
     public void afegir_cami(String cami, String descripcio) throws ArrayIndexOutOfBoundsException {
-        controladorCami.afegir_cami(cami, descripcio, true, true);
+        //controladorCami.afegir_cami(cami, descripcio, true, true);
     }
     
     public void modificar_cami(int posicio, String cami) throws ArrayIndexOutOfBoundsException, IllegalArgumentException{
-        controladorCami.modificar_cami(posicio, cami, true, true);
+        //controladorCami.modificar_cami(posicio, cami, true, true);
     }
     
     public void modificar_descripcio(int posicio, String Descripcio){

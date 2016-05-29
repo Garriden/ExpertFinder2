@@ -153,11 +153,11 @@ public class ControladorPersistenciaGraf {
             ois = new ObjectInputStream(fitxer);
             graf = (Graf) ois.readObject();
         } catch (IOException e) {
-            throw new IOException("Error: No s'ha pogut importar el graf selvat de la ruta: " + ruta +
-                    "perque o no existeix, o es utilitzat per un altre programa.");
+            throw new IOException("Error: No s'ha pogut importar el graf selvat de la ruta: " + ruta + "perque o no " +
+                    "existeix, o es utilitzat per un altre programa.");
         } catch (ClassNotFoundException e) {
-            throw new IOException("Error: El fitxer binari on esta enmmagatzemat el graf en la ruta: " + ruta +
-                    "no s'ha pogut obtenir el graf perquè el contingut del fitxer no es un graf.");
+            throw new IOException("Error: El fitxer binari on esta enmmagatzemat el graf en la ruta: " + ruta + "no s'ha " +
+                    "pogut obtenir el graf perquè el contingut del fitxer no es un graf.");
         }
 
         ois.close();

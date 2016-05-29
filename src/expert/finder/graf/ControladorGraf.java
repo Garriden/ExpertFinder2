@@ -8,6 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by Ruben Bagan Benavides on 16/05/2016.
  */
+
 public class ControladorGraf {
     private Graf graf;
 
@@ -19,22 +20,35 @@ public class ControladorGraf {
         throw new IllegalArgumentException("Error: El tipus de node que has sel·leccionat es incorrecte.");
     }
 
+    // Pre:  Cert.
+    // Post: S'inicialitza el graf del controlador amb el contingut de la base de dades o d'un altre graf guardat com
+    //       a objecte.
+    // Cost: O(n)
     public void importar(boolean nouGraf, String rutaFitxer) throws IOException {
         ControladorPersistenciaGraf controladorPersistenciaGraf = new ControladorPersistenciaGraf();
         if (nouGraf) this.graf = controladorPersistenciaGraf.importar_graf_nou(rutaFitxer);
         else this.graf = controladorPersistenciaGraf.importar_graf_salvat(rutaFitxer);
     }
 
+    // Pre:  Cert
+    // Post: S'enmmagatzema el graf del controlador en el fitxer indicat en la ruta passada del parametre.
+    // Cost: O(1)
     public void exportar(String rutaFitxer) throws IOException {
         ControladorPersistenciaGraf controladorPersistenciaGraf = new ControladorPersistenciaGraf();
         controladorPersistenciaGraf.exportar(rutaFitxer, this.graf);
     }
 
+    // Pre:  Cert
+    // Post: S'afegeix un nou node al graf del controlador, amb els atributs del node inicialitzats amb els valors
+    //       passats per parametre.
+    // Cost: O(n)
     public void afegir_node(String nom, String tipusNode) throws IllegalArgumentException {
         Node.TipusNode tipus = stringToTipusNode(tipusNode);
         this.graf.afegir_node(tipus, nom);
     }
 
+    // Pre:  Cert
+    // Post: S'elimina el node del graf del controlador.
     public void eliminar_node(int posicio, String tipusNode) throws IllegalArgumentException {
         Node.TipusNode tipus = stringToTipusNode(tipusNode);
         Node n = this.graf.get_node(posicio, tipus);

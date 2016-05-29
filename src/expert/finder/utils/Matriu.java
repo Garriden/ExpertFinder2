@@ -8,9 +8,15 @@ import java.util.*;
  */
 
 public class Matriu implements Serializable {
+    // S'enmmagatzema la matriu esparsa en aquesta estructura on nomes té valors diferents a 0.0.
     protected HashMap<Integer, HashMap<Integer, Double>> data;
+
+    // Numero de files de la matriu, no te perque representar un valor igual al numero real de files que te data.
     protected int nFiles;
+
+    // Numero de columens de la matriu, no te perque representar un valor igual al numero real de columnes que te data.
     protected int nColumnes;
+
 
     // Pre:  files > 0; columnes > 0
     // Post: S'inicialitza una matriu esparsa amb les dimensiones files x columnes, tots els elements estan inicialitzats
@@ -28,8 +34,12 @@ public class Matriu implements Serializable {
     public void set_valor(int fila, int columna, double valor) {
         HashMap<Integer, Double> columnaData = this.data.get(fila);
         if (columnaData != null) {
-            if (valor == 0.0) columnaData.remove(columna);
-            else columnaData.put(columna, valor);
+            if (valor == 0.0) {
+                columnaData.remove(columna);
+            }
+            else {
+                columnaData.put(columna, valor);
+            }
         }
         else if (valor != 0.0) {
             this.data.put(fila, new HashMap<>());
@@ -293,7 +303,7 @@ public class Matriu implements Serializable {
     public HashMap<Integer, HashMap<Integer, Double>> get_hashmap() {
         return this.data;
     }
-    
+
     // Pre:  Cert.
     // Post: Retorna una copia de la matriu.
     // Cost: O(n^2)
