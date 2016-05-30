@@ -14,13 +14,18 @@ import javax.swing.JOptionPane;
 public class ModificarCamiAplicacio extends javax.swing.JFrame {
     private ControladorPresentacio controladorpresentacio;
     private int id;
-    
-    public ModificarCamiAplicacio(ControladorPresentacio controladorpresentacio,String cami, String descripcio, int id) {
+    private String cami;
+    private boolean teClausura;
+    public ModificarCamiAplicacio(ControladorPresentacio controladorpresentacio,String cami, String descripcio, int id, boolean teClausura) {
         initComponents();
         this.controladorpresentacio = controladorpresentacio;
         this.id = id;
+        this.cami = cami;
+        this.teClausura = teClausura;
         campCami.setText(cami);
         campDescripcio.setText(descripcio);
+        jCheckBox1.setSelected(teClausura);
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -38,6 +43,8 @@ public class ModificarCamiAplicacio extends javax.swing.JFrame {
         campCami = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         campDescripcio = new javax.swing.JTextField();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,6 +72,20 @@ public class ModificarCamiAplicacio extends javax.swing.JFrame {
 
         jLabel2.setText("Introdueix una nova Descripcio:");
 
+        jCheckBox1.setText("Calcular Clausura");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+
+        jCheckBox2.setText("Recalcular Clausura");
+        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -77,12 +98,16 @@ public class ModificarCamiAplicacio extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(BotonModificar))
                     .addComponent(campCami)
+                    .addComponent(campDescripcio)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
-                        .addGap(0, 196, Short.MAX_VALUE))
-                    .addComponent(campDescripcio))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jCheckBox1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+                        .addComponent(jCheckBox2)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -96,7 +121,11 @@ public class ModificarCamiAplicacio extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(campDescripcio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBox1)
+                    .addComponent(jCheckBox2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BotonEnrere)
                     .addComponent(BotonModificar))
@@ -118,11 +147,11 @@ public class ModificarCamiAplicacio extends javax.swing.JFrame {
 
     private void BotonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonModificarActionPerformed
         try{
-            controladorpresentacio.modificar_cami(id, campCami.getText());
-            controladorpresentacio.modificar_descripcio(id, campDescripcio.getText());
             
-            new ModificarCami(this.controladorpresentacio).setVisible(true);
-            this.dispose();
+                controladorpresentacio.modificar_cami(id, campCami.getText(), this.cami, campDescripcio.getText(), jCheckBox1.isSelected(), jCheckBox2.isSelected());
+                JOptionPane.showMessageDialog(this, "S'ha modificat correctament");
+                new ModificarCami(this.controladorpresentacio).setVisible(true);
+                this.dispose();
         }catch(ArrayIndexOutOfBoundsException ex){
             JOptionPane.showConfirmDialog(this, ex.getMessage());
         }catch(IllegalArgumentException ex){
@@ -130,11 +159,24 @@ public class ModificarCamiAplicacio extends javax.swing.JFrame {
         }        
     }//GEN-LAST:event_BotonModificarActionPerformed
 
+    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+        // TODO add your handling code here:
+        if(jCheckBox2.isSelected()) JOptionPane.showMessageDialog(this, "Aquesta opcio pot demorarse uns minuts");
+    }//GEN-LAST:event_jCheckBox2ActionPerformed
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        // TODO add your handling code here:
+        if(jCheckBox1.isSelected() && this.teClausura==false) JOptionPane.showMessageDialog(this, "Aquesta opcio pot demorarse uns minuts");
+        else if(!jCheckBox1.isSelected() && this.teClausura==true) JOptionPane.showMessageDialog(this, "Desmarcar aquesta opcio fara perder la clausura existent");
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonEnrere;
     private javax.swing.JButton BotonModificar;
     private javax.swing.JTextField campCami;
     private javax.swing.JTextField campDescripcio;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables

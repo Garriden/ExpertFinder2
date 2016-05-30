@@ -7,6 +7,7 @@ package expert.finder.gui;
 
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -190,7 +191,9 @@ public class GuiResultat extends javax.swing.JFrame {
             menu.setVisible(true);
             this.dispose();
         }
-        //else no se puede hacer de otro tipo
+        else JOptionPane.showMessageDialog(this, "El grau de rellevància seleccionat no pertany al resultat "
+                                                  + "d'una consulta bàsica");
+
     }//GEN-LAST:event_consultaUmbralActionPerformed
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed

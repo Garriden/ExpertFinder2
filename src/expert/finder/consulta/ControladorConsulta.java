@@ -1,4 +1,3 @@
-//  Created Ruben Bagan
 package expert.finder.consulta;
 
 import expert.finder.cami.CamiClausura;
@@ -8,6 +7,16 @@ import expert.finder.node.Node;
 import expert.finder.utils.Matriu;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+/**
+ * @Author: Ruben Bagan Benavides
+ */
+
+/**
+ * La funcio d'aquesta clase es la de comunicarse amb la capa de presentacio i la del domini oferint totes les
+ * possibles funcions per permetre executar elements del domini i retornar aquesta informacio codificada en un tipus
+ * estandard de java. Per parmetre aixi una independencia entre capes.
+ */
 
 public class ControladorConsulta {
     private ArrayList<Consulta> consultes;
@@ -19,8 +28,7 @@ public class ControladorConsulta {
         if (tipusNode == 'A') return Node.TipusNode.AUTOR;
         if (tipusNode == 'T') return Node.TipusNode.TERME;
         if (tipusNode == 'P') return Node.TipusNode.PAPER;
-        if (tipusNode == 'C') return Node.TipusNode.CONFERENCIA;
-        throw new IllegalArgumentException("Error: El tipus de node no existeix, te que ser de tipus: Autor, Terme, Paper o Conferencia");
+        return Node.TipusNode.CONFERENCIA;
     }
 
     private Node.TipusNode stringToTipusNode(String tipusNode) throws IllegalArgumentException {
@@ -68,6 +76,15 @@ public class ControladorConsulta {
         return resultat;
     }
 
+    /**
+     * Inicialitza una instancia del controlador de consultes. Aquesta instancia té que rebre una referencia a una
+     * instancia ja inicialitzada del controlador de graf i d'un controlador de camins. El cost d'executar aquesta
+     * funcio es: O(1)
+     * @param controladorGraf Conte una referencia a una instancia del controlador de graf ja inicialitzada. No pot
+     *                        tindre un valor nul.
+     * @param controladorCami Conte una referencia a una instancia del controlador de camins ja inicialitzada. No pot
+     *                        tindre un valor nul.
+     */
     public ControladorConsulta(ControladorGraf controladorGraf, ControladorCami controladorCami) {
         this.hetesim = new HeteSim();
         this.consultes = new ArrayList<>();
@@ -75,6 +92,17 @@ public class ControladorConsulta {
         this.controladorCami = controladorCami;
     }
 
+    /**
+     * Executa una consulta de tipus I: Es una consulta que donat un node origen d'un cami i un cami trobar tots els
+     * nodes desti relacionats amb aquest node origen amb el seu grau de rellevancia.
+     * @param descripcio Cnote una breu descripcio de que fa la consulta.
+     * @param idNodeOrigen Conte l'identificador del node origen que pertany al conjunt de nodes origen del primer node
+     *                     del cami.
+     * @param idCami Conte l'identificador del cami per realitzar la consulta. Te que ser un identificador valid.
+     * @return Retorna un conjunt de tuples d'un resultat codificades.
+     * @throws IllegalArgumentException Errors provocats per el controlador de cami i/o errors provacts per el
+     * controlador de de graf.
+     */
     public ArrayList<String> executar_consulta_tipusI(String descripcio, int idNodeOrigen, int idCami) throws IllegalArgumentException {
         CamiClausura cami = this.controladorCami.get_cami_sense_codificar(idCami);
         Node.TipusNode tipusOrigen = camiToTipusNode(cami.get_cami().charAt(0));
@@ -91,6 +119,19 @@ public class ControladorConsulta {
         return resultat.codificar_resultat();
     }
 
+    /**
+     * Executa una consulta de Tipus II: Es una consulta que donat un node origen d'un cami i un cami trobar tots els
+     * nodes desti relacionats amb aquest node origen amb el seu grau de rellevancia. Pero a diferencia del tipus I
+     * filtrem el resultat a partir d'un grau de rellevancia proporcionat.
+     * @param descripcio Cnote una breu descripcio de que fa la consulta.
+     * @param idNodeOrigen Conte l'identificador del node origen que pertany al conjunt de nodes origen del primer node
+     *                     del cami.
+     * @param idCami Conte l'identificador del cami per realitzar la consulta. Te que ser un identificador valid.
+     * @param grauRellevancia Conte un valor entre [0..1]
+     * @return Retorna un conjunt de tuples d'un resultat codificades.
+     * @throws IllegalArgumentException Errors provocats per el controlador de cami i/o errors provacts per el
+     * controlador de de graf.
+     */
     public ArrayList<String> executar_consulta_tipusII(String descripcio, int idNodeOrigen, int idCami, double grauRellevancia) throws IllegalArgumentException {
         CamiClausura cami = this.controladorCami.get_cami_sense_codificar(idCami);
         Node.TipusNode tipusOrigen = camiToTipusNode(cami.get_cami().charAt(0));
@@ -108,7 +149,24 @@ public class ControladorConsulta {
         return resultat.codificar_resultat();
     }
 
-    public ArrayList<String> executar_consulta_tipusIII(String descripcio, int idNodeOrigen, int idCami, int idNodeDesti1, int idNodeDesti2) {
+    /**
+     * Executa una consulta de tipus III: Es uan consulta que donat un node origen i un node desti en un cami, trobar
+     * el seu grau de rellevancia que era desconegut. Proporcionar un tercer node, que sera tambe del conjunt de
+     * nodes origen executar la consulta de Tipus II amb el mateix grau de rellevancia.
+     * @param descripcio Cnote una breu descripcio de que fa la consulta.
+     * @param idNodeOrigen Conte l'identificador del node origen que pertany al conjunt de nodes origen del primer node
+     *                     del cami.
+     * @param idCami Conte l'identificador del cami per realitzar la consulta. Te que ser un identificador valid.
+     * @param idNodeDesti1 Conte l'identificador del node desti1 que pertany al conjunt de nodes desti de l'ultim node
+     *                     del cami.
+     * @param idNodeOrigen2 Conte l'identificador del node desti2 que pertany al conjunt de nodes origen del primer
+     *                      node del cami.
+     * @return Retorna un conjunt de tuples d'un resultat codificades.
+     * @throws IllegalArgumentException Errors provocats per el controlador de cami i/o errors provacts per el
+     * controlador de de graf.
+     */
+    public ArrayList<String> executar_consulta_tipusIII(String descripcio, int idNodeOrigen, int idCami, int
+            idNodeDesti1, int idNodeOrigen2) throws IllegalArgumentException {
         CamiClausura cami = this.controladorCami.get_cami_sense_codificar(idCami);
         Node.TipusNode tipusOrigen = camiToTipusNode(cami.get_cami().charAt(0));
         Node.TipusNode tipusDesti1 = camiToTipusNode(cami.get_cami().charAt(cami.get_longitud()-1));
@@ -117,7 +175,7 @@ public class ControladorConsulta {
         Node nodeDesti1 = this.controladorGraf.get_graf().get_node(idNodeDesti1, tipusDesti1);
         double grauRellevancia = this.hetesim.grau_relacio(nodeOrigen, nodeDesti1, cami, this.controladorGraf.get_graf());
 
-        Node nodeDesti2 = this.controladorGraf.get_graf().get_node(idNodeDesti2, tipusOrigen);
+        Node nodeDesti2 = this.controladorGraf.get_graf().get_node(idNodeOrigen2, tipusOrigen);
         Matriu m = this.hetesim.relacio_node_matriu(nodeDesti2, cami, this.controladorGraf.get_graf());
         Resultat resultat = generar_resultat(m, tipusDesti1);
         resultat.filtrar_resultat(grauRellevancia);
@@ -129,13 +187,14 @@ public class ControladorConsulta {
         return resultat.codificar_resultat();
     }
 
-
+    /**
+     *
+     * @param resultat
+     * @param posicioConsulta
+     */
     public void afegir_resultat_modificat(ArrayList<String> resultat, int posicioConsulta){
         this.consultes.get(posicioConsulta).set_resultat(generar_resultat(resultat));
     }
-
-
-
 
     public void eliminar_ultima_consulta_executada() {
         this.consultes.remove(this.consultes.size() - 1);
@@ -147,14 +206,29 @@ public class ControladorConsulta {
         consulta.set_resultat(resultat);
     }
 
+    /**
+     * Retorna el nombre total de consultes.
+     * @return Retorna el nombre total de consultes.
+     */
     public int get_nombre_consultes() {
         return this.consultes.size();
     }
 
+    /**
+     *
+     * @param posicio
+     * @return
+     */
     public ArrayList<String> get_resultat(int posicio) {
         return this.consultes.get(posicio).get_resultat().codificar_resultat();
     }
 
+    /**
+     * Retorna un conjunt de consultes codificades de la seguent forma:
+     * [Tipo Consulta]|[Descripcio]|[Norde Origen]|[Cami]|[Node Desti]|[Node Origen2]|[Grau rellevancia] El cost
+     * d'executar aquesta funcio es: O(n) on n es el nombre de consultes.
+     * @return Retorna un conjunt de consultes codificades.
+     */
     public ArrayList<String> get_consultes() {
         ArrayList<String> consultesCodificades = new ArrayList<>(this.consultes.size());
         for (int i = 0; i < this.consultes.size(); ++i) {
@@ -164,120 +238,28 @@ public class ControladorConsulta {
                     + "|" + consulta.get_node_origen()
                     + "|" + consulta.get_cami()
                     + "|" + consulta.get_node_desti()
-                    + "|" + consulta.get_node_origen()
+                    + "|" + consulta.get_node_relacio()
                     + "|" + consulta.get_grau_rellevancia());
         }
 
         return consultesCodificades;
     }
 
+    /**
+     * Elimina del controlador la consulta que estroba en la posicio pasada per parametre.
+     * @param posicio Conte la posicio de la consulta que s'ha d'eliminar de la llista. Te que tenir un valor major o
+     *                igual que 0 i menor al nombre total de consultes del controlador.
+     * @throws ArrayIndexOutOfBoundsException La posicio no esta dins d'un interval correcte
+     */
     public void eliminar_consulta(int posicio) throws ArrayIndexOutOfBoundsException {
-        if (posicio < 0 || posicio >= this.consultes.size())
-            throw new ArrayIndexOutOfBoundsException("Error: La posicio de la consulta té que estar compresa entre el 1 i la mida de la taula");
+        if (posicio < 0 || posicio >= this.consultes.size()) {
+            throw new ArrayIndexOutOfBoundsException("Error: La posicio de la consulta té que estar compresa entre el" +
+                    " 1 i la mida de la taula");
+        }
         this.consultes.remove(posicio);
     }
-    
-    /*
-    public ArrayList<String> get_consultes() {
-        ArrayList<String> consultesCodificades = new ArrayList<>(this.consultes.size());
-        for (int i = 0; i < this.consultes.size(); ++i) {
-            Consulta c = this.consultes.get(i);
-            String consultaCodificada = c.get_tipus_consulta() + "|" + c.get_descripcio();
-            consultesCodificades.add(consultaCodificada);
-        }
 
-        return consultesCodificades;
+    public void calcular_matriu_clausura(int idCami) {
+
     }
-
-    public void modificar_node_origen(int posicioConsulta, int posicioNode, String tipusNode) throws ArrayIndexOutOfBoundsException, IllegalArgumentException {
-        Node node = get_node(posicioNode, tipusNode);
-        if (posicioConsulta < 0 || posicioConsulta >= this.consultes.size())
-            throw new ArrayIndexOutOfBoundsException("Error: La posicio de la consulta té que estar compresa entre el 1 i la mida de la taula");
-        this.consultes.get(posicioConsulta).set_node_origen(node);
-    }
-
-    public void modificar_node_desti(int posicioConsulta, int posicioNode, String tipusNode) throws ArrayIndexOutOfBoundsException, IllegalArgumentException {
-        Node node = get_node(posicioNode, tipusNode);
-        if (posicioConsulta < 0 || posicioConsulta >= this.consultes.size())
-            throw new ArrayIndexOutOfBoundsException("Error: La posicio de la consulta té que estar compresa entre el 1 i la mida de la taula");
-        this.consultes.get(posicioConsulta).set_node_desti(node);
-    }
-
-    public void modificar_node_relacio(int posicioConsulta, int posicioNode, String tipusNode) throws ArrayIndexOutOfBoundsException, IllegalArgumentException {
-        Node node = get_node(posicioNode, tipusNode);
-        if (posicioConsulta < 0 || posicioConsulta >= this.consultes.size())
-            throw new ArrayIndexOutOfBoundsException("Error: La posicio de la consulta té que estar compresa entre el 1 i la mida de la taula");
-        this.consultes.get(posicioConsulta).set_node_relacio(node);
-    }
-
-    public void modificar_cami(int posicioConsulta, int posicioCami) throws ArrayIndexOutOfBoundsException, IllegalArgumentException {
-        Cami cami = get_cami(posicioCami);
-        if (posicioConsulta < 0 || posicioConsulta >= this.consultes.size())
-            throw new ArrayIndexOutOfBoundsException("Error: La posicio de la consulta té que estar compresa entre el 1 i la mida de la taula");
-        this.consultes.get(posicioConsulta).set_cami(cami);
-    }
-
-    public void modificar_grau_rellevancia(int posicioConsulta, double grauRellevancia) throws  ArrayIndexOutOfBoundsException{
-        if (posicioConsulta < 0 || posicioConsulta >= this.consultes.size())
-            throw new ArrayIndexOutOfBoundsException("Error: La posicio de la consulta té que estar compresa entre el 1 i la mida de la taula");
-        this.consultes.get(posicioConsulta).set_grau_rellevancia(grauRellevancia);
-    }
-
-    public void actualitzar_nodes_consultes(int posicioNode, String tipusNode) {
-        Node node = get_node(posicioNode, tipusNode);
-        for (int i = 0; i < this.consultes.size(); ++i) {
-            Consulta c = this.consultes.get(i);
-            if (c.get_node_origen().get_id() == node.get_id()) this.consultes.remove(i);
-            else if (c.get_tipus_consulta().equalsIgnoreCase("Tipus III")) {
-                if (c.get_node_desti().get_id() == node.get_id() || c.get_node_relacio().get_id() == node.get_id()) {
-                    this.consultes.remove(i);
-                }
-            }
-        }
-    }
-
-    public void actualitzar_camins_consultes(int posicioCami) throws IllegalArgumentException {
-        Cami cami = get_cami(posicioCami);
-        for (int i = 0; i < this.consultes.size(); ++i) {
-            Consulta c = this.consultes.get(i);
-            if (c.get_cami().get_cami().equalsIgnoreCase(cami.get_cami()) &&
-                    c.get_descripcio().equalsIgnoreCase(cami.get_descripcio())) {
-                this.consultes.remove(i);
-            }
-        }
-    }
-
-    public ArrayList<String> executar_consulta(int posicioConsulta) {
-        if (posicioConsulta < 0 || posicioConsulta >= this.consultes.size())
-            throw new ArrayIndexOutOfBoundsException("Error: La posicio de la consulta té que estar compresa entre el 1 i la mida de la taula");
-        ArrayList<String> resultat = new ArrayList<>();
-        Consulta c = this.consultes.get(posicioConsulta);
-        if (c.get_tipus_consulta().equalsIgnoreCase("Tipus III")) {
-            double grauRellevancia = this.hetesim.grau_relacio(c.get_node_origen(), c.get_node_desti(), c.get_cami(), this.controladorGraf.get_graf());
-            c.set_grau_rellevancia(grauRellevancia);
-        }
-
-        String cami = c.get_cami().get_cami();
-        Matriu matriu = hetesim.relacio_node_matriu(c.get_node_origen(), c.get_cami(), controladorGraf.get_graf());
-        String tipusNode = "Autor";
-        if (cami.charAt(cami.length()-1) == 'T') tipusNode = "Terme";
-        else if (cami.charAt(cami.length()-1) == 'C') tipusNode = "Conferencia";
-        
-        for (int i = 0 ; i < matriu.get_nombre_columnes(); ++i) {
-            String node = controladorGraf.consultar_node(i, tipusNode);
-            double valor = matriu.get_valor(0,i);
-            if (valor != 0.0) {
-                System.out.println();
-            }
-            node = node + "|" + String.valueOf(valor);
-            if (c.get_tipus_consulta().equalsIgnoreCase("Tipus II") || c.get_tipus_consulta().equalsIgnoreCase("Tipus III")) {
-                if (valor >= c.get_grau_rellevancia() - 0.05 && valor <= c.get_grau_rellevancia() + 0.05) {
-                    resultat.add(node);
-                }
-            }
-            else resultat.add(node);
-        }
-
-        return resultat;
-    }*/
 }

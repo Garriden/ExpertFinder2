@@ -7,7 +7,15 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * Created by Ruben Bagan Benavides on 14/05/2016.
+ * @Author: Ruben Bagan Benavides
+ */
+
+/**
+ * La funcio d'aquesta clase es la de permetre importar i exportar grafs ja sigui en format objecte o a partir de
+ * fitxers. Si la importacio es d'un nou graf, la carpeta te que contenir tots els fitxers necesaris de la base de
+ * dades per inicialitzar un graf. Els fitxers dels nodes i els fitxers de les relacions, tots amb extencio .txt. En
+ * canvi si es per recuperar un graf guardat com a objecte nomes cal aquell objecte unicament. Per exportar el graf
+ * el guardara en la ruta absoluta indicada amb la extencio i nom definides en la propia ruta.
  */
 
 public class ControladorPersistenciaGraf {
@@ -133,9 +141,9 @@ public class ControladorPersistenciaGraf {
         return m;
     }
 
-    // Pre:  Cert
-    // Post: Inicialitza el controlador del graf
-    // Cost: O(1)
+    /**
+     * Inicialitza el controlador de persistencia del graf. El cost d'executar aquesta funcio es: O(1).
+     */
     public ControladorPersistenciaGraf() {
         this.autorId = new ArrayList<>();
         this.paperId = new ArrayList<>();
@@ -143,10 +151,16 @@ public class ControladorPersistenciaGraf {
         this.conferenciaId = new ArrayList<>();
     }
 
-    // Pre:  Cert
-    // Post: Retorna una referencia a un graf inicialitzat amb els nodes existents en els diferents fitxers
-    //       de nodes i conté les relacions especificades en els fitxers paper x [autor,terme,conferencia]
-    // Cost: O(n) on n es el nombre d'entrades
+    /**
+     *  Retorna una referencia a un graf inicialitzat amb els nodes existents en els diferents fitxers de nodes i
+     *  conté les relacions especificades en els fitxers paper x [autor,terme,conferencia] El cost d'executar aquesta
+     *  funcio es: O(n). on es el nombre d'entrades del fitxer mes gran.
+     * @param ruta La ruta absoluta on estan tots els fitxers necessaris per importar: fitxers de nodes i fitxers de
+     *             relacions. Tots amb extencio .txt
+     * @return Retorna una referencia al graf que s'ha importat.
+     * @throws IOException Errors format dels fitxers o els fitxers necessaris no existeixen.
+     * @throws IllegalArgumentException La ruta te valor nul.
+     */
     public Graf importar_graf_nou(String ruta) throws IOException, IllegalArgumentException {
         if (ruta == null) {
             throw new IllegalArgumentException("Error: La ruta no pot tenir un valor nul");
@@ -164,8 +178,13 @@ public class ControladorPersistenciaGraf {
         return new Graf(paper_autor, paper_conf, paper_term, papers, termes, autors, conferencies);
     }
 
-    // Pre:  Cert
-    // Post: Retorna una referencia a un graf guardat com a objecte
+    /**
+     * Retorna una referencia a un graf que s'habia enmmagatzemat com a objecte. Aquest graf conte una imatge de
+     * l'estat en que es va exportar. El cost d'executar aquesta funcio es: O(1).
+     * @param ruta Conte la ruta i el nom del fitxer amb la seva extencio on esta enmmagatzemat el graf com a objecte.
+     * @return Retorna una referencia a un graf enmmagatzemat com a objecte en l'estat en que es va exportar.
+     * @throws IOException El contingut del fitxer no es un graf o la ruta noe s valida o no s'ha pogut obrir el fitxer.
+     */
     public Graf importar_graf_salvat(String ruta) throws IOException {
         FileInputStream fitxer = new FileInputStream(ruta);
         ObjectInputStream ois;
@@ -186,8 +205,14 @@ public class ControladorPersistenciaGraf {
         return graf;
     }
 
-    // Pre:  Cert
-    // Post: Enmmagatzema el graf passat com a referencia per parametre a la ruta absoluta.
+    /**
+     * Exporta una un graf a la ruta absoluta pasada com a paramtre, la cual també conte el nom del fitxer i la seva
+     * extencio. El graf s'enmmagatzema com a un objecte i es guarda en l'estat actual en que es fa l'exportacio.
+     * El cost d'executar aquesta funcio es: O(1).
+     * @param ruta Conte la ruta i el nom del fitxer amb la seva extencio on s'enmmagatzemara el graf com a objecte.
+     * @param graf Conte una referencia a un graf instanciat
+     * @throws IOException Algun paramtre te valor nul, o la ruta no es valida.
+     */
     public void exportar(String ruta , Graf graf) throws IOException {
         if (ruta == null) {
             throw new IllegalArgumentException("Error: La ruta no pot tenir un valor nul");

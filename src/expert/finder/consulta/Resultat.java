@@ -9,60 +9,83 @@ import java.util.ArrayList;
  * Created by Ruben Bagan Benavides
  */
 
+/**
+ * La funcio d'aquesta clase es la de representar un resultat d'una consulta. Entenem com a resultat un conjunt de
+ * tuples que conte una copia del node i el seu grau de rellevancia.
+ */
 public class Resultat implements Serializable {
     private ArrayList<Tuple> taula;
 
-    // Pre:  Cert
-    // Post: Crea un resultat amb cap tuple.
+    /**
+     * Inicialitza una instancia de resultat. El cost d'executar aquesta funcio es: O(1)
+     */
     public Resultat(){
         taula = new ArrayList<>();
     }
 
-    // Pre:  Node != null; 0 <= grauRellevancia <= 1
-    // Post: Afegix una tuple al resultat amb el node i un grau de rellevancia passats per paràmetre.
-    // Cost: O(1)
+    /**
+     * Afegiex una tupla al resultat. Aquesta tuple estara formada per la referencia al node passat per parametre i
+     * el seu grau de rellevancia. El cost d'executar aquesta funcio es: O(1)
+     * @param node Es una referencia a una copia del node resultant. No pot apuntar a una referencia nul-la.
+     * @param grauRellevancia Es un valor que te assignat al node que va en el rang [0..1]
+     */
     public void afegir_tuple(Node node, double grauRellevancia){
         taula.add(new Tuple(node, grauRellevancia));
     }
 
-    // Pre:  Cert
-    // Post: Retorna el nombre de tuples que té un resultat.
-    // Cost: O(1)
+    /**
+     * Retorna el nombre de tuples que te la consulta. El cost d'executar aquesta funcio es: O(1)
+     * @return Retorna el nombre de tuples que te la consulta.
+     */
     public int mida(){
         return taula.size();
     }
 
-    // Pre:  0 <= posicio < Resultat.Mida
-    // Post: Retorna la tuple i-èssima del resultat.
-    // Cost: O(1)
+    /**
+     * Retorna una referencia a una tuple que es troba a la posicio pasada per parametre. El cost d'executar aquesta
+     * funcio es: O(1)
+     * @param posicio La posicio te que ser major o igual que 0 i menor que el nombre de tuples de la consulta.
+     * @return Retorna una referencia a una tuple que es troba a la posicio pasada per parametre.
+     */
     public Tuple get_tuple(int posicio) {
         return taula.get(posicio);
     }
 
-    // Pre:  Cert
-    // Post: Retorna una referencia a l'ArrayList de tuples d'un resultat.
-    // Cost: O(n)
+    /**
+     * Retorna una referencia al conjunt de tuples que formen el resultat. El cost d'executar aquesta funcio es: O(1)
+     * @return Retorna una referencia al conjunt de tuples que formen el resultat.
+     */
     public ArrayList<Tuple> get_tuples() {
         return this.taula;
     }
 
-    // Pre:  0 <= posicio < Resultat.Mida
-    // Post: S'ha elimiant la tuple i-èssima del resultat.
-    // Cost: O(1)
+    /**
+     * Elimina una tuple que estigui en la posicio pasada per parametre. El cost d'executar aquesta funcio es: O(1)
+     * @param posicio La posicio te que ser major o igual que 0 i menor que el nombre de tuples de la consulta.
+     */
     public void eliminar_tuple(int posicio){
         taula.remove(posicio);
     }
 
-    // Pre:  0 <= grauRellevancia
-    // Post: S'han eliminat les tuples del resultat que no estan dins de l'interval de grauRellevancia +/- error.
-    // Cost: O(n)
+    /**
+     * Aquesta funcio serveix que donat un grau de rellevancia filtra totes les seves tuples a partir d'aquest grau
+     * de rellevancia pasat com a paramtre. La filtracio va en funcio que si el grau de rellevancia del node es menor
+     * que el grau pasat per paramtre s'elimina del resultat. El cost d'executar aquesta funcio es: O(n) on n es el
+     * nombre de tuples.
+     * @param grauRellevancia Es un valor que te assignat al node que va en el rang [0..1]
+     */
     public void filtrar_resultat(double grauRellevancia){
         for(int i = 0; i < taula.size(); ++i){
-            if(taula.get(i).get_grau_rellevancia() < grauRellevancia - 0.05 ||
-                    taula.get(i).get_grau_rellevancia() > grauRellevancia + 0.05) taula.remove(i);
+            if(taula.get(i).get_grau_rellevancia() < grauRellevancia) taula.remove(i);
         }
     }
-    
+
+    /**
+     * Retorna una llista de totes les tuples del resultat codificades amb els seguent format:
+     * [idNode]|[nomNode]|[TipusNode]|[GrauRellevancia]
+     * @return Retorna una llista de totes les tuples del resultat codificades amb els seguent format:
+     * [idNode]|[nomNode]|[TipusNode]|[GrauRellevancia]
+     */
     public ArrayList<String> codificar_resultat() {
         ArrayList<String> resultatsCodificat = new ArrayList<>(this.taula.size());
         for (int i = 0; i < this.taula.size(); ++i) {

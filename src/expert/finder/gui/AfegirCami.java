@@ -151,7 +151,7 @@ public class AfegirCami extends javax.swing.JFrame {
 
     private void BotonCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonCrearActionPerformed
         try {
-            this.controladorpresentacio.afegir_cami(CamiText.getText(), DescripcioText.getText());
+            this.controladorpresentacio.afegir_cami(CamiText.getText(), DescripcioText.getText(), jCheckBox1.isSelected());
             JOptionPane.showMessageDialog(this, "S'ha afegit el cami correctament");                
             GestioCami gc = new GestioCami(this.controladorpresentacio);
             gc.setVisible(true);
@@ -163,6 +163,7 @@ public class AfegirCami extends javax.swing.JFrame {
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // TODO add your handling code here:
+        if(jCheckBox1.isSelected()) JOptionPane.showMessageDialog(this, "Aquesta opcio pot demorarse uns minuts");
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void CamiTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CamiTextActionPerformed

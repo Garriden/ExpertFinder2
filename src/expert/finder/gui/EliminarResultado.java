@@ -7,6 +7,7 @@ package expert.finder.gui;
 
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -119,10 +120,14 @@ public class EliminarResultado extends javax.swing.JFrame {
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
         // TODO add your handling code here:
         int i = TableResultat.getSelectedRow();
-        this.controladorPresentacio.eliminar_consulta(i);
-        GuiGestionConsulta menu = new GuiGestionConsulta(this.controladorPresentacio);
-        menu.setVisible(true);
-        this.dispose();
+        if(i == -1) JOptionPane.showMessageDialog(this, "No s´ha seleccionat cap resultat.");
+        else {
+            this.controladorPresentacio.eliminar_consulta(i);
+            GuiGestionConsulta menu = new GuiGestionConsulta(this.controladorPresentacio);
+            menu.setVisible(true);
+            this.dispose();
+        }
+        
     }//GEN-LAST:event_eliminarActionPerformed
 
     

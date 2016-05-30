@@ -8,6 +8,7 @@ package expert.finder.gui;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -19,7 +20,10 @@ public class ModificarResultat extends javax.swing.JFrame {
     private final ControladorPresentacio controladorPresentacio;
     private int numeroConsulta;
     private ArrayList<String> modificacio;
-    boolean modificat = false;
+    String column_names[]= {"Nom Node","Grau Rellevancia"};
+    private DefaultTableModel table_model=new DefaultTableModel(column_names, 0);
+    private String tipusNode = null;
+    
     
     /**
      * Creates new form ModificarResultat
@@ -32,6 +36,20 @@ public class ModificarResultat extends javax.swing.JFrame {
         this.controladorPresentacio = controladorPresentacio;
         this.modificacio = this.controladorPresentacio.get_resultat(numeroConsulta);
         inicializar_taula_resultat();
+        
+        ArrayList<String> consultes = this.controladorPresentacio.get_consultes();
+        String consulta = consultes.get(this.numeroConsulta);
+        int primeraBarra = consulta.indexOf('|');
+        int segonaBarra = consulta.indexOf("|", primeraBarra+1);
+        int terceraBarra = consulta.indexOf("|", segonaBarra+1);
+        int cuartaBarra = consulta.indexOf("|", terceraBarra+1);
+        String cami = consulta.substring(terceraBarra+1, cuartaBarra);
+        
+            if (cami.charAt(0) == 'P') tipusNode = "Paper";
+            else if (cami.charAt(0) == 'T') tipusNode = "Terme";
+            else if (cami.charAt(0) == 'C') tipusNode = "Conferencia";            
+            else tipusNode = "Autor";
+        
     }
 
     /**
@@ -46,10 +64,12 @@ public class ModificarResultat extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TableResultat = new javax.swing.JTable();
-        afegir = new javax.swing.JButton();
+        guardar = new javax.swing.JButton();
         tornar = new javax.swing.JButton();
         modificaCasella = new javax.swing.JButton();
         novaCasella = new javax.swing.JTextField();
+        afegirFila = new javax.swing.JButton();
+        eliminarFila = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,10 +93,10 @@ public class ModificarResultat extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(TableResultat);
 
-        afegir.setText("Afegir");
-        afegir.addActionListener(new java.awt.event.ActionListener() {
+        guardar.setText("Guardar");
+        guardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                afegirActionPerformed(evt);
+                guardarActionPerformed(evt);
             }
         });
 
@@ -101,31 +121,54 @@ public class ModificarResultat extends javax.swing.JFrame {
             }
         });
 
+        afegirFila.setText("Afegir Fila");
+        afegirFila.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                afegirFilaActionPerformed(evt);
+            }
+        });
+
+        eliminarFila.setText("Eliminar Fila");
+        eliminarFila.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarFilaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(afegir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(tornar)
-                .addGap(52, 52, 52))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(novaCasella, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(modificaCasella)
-                        .addGap(61, 61, 61))))
+                        .addGap(0, 5, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(guardar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(tornar)
+                                        .addGap(52, 52, 52))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(eliminarFila)
+                                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(afegirFila)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(novaCasella, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(modificaCasella)
+                                        .addGap(39, 39, 39))))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,12 +180,15 @@ public class ModificarResultat extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(modificaCasella)
-                    .addComponent(novaCasella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(afegir)
-                    .addComponent(tornar))
-                .addGap(50, 50, 50))
+                    .addComponent(novaCasella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(afegirFila))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(eliminarFila)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tornar)
+                    .addComponent(guardar))
+                .addGap(38, 38, 38))
         );
 
         pack();
@@ -156,36 +202,15 @@ public class ModificarResultat extends javax.swing.JFrame {
         
     }//GEN-LAST:event_tornarActionPerformed
 
-    private void afegirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_afegirActionPerformed
+    private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
         // TODO add your handling code here:
-        ArrayList<String> resultat = new ArrayList<String> ();
-        int mida = this.modificacio.size();
-        for(int i = 0; i < mida; ++i){
-            
-            String linea = this.modificacio.get(i);
-            System.out.println(linea);
-            int primeraBarra = linea.indexOf("|");
-            int segonaBarra = linea.indexOf("|", primeraBarra + 1);
-            int terceraBarra = linea.indexOf("|", segonaBarra + 1);
-            
-            String id = linea.substring(0, primeraBarra);
 
-            String tipus = linea.substring(segonaBarra+1, terceraBarra);
-            
-            String novalinea = id + "|" + TableResultat.getModel().getValueAt(i, 0).toString() 
-                                + "|" + tipus + "|" + TableResultat.getModel().getValueAt(i, 1).toString();
-            System.out.println(novalinea);
-
-            resultat.add(novalinea);
-            
-            
-        }
-        this.controladorPresentacio.afegir_resultat_modificat(resultat,numeroConsulta);
+        this.controladorPresentacio.afegir_resultat_modificat(this.modificacio,numeroConsulta);
         GuiResultat menu = new GuiResultat(this.controladorPresentacio, numeroConsulta, false);
         menu.setVisible(true);
         this.dispose();
         
-    }//GEN-LAST:event_afegirActionPerformed
+    }//GEN-LAST:event_guardarActionPerformed
 
     private void modificaCasellaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificaCasellaActionPerformed
         // TODO add your handling code here:
@@ -193,7 +218,38 @@ public class ModificarResultat extends javax.swing.JFrame {
             int i = TableResultat.getSelectedRow();
             int j = TableResultat.getSelectedColumn();
             String nou = novaCasella.getText();
-            TableResultat.getModel().setValueAt(nou, i, j);
+            if(j == 1){
+                
+                double nouGrau = Double.parseDouble(nou);
+                if(nouGrau < 0 || nouGrau > 1){
+                     JOptionPane.showMessageDialog(this, "El grau de rellevancia introduit no és vàlid, ha de estar entre 0 i 1 ambdós inclosos.");
+                }
+                else{ 
+                    TableResultat.getModel().setValueAt(nou, i, 1);
+                    
+                    String novaLinea = modificacio.get(i);
+                    int primeraBarra = novaLinea.indexOf('|');
+                    int segonaBarra = novaLinea.indexOf("|", primeraBarra+1);
+                    String linea = i + "|" + novaLinea.substring(primeraBarra + 1, segonaBarra) + 
+                    "|" + tipusNode + "|" + nou;
+                    
+                    this.modificacio.set(i, linea);
+
+                }
+            }
+            else {
+                TableResultat.getModel().setValueAt(nou, i, 0);
+                String novaLinea = modificacio.get(i);
+                int ultimaBarra = novaLinea.lastIndexOf("|");
+
+                String linea = i + "|" + nou + 
+                "|" + tipusNode + "|" + novaLinea.substring(ultimaBarra + 1, novaLinea.length());
+                    
+                this.modificacio.set(i, linea);                    
+            }
+            
+            
+            
             novaCasella.setText("");
         }
         
@@ -204,13 +260,28 @@ public class ModificarResultat extends javax.swing.JFrame {
         
     }//GEN-LAST:event_novaCasellaActionPerformed
 
+    private void afegirFilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_afegirFilaActionPerformed
+        // TODO add your handling code here:
+        int i = this.modificacio.size();
+        String nodei = "x" + Integer.toString(i+1);
+        String Gr = "0.000001";
+        table_model.addRow(new Object [] {nodei, Gr});
+        TableResultat.setModel(table_model);
+        
+        String linea = i + "|" + nodei + "|" + tipusNode + "|" + Gr;
+        this.modificacio.add(linea);
+    }//GEN-LAST:event_afegirFilaActionPerformed
+
+    private void eliminarFilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarFilaActionPerformed
+        // TODO add your handling code here:
+        int i = TableResultat.getSelectedRow();
+        table_model.removeRow(i);
+        this.modificacio.remove(i);
+    }//GEN-LAST:event_eliminarFilaActionPerformed
+
 
     public void inicializar_taula_resultat(){
 
-        String column_names[]= {"Nom Node","Grau Rellevancia"};
-        DefaultTableModel table_model=new DefaultTableModel(column_names, 0);
-        
-        
         for(int j = 0; j < modificacio.size(); ++j){
             String nodeGrau = modificacio.get(j);
             String nomNode = nodeGrau.substring(nodeGrau.indexOf('|')+1, nodeGrau.indexOf("|", nodeGrau.indexOf('|')+1));
@@ -227,7 +298,9 @@ public class ModificarResultat extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TableResultat;
-    private javax.swing.JButton afegir;
+    private javax.swing.JButton afegirFila;
+    private javax.swing.JButton eliminarFila;
+    private javax.swing.JButton guardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton modificaCasella;

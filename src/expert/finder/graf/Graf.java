@@ -114,7 +114,7 @@ public class Graf implements Serializable{
      * paper s'elimina tambe totes les relacions que te amb els altres nodes es a dir s'elimina una fila de cada
      * matriu. Si el tipus es diferent a paper s'elimina la columna de la matriu corresponent. Si s'elimina un autor
      * i aquest es l'ultim autor d'un paper o mes retorna un error i impadeix eliminar-lo. El cost d'executar aquesta
-     * funcio es: O(n).
+     * funcio es: O(n) on n es el nombre de nodes relacionat amb ell.
      * @param node conte informacio del node que s'ha d'eliminar. Aquest node no pot apunta a una referencia nul-la.
      * @throws IllegalArgumentException Retorna un error si el parametre te valor nul, l'identificador del node no es
      * valid, el tipus del node es incorrecte o no es pot eliminar el autor.

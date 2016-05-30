@@ -115,8 +115,10 @@ public class ModificarCami extends javax.swing.JFrame {
         if(fila != -1){
             try{
                 String cami = jTable1.getModel().getValueAt(fila, 1).toString();
-                String descripcio = jTable1.getModel().getValueAt(fila, 2).toString();                
-                new ModificarCamiAplicacio(this.controladorpresentacio, cami, descripcio, fila).setVisible(true);
+                String descripcio = jTable1.getModel().getValueAt(fila, 2).toString();
+                boolean teClausura = false;
+                if(jTable1.getModel().getValueAt(fila, 3).toString().equals("Si")) teClausura = true;
+                new ModificarCamiAplicacio(this.controladorpresentacio, cami, descripcio, fila, teClausura).setVisible(true);
                 this.dispose();
             }catch(ArrayIndexOutOfBoundsException ex){
                 JOptionPane.showMessageDialog(this, ex.getMessage());
@@ -130,22 +132,25 @@ public class ModificarCami extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_BotonEnrereActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    
     private void inicialitzar_taula(){
-        String column_names[]= {"Id","Cami","Descripcio", "Clausura"};
-        DefaultTableModel table_model=new DefaultTableModel(column_names, 0);
+        String column_names[]= {"Id","Cami","Descripcio", "te Clausura", "Clasura Desactualitzada"};
+        DefaultTableModel table_model=new DefaultTableModel(column_names, 0){
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+        };
         ArrayList<String> camins = controladorpresentacio.get_camins();
         
         for(int i = 0; i < camins.size(); ++i){
             String camiCodificat = camins.get(i);
             
             String cami = camiCodificat.substring(0, camiCodificat.indexOf('|'));
-            String descripcio = camiCodificat.substring(camiCodificat.indexOf('|')+1, camiCodificat.length());
+            String descripcio = camiCodificat.substring(camiCodificat.indexOf('|')+1, camiCodificat.length()-6);
+            String teClausura = camiCodificat.substring(camiCodificat.length()-5, camiCodificat.length()-3);
+            String ClaActu = camiCodificat.substring(camiCodificat.length()-2, camiCodificat.length());
             
-            table_model.addRow(new Object [] {i+1, cami, descripcio, "Si"});            
+            table_model.addRow(new Object [] {i+1, cami, descripcio, teClausura, ClaActu});            
         }
         
         jTable1.setModel(table_model);

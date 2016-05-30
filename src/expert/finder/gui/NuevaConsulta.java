@@ -7,6 +7,7 @@ package expert.finder.gui;
 
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,9 +23,9 @@ public class NuevaConsulta extends javax.swing.JFrame {
     private final ControladorPresentacio controladorPresentacio;
     private String tipusConsulta = null;
     private String cami = null;
-    private String nodeOrigen = null;
-    private String nodeDesti = null;
-    private String nodeNou = null;
+    private int nodeOrigen = -1;
+    private int nodeDesti = -1;
+    private int nodeNou = -1;
     private String descripcio = null;
     private double grauRellevancia = -1;
     
@@ -294,29 +295,6 @@ public class NuevaConsulta extends javax.swing.JFrame {
     private void TipusBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TipusBoxActionPerformed
         // TODO add your handling code here:
         tipusConsulta = (String)TipusBox.getSelectedItem();
-        switch(tipusConsulta){
-            case "Consulta Basica": 
-                TableCami.setEnabled(true);
-                TableNodoOrigen.setEnabled(true);
-                TableNodoDestino.setEnabled(false);
-                TableNuevoNodo.setEnabled(false);
-                GrauRellevancia.setEnabled(false);
-                break;
-            case "Consulta Umbral":
-                TableCami.setEnabled(true);
-                TableNodoOrigen.setEnabled(true);
-                TableNodoDestino.setEnabled(false);
-                TableNuevoNodo.setEnabled(false);
-                GrauRellevancia.setEnabled(true);
-                break;
-            case "Consulta Tres Nodos":
-                TableCami.setEnabled(true);
-                TableNodoOrigen.setEnabled(true);
-                TableNodoDestino.setEnabled(true);
-                TableNuevoNodo.setEnabled(true);
-                GrauRellevancia.setEnabled(false);
-                break;
-        }
     }//GEN-LAST:event_TipusBoxActionPerformed
 
     private void tornaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tornaActionPerformed
@@ -329,54 +307,103 @@ public class NuevaConsulta extends javax.swing.JFrame {
     private void selectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectActionPerformed
         // TODO add your handling code here:
         if (TableCami.getSelectedRow() != -1){
-            cami = TableCami.getModel().getValueAt(TableCami.getSelectedRow(), 0).toString();
+            cami = Integer.toString(TableCami.getSelectedRow()+1);
                     
             tipusConsulta = (String)TipusBox.getSelectedItem();
+            System.out.println(tipusConsulta);
             TipusBox.setEnabled(false);
             switch(tipusConsulta){
                 case "Consulta Basica": 
                     inicialitzar_taula_node_origen(false);
+                    TableCami.setEnabled(true);
+                    TableNodoOrigen.setEnabled(true);
+                    TableNodoDestino.setEnabled(false);
+                    TableNuevoNodo.setEnabled(false);
+                    GrauRellevancia.setEnabled(false);
                     break;
                 case "Consulta Umbral":
                     inicialitzar_taula_node_origen(false);
+                    TableCami.setEnabled(true);
+                    TableNodoOrigen.setEnabled(true);
+                    TableNodoDestino.setEnabled(false);
+                    TableNuevoNodo.setEnabled(false);
+                    GrauRellevancia.setEnabled(true);
                     break;
                 case "Consulta Tres Nodos":
                     inicialitzar_taula_node_origen(false);
                     inicialitzar_taula_node_desti();
                     inicialitzar_taula_node_origen(true);
+                    TableCami.setEnabled(true);
+                    TableNodoOrigen.setEnabled(true);
+                    TableNodoDestino.setEnabled(true);
+                    TableNuevoNodo.setEnabled(true);
+                    GrauRellevancia.setEnabled(false);
                     break;
             }
         }
+        else JOptionPane.showMessageDialog(this, "No hi ha cap camí seleccionat.");
+
     }//GEN-LAST:event_selectActionPerformed
 
     private void ejecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarActionPerformed
         // TODO add your handling code here:
         ArrayList<String> resultat = new ArrayList<String>();
-        
-        nodeOrigen = TableNodoOrigen.getModel().getValueAt(TableNodoOrigen.getSelectedRow(), 0).toString();
-        System.out.println(cami);
-        System.out.println(nodeOrigen);
-        System.out.println(TextDescripcio.getText());
-            switch(tipusConsulta){
-                case "Consulta Basica": 
-                    resultat = this.controladorPresentacio.executa_consulta_tipo1(nodeOrigen, cami, TextDescripcio.getText());
-                    break;
-                case "Consulta Umbral":
-                    grauRellevancia = Double.parseDouble(GrauRellevancia.getText());
-                    resultat = this.controladorPresentacio.executa_consulta_tipo2(nodeOrigen, cami, grauRellevancia, TextDescripcio.getText());
-                    break;
-                case "Consulta Tres Nodos":
-                    nodeDesti = TableNodoDestino.getModel().getValueAt(TableNodoDestino.getSelectedRow(), 0).toString();
-                    nodeNou = TableNuevoNodo.getModel().getValueAt(TableNuevoNodo.getSelectedRow(), 0).toString();
-                    resultat = this.controladorPresentacio.executa_consulta_tipo3(nodeOrigen, cami, nodeDesti, nodeNou, TextDescripcio.getText());
-                    break;
-            }
+        boolean ejecutar = true;
+        if (cami == null) JOptionPane.showMessageDialog(this, "No hi ha cap camí seleccionat.");
+        else{
+            if(TableNodoOrigen.getSelectedRow() == -1) JOptionPane.showMessageDialog(this, "No hi ha cap node origen seleccionat.");
+            else{
+                nodeOrigen = TableNodoOrigen.getSelectedRow();
+                System.out.println(cami);
+                System.out.println(nodeOrigen);
+                System.out.println(TextDescripcio.getText());
+                    switch(tipusConsulta){
+                        case "Consulta Basica": 
+                            resultat = this.controladorPresentacio.executa_consulta_tipo1(nodeOrigen, cami, TextDescripcio.getText());
+                            break;
+                        case "Consulta Umbral":
+                            System.out.println(GrauRellevancia.getText());
+                            //try catch...
+                            grauRellevancia = Double.parseDouble(GrauRellevancia.getText());
+                            if(grauRellevancia < 0 || grauRellevancia > 1){
+                                JOptionPane.showMessageDialog(this, "El grau de rellevancia introduit no és valid, ha de estar entre 0 i 1 ambdós inclosos.");
+                                ejecutar = false;
+                            }
+                            else resultat = this.controladorPresentacio.executa_consulta_tipo2(nodeOrigen, cami, grauRellevancia, TextDescripcio.getText());
+
+                            break;
+                        case "Consulta Tres Nodos":
+                            if(TableNodoDestino.getSelectedRow() == -1){ 
+                                JOptionPane.showMessageDialog(this, "No hi ha cap node destí seleccionat.");
+                                ejecutar = false;
+                            }
+                            else{
+                                nodeDesti = TableNodoDestino.getSelectedRow();
+                                if(TableNuevoNodo.getSelectedRow() == -1){
+                                    JOptionPane.showMessageDialog(this, "No hi ha cap nou node origen seleccionat.");
+                                    ejecutar = false;
+                                }
+                                else{
+                                    nodeNou = TableNuevoNodo.getSelectedRow();
+                                    if(nodeNou == nodeOrigen){
+                                        JOptionPane.showMessageDialog(this, "El node origen y nou node origen no poden ser iguals.");
+                                        ejecutar = false;
+                                    }
+                                    else resultat = this.controladorPresentacio.executa_consulta_tipo3(nodeOrigen, cami, nodeDesti, nodeNou, TextDescripcio.getText());
+                                    
+                                }
+                            }
+                            break;
+                    }
             
-        
-        GuiResultat menu = new GuiResultat(this.controladorPresentacio, 
-                this.controladorPresentacio.get_nombre_consultes()-1, true);
-        menu.setVisible(true);
-        this.dispose();
+                if(ejecutar){
+                    GuiResultat menu = new GuiResultat(this.controladorPresentacio, 
+                        this.controladorPresentacio.get_nombre_consultes()-1, true);
+                    menu.setVisible(true);
+                    this.dispose();
+                }
+            }
+        }
     }//GEN-LAST:event_ejecutarActionPerformed
 
     private void GrauRellevanciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GrauRellevanciaActionPerformed
@@ -474,7 +501,10 @@ public class NuevaConsulta extends javax.swing.JFrame {
         
             String column_names[]= {"Id","Nom"};
             DefaultTableModel table_model = new DefaultTableModel(column_names, 0);
-            String cami1 = TableCami.getModel().getValueAt(TableCami.getSelectedRow(), 1).toString();
+            //peligro
+            ArrayList<String> camins = this.controladorPresentacio.get_camins();
+            String camicod1 = camins.get(TableCami.getSelectedRow());
+            String cami1 = camicod1.substring(0, camicod1.indexOf("|"));
             String tipusNode = "";
             if (cami1.charAt(0) == 'P') tipusNode = "Paper";
             else if (cami1.charAt(0) == 'T') tipusNode = "Terme";
@@ -498,7 +528,10 @@ public class NuevaConsulta extends javax.swing.JFrame {
         private void inicialitzar_taula_node_desti() {
             String column_names[]= {"Id","Nom"};
             DefaultTableModel table_model = new DefaultTableModel(column_names, 0);
-            String cami = TableCami.getModel().getValueAt(TableCami.getSelectedRow(), 1).toString();
+            //peligro
+            ArrayList<String> camins = this.controladorPresentacio.get_camins();
+            String camicod1 = camins.get(TableCami.getSelectedRow());
+            String cami = camicod1.substring(0, camicod1.indexOf("|"));
             String tipusNode = "";
             if (cami.charAt(cami.length()-1) == 'P') tipusNode = "Paper";
             else if (cami.charAt(cami.length()-1) == 'T') tipusNode = "Terme";

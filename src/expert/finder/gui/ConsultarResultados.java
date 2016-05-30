@@ -2,6 +2,7 @@
 package expert.finder.gui;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -121,10 +122,13 @@ public class ConsultarResultados extends javax.swing.JFrame {
     private void veureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_veureActionPerformed
         // TODO add your handling code here:
         int i = TableResultat.getSelectedRow();
+        if(i == -1) JOptionPane.showMessageDialog(this, "No s´ha seleccionat cap resultat.");
+        else{
+            GuiResultat menu = new GuiResultat(this.controladorPresentacio,i,false);
+            menu.setVisible(true);
+            this.dispose();
+        }
         
-        GuiResultat menu = new GuiResultat(this.controladorPresentacio,i,false);
-        menu.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_veureActionPerformed
 
     

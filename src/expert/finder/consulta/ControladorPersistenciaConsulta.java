@@ -7,7 +7,7 @@ package expert.finder.consulta;
 
 /**
  *
- * @author Phenom
+ * @author Ruben Bagan Benavides
  */
 public class ControladorPersistenciaConsulta {
     

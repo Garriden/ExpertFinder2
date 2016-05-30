@@ -49,20 +49,16 @@ public class ControladorPresentacio {
     public void exportar_cami(String rutaFitxer) throws IOException{
         controladorCami.exportar_camins(rutaFitxer);
     }
-    
-    public void afegir_cami(String cami, String descripcio) throws ArrayIndexOutOfBoundsException {
-        controladorCami.afegir_cami(cami, descripcio, true);
+
+    public void afegir_cami(String cami, String descripcio, boolean teClausura) throws ArrayIndexOutOfBoundsException {
+        controladorCami.afegir_cami(cami, descripcio, teClausura);
     }
-    
-    public void modificar_cami(int posicio, String cami) throws ArrayIndexOutOfBoundsException, IllegalArgumentException{
-        //controladorCami.modificar_cami(posicio, cami, true, true);
+
+    public void modificar_cami(int posicio, String cami, String camiAntic, String descripcio, boolean teClausura, boolean recalcularClausura) throws ArrayIndexOutOfBoundsException, IllegalArgumentException{
+        controladorCami.modificar_cami(posicio, cami, descripcio, teClausura, recalcularClausura);
     }
-    
-    public void modificar_descripcio(int posicio, String Descripcio){
-        //controladorCami.modificar_descripcio(posicio, Descripcio);
-    }
-    
-    public void eliminar_cami(int posicio){
+
+    public void eliminar_cami(int posicio) throws ArrayIndexOutOfBoundsException{
         controladorCami.eliminar_cami(posicio);
     }
 
@@ -104,57 +100,53 @@ public class ControladorPresentacio {
     public void eliminar_consulta(int posicio) {
         this.controladorConsulta.eliminar_consulta(posicio);
     }
-    
-    
+
+
     public int get_nombre_consultes(){
         return controladorConsulta.get_nombre_consultes();
     }
-    
+
     public ArrayList<String> get_consultes() {
         return this.controladorConsulta.get_consultes();
     }
 
-    public ArrayList<String> executa_consulta_tipo1(String idNodeOrigen, String idCami, String descripcio){
+    public ArrayList<String> executa_consulta_tipo1(int idNodeOrigen, String idCami, String descripcio){
 
-        int idNodeO = Integer.parseInt(idNodeOrigen);
+        int idNodeO = idNodeOrigen;
         int idC = Integer.parseInt(idCami);
         return controladorConsulta.executar_consulta_tipusI(descripcio, idNodeO, idC-1);
     }
 
-    public ArrayList<String> executa_consulta_tipo2(String idNodeOrigen, String idCami, double grauRellevancia, String descripcio){
+    public ArrayList<String> executa_consulta_tipo2(int idNodeOrigen, String idCami, double grauRellevancia, String descripcio){
 
-        int idNodeO = Integer.parseInt(idNodeOrigen);
+        int idNodeO = idNodeOrigen;
         System.out.println(idCami);
         int idC = Integer.parseInt(idCami);
 
         return controladorConsulta.executar_consulta_tipusII(descripcio, idNodeO, idC-1, grauRellevancia);
     }
 
-    public ArrayList<String> executa_consulta_tipo3(String idNodeOrigen, String idCami, String idNodeDesti1, String idNodeOrigen2, String descripcio){
+    public ArrayList<String> executa_consulta_tipo3(int idNodeOrigen, String idCami, int idNodeDesti1, int idNodeOrigen2, String descripcio){
 
-        int idNodeO = Integer.parseInt(idNodeOrigen);
         int idC = Integer.parseInt(idCami);
-        int idNodeD1 = Integer.parseInt(idNodeDesti1);
-        int idNodeO2 = Integer.parseInt(idNodeOrigen2);
 
-        return controladorConsulta.executar_consulta_tipusIII(descripcio, idNodeO, idC-1, idNodeD1, idNodeO2);
+
+        return controladorConsulta.executar_consulta_tipusIII(descripcio, idNodeOrigen, idC-1, idNodeDesti1, idNodeOrigen2);
     }
-    
-    
 
     public void eliminar_ultima_consulta_executada(){
         controladorConsulta.eliminar_ultima_consulta_executada();
     }
 
     public ArrayList<String> get_resultat(int numeroConsulta){
-          return controladorConsulta.get_resultat(numeroConsulta);
+        return controladorConsulta.get_resultat(numeroConsulta);
     }
 
     public void afegir_resultat_modificat(ArrayList<String> modificacio, int numeroConsulta){
-        
+
         controladorConsulta.afegir_resultat_modificat(modificacio, numeroConsulta);
     }
-    
+
     public void run() {
         new Menu(this).setVisible(true);
     }    
