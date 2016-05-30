@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class ControladorPersistenciaConsulta {
     /**
-     * Exporta el conjunt de consultes pasades com a parametre a un objecte anomenat Consultes.av que es crea en la
+     * Exporta el conjunt de consultes pasades com a parametre a un objecte anomenat Consultes.sav que es crea en la
      * propia arrel del programa.
      * @param consultes Conte un conjunt de consultes. El valor no pot ser nul.
      * @throws IOException
@@ -36,9 +36,9 @@ public class ControladorPersistenciaConsulta {
     }
 
     /**
-     * Importa un conjunt de consultes
-     * @return
-     * @throws IOException
+     * Importa un conjunt de consultes enmmagatzemades en l'arrel del programa amb nom Consultes.sav.
+     * @return Retorna un conjunt de consultes enmmagatzemades en l'arrel del programa amb nom Consultes.sav
+     * @throws IOException El fitxer no existeix o no conte consultes.
      */
     public ArrayList<Consulta> importar_consulta() throws IOException {
         FileInputStream fitxer = new FileInputStream("Consultes.sav");

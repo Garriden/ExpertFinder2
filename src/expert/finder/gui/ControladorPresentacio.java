@@ -48,6 +48,10 @@ public class ControladorPresentacio {
         controladorCami.exportar_camins(rutaFitxer);
     }
 
+    public void importar_consultes() throws IOException {
+        this.controladorConsulta.importar_consultes();
+    }
+
     public void afegir_cami(String cami, String descripcio, boolean teClausura)  throws IllegalArgumentException {
         controladorCami.afegir_cami(cami, descripcio, teClausura);
         if (teClausura) {
@@ -122,28 +126,26 @@ public class ControladorPresentacio {
         return this.controladorConsulta.get_consultes();
     }
 
-    public ArrayList<String> executa_consulta_tipo1(int idNodeOrigen, String idCami, String descripcio){
+    public void executa_consulta_tipo1(int idNodeOrigen, String idCami, String descripcio){
 
         int idNodeO = idNodeOrigen;
         int idC = Integer.parseInt(idCami);
-        return controladorConsulta.executar_consulta_tipusI(descripcio, idNodeO, idC-1);
+        controladorConsulta.executar_consulta_tipusI(descripcio, idNodeO, idC-1);
     }
 
-    public ArrayList<String> executa_consulta_tipo2(int idNodeOrigen, String idCami, double grauRellevancia, String descripcio){
+    public void executa_consulta_tipo2(int idNodeOrigen, String idCami, double grauRellevancia, String descripcio){
 
         int idNodeO = idNodeOrigen;
         System.out.println(idCami);
         int idC = Integer.parseInt(idCami);
-
-        return controladorConsulta.executar_consulta_tipusII(descripcio, idNodeO, idC-1, grauRellevancia);
+        controladorConsulta.executar_consulta_tipusII(descripcio, idNodeO, idC-1, grauRellevancia);
     }
 
-    public ArrayList<String> executa_consulta_tipo3(int idNodeOrigen, String idCami, int idNodeDesti1, int idNodeOrigen2, String descripcio){
+    public void executa_consulta_tipo3(int idNodeOrigen, String idCami, int idNodeDesti1, int idNodeOrigen2, String
+            descripcio){
 
         int idC = Integer.parseInt(idCami);
-
-
-        return controladorConsulta.executar_consulta_tipusIII(descripcio, idNodeOrigen, idC-1, idNodeDesti1, idNodeOrigen2);
+        controladorConsulta.executar_consulta_tipusIII(descripcio, idNodeOrigen, idC-1, idNodeDesti1, idNodeOrigen2);
     }
 
     public void eliminar_ultima_consulta_executada(){

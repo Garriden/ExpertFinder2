@@ -102,11 +102,11 @@ public class ControladorConsulta {
      * @param idNodeOrigen Conte l'identificador del node origen que pertany al conjunt de nodes origen del primer node
      *                     del cami.
      * @param idCami Conte l'identificador del cami per realitzar la consulta. Te que ser un identificador valid.
-     * @return Retorna un conjunt de tuples d'un resultat codificades.
      * @throws IllegalArgumentException Errors provocats per el controlador de cami i/o errors provacts per el
      * controlador de de graf.
      */
-    public ArrayList<String> executar_consulta_tipusI(String descripcio, int idNodeOrigen, int idCami) throws IllegalArgumentException {
+    public void executar_consulta_tipusI(String descripcio, int idNodeOrigen, int idCami) throws
+            IllegalArgumentException {
         CamiClausura cami = this.controladorCami.get_cami_sense_codificar(idCami);
         Node.TipusNode tipusOrigen = camiToTipusNode(cami.get_cami().charAt(0));
         Node.TipusNode tipusDesti = camiToTipusNode(cami.get_cami().charAt(cami.get_longitud()-1));
@@ -118,8 +118,6 @@ public class ControladorConsulta {
         Consulta consulta = new Consulta(descripcio, nodeOrigen.get_nom(), cami.get_cami());
         consulta.set_resultat(resultat);
         this.consultes.add(consulta);
-
-        return resultat.codificar_resultat();
     }
 
     /**
@@ -131,11 +129,11 @@ public class ControladorConsulta {
      *                     del cami.
      * @param idCami Conte l'identificador del cami per realitzar la consulta. Te que ser un identificador valid.
      * @param grauRellevancia Conte un valor entre [0..1]
-     * @return Retorna un conjunt de tuples d'un resultat codificades.
      * @throws IllegalArgumentException Errors provocats per el controlador de cami i/o errors provacts per el
      * controlador de de graf.
      */
-    public ArrayList<String> executar_consulta_tipusII(String descripcio, int idNodeOrigen, int idCami, double grauRellevancia) throws IllegalArgumentException {
+    public void executar_consulta_tipusII(String descripcio, int idNodeOrigen, int idCami, double grauRellevancia)
+            throws IllegalArgumentException {
         CamiClausura cami = this.controladorCami.get_cami_sense_codificar(idCami);
         Node.TipusNode tipusOrigen = camiToTipusNode(cami.get_cami().charAt(0));
         Node.TipusNode tipusDesti = camiToTipusNode(cami.get_cami().charAt(cami.get_longitud()-1));
@@ -148,8 +146,6 @@ public class ControladorConsulta {
         Consulta consulta = new Consulta(descripcio, nodeOrigen.get_nom(), cami.get_cami(), grauRellevancia);
         consulta.set_resultat(resultat);
         this.consultes.add(consulta);
-
-        return resultat.codificar_resultat();
     }
 
     /**
@@ -164,11 +160,10 @@ public class ControladorConsulta {
      *                     del cami.
      * @param idNodeOrigen2 Conte l'identificador del node desti2 que pertany al conjunt de nodes origen del primer
      *                      node del cami.
-     * @return Retorna un conjunt de tuples d'un resultat codificades.
      * @throws IllegalArgumentException Errors provocats per el controlador de cami i/o errors provacts per el
      * controlador de de graf.
      */
-    public ArrayList<String> executar_consulta_tipusIII(String descripcio, int idNodeOrigen, int idCami, int
+    public double executar_consulta_tipusIII(String descripcio, int idNodeOrigen, int idCami, int
             idNodeDesti1, int idNodeOrigen2) throws IllegalArgumentException {
         CamiClausura cami = this.controladorCami.get_cami_sense_codificar(idCami);
         Node.TipusNode tipusOrigen = camiToTipusNode(cami.get_cami().charAt(0));
@@ -186,8 +181,7 @@ public class ControladorConsulta {
         Consulta consulta = new Consulta(descripcio, nodeOrigen.get_nom(), nodeDesti1.get_nom(), nodeDesti2.get_nom(), cami.get_cami(), grauRellevancia);
         consulta.set_resultat(resultat);
         this.consultes.add(consulta);
-
-        return resultat.codificar_resultat();
+        return grauRellevancia;
     }
 
     /**
@@ -249,6 +243,19 @@ public class ControladorConsulta {
     }
 
     /**
+     * S'inicialitza o s'afegixen noves consultes al controlador a partir del fitxer enmamgatzemat a l'arrel del
+     * programa amb nom Consultes.sav
+     * @throws IOException Errors creats per part del controlador de persistencia de consultes.
+     */
+    public void importar_consultes() throws IOException {
+        ControladorPersistenciaConsulta controladorPersistenciaConsulta = new ControladorPersistenciaConsulta();
+        ArrayList<Consulta> novesConsultes = controladorPersistenciaConsulta.importar_consulta();
+        for (int i = 0; i < novesConsultes.size(); ++i) {
+            this.consultes.add(novesConsultes.get(i));
+        }
+    }
+
+    /**
      * Elimina del controlador la consulta que estroba en la posicio pasada per parametre.
      * @param posicio Conte la posicio de la consulta que s'ha d'eliminar de la llista. Te que tenir un valor major o
      *                igual que 0 i menor al nombre total de consultes del controlador.
@@ -262,6 +269,10 @@ public class ControladorConsulta {
         this.consultes.remove(posicio);
     }
 
+    /**
+     *
+     * @param posicio
+     */
     public void calcular_matriu_clausura(int posicio) {
         CamiClausura cami = controladorCami.get_cami_sense_codificar(posicio);
         Matriu m = this.hetesim.matriu_clausura(cami, this.controladorGraf.get_graf());

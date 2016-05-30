@@ -2,6 +2,8 @@ package expert.finder.utils;
 
 import expert.finder.node.Node;
 
+import java.io.Serializable;
+
 /**
  * @Author: Ruben Bagan Benavides
  */
@@ -10,7 +12,7 @@ import expert.finder.node.Node;
  * La funcio d'aquesta clase es la de representar una tuple d'un resultat. Aquesta tuple consta d'una referencia a
  * un node i el seu grau de rellevancia.
  */
-public class Tuple {
+public class Tuple implements Serializable{
     // Enmamgatzema una referencia a un node del graf.
     private Node node;
 

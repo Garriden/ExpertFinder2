@@ -5,6 +5,9 @@
  */
 package expert.finder.gui;
 
+import javax.swing.*;
+import java.io.IOException;
+
 /**
  *
  * @author marc.garrido.casas
@@ -191,6 +194,16 @@ public class Menu extends javax.swing.JFrame {
 
     private void BotonImpExpConsultesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonImpExpConsultesActionPerformed
         // TODO add your handling code here:
+        try {
+            this.controladorPresentacio.importar_consultes();
+            JOptionPane.showMessageDialog(this,
+                    "S'han importat correctament les consultes");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Error al exportar",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_BotonImpExpConsultesActionPerformed
 
     private void BotonGestioGrafActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonGestioGrafActionPerformed
