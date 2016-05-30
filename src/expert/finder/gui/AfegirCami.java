@@ -151,11 +151,32 @@ public class AfegirCami extends javax.swing.JFrame {
 
     private void BotonCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonCrearActionPerformed
         try {
-            this.controladorpresentacio.afegir_cami(CamiText.getText(), DescripcioText.getText(), jCheckBox1.isSelected());
-            JOptionPane.showMessageDialog(this, "S'ha afegit el cami correctament");                
-            GestioCami gc = new GestioCami(this.controladorpresentacio);
-            gc.setVisible(true);
-            this.dispose();
+            boolean confirmar = true;
+            if (this.controladorpresentacio.existeix_cami(DescripcioText.getText())) {
+                Object[] opcions = {"Si", "No"};
+                int n = JOptionPane.showOptionDialog(this, "Ja existeix un cami amb aquesta descripcio, ¿vols " +
+                        "afegir-lo igualment?", "Cami amb descripcio repetida", JOptionPane.YES_NO_OPTION, JOptionPane
+                        .QUESTION_MESSAGE, null,
+                        opcions, opcions[0]);
+                if (n == JOptionPane.NO_OPTION) {
+                    confirmar = false;
+                }
+            }
+            if (confirmar) {
+                if (CamiText.getText().length() == 1 && jCheckBox1.isSelected()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Error: No pots calcular la matriu de clausura d'un cami de longitud 1",
+                            "Error Clausura",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    this.controladorpresentacio.afegir_cami(CamiText.getText(), DescripcioText.getText(), jCheckBox1.isSelected());
+                    JOptionPane.showMessageDialog(this, "S'ha afegit el cami correctament");
+                    GestioCami gc = new GestioCami(this.controladorpresentacio);
+                    gc.setVisible(true);
+                    this.dispose();
+                }
+            }
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());                
         }

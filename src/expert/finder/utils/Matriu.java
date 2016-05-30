@@ -156,17 +156,16 @@ public class Matriu implements Serializable {
      */
     public void eliminar_fila(int fila) {
         this.data.remove(fila);
-        HashMap<Integer, HashMap<Integer, Double>> copiaData = new HashMap<>();
+        HashMap<Integer, HashMap<Integer, Double>> copiaDataFiles = new HashMap<>();
         for (Integer filaData : this.data.keySet()) {
             if (filaData > fila) {
-                copiaData.put(filaData - 1, this.data.get(filaData));
+                copiaDataFiles.put(filaData - 1, this.data.get(filaData));
             }
             else if (filaData < fila) {
-                copiaData.put(filaData, this.data.get(filaData));
+                copiaDataFiles.put(filaData, this.data.get(filaData));
             }
         }
-        this.data = copiaData;
-
+        this.data = copiaDataFiles;
         --this.nFiles;
     }
 
@@ -189,7 +188,6 @@ public class Matriu implements Serializable {
             }
             this.data.put(filaData, copiaColumna);
         }
-
         --this.nColumnes;
     }
 
@@ -344,31 +342,42 @@ public class Matriu implements Serializable {
      */
     public Matriu normalitzar_columna() {
         Matriu m = new Matriu(this.nFiles, this.nColumnes);
-        
-        for (int i = 0; i < this.nColumnes; ++i) {
-            double norma = 0.0;
-            for (Integer fila : this.data.keySet()) {
-                norma += Math.pow(this.get_valor(fila, i),2);
+        Matriu mColumnes = new Matriu(this.nFiles, this.nColumnes);
+        for (Integer fila : this.data.keySet()) {
+            HashMap<Integer, Double> columnes = this.data.get(fila);
+            for (Integer columna : columnes.keySet()) {
+                mColumnes.set_valor(columna, fila, columnes.get(columna));
             }
+        }
+
+        for (Integer columna : mColumnes.data.keySet()) {
+            double norma = 0.0;
+            HashMap<Integer, Double> files = mColumnes.data.get(columna);
+            for (Integer fila : files.keySet()) {
+                norma += Math.pow(files.get(fila), 2);
+            }
+
             if (norma != 0.0) {
                 norma = Math.sqrt(norma);
-                for (Integer fila : this.data.keySet()) {
-                    m.set_valor(fila, i, (this.get_valor(fila, i)/norma));
+
+                for (Integer fila : files.keySet()) {
+                    m.set_valor(fila, columna, (files.get(fila)/norma));
                 }
             }
-        }                
-        
+        }
         return m;
     }
 
     /**
-     * Retorna una referencia a la estructura de dades que utilitza la matriu esparsa. El cost d'executar aquesta
-     * funcio es: O(1)
-     * @return Retorna una referencia a la estructura de dades que utilitza la matriu esparsa.
+     * Retorna una referencia a la estructura de dades que utilitza la matriu esparsa estructurada per files. El
+     * cost d'executar aquesta funcio es: O(1)
+     * @return Retorna una referencia a la estructura de dades que utilitza la matriu esparsa estructurada per files.
      */
     public HashMap<Integer, HashMap<Integer, Double>> get_hashmap() {
         return this.data;
     }
+
+
 
     /**
      * Retorna una matriu M que es una copia de la matriu implicita. El cost d'executar aquesta funcio es: O(n^2)

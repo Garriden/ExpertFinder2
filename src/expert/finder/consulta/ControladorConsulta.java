@@ -4,7 +4,10 @@ import expert.finder.cami.CamiClausura;
 import expert.finder.cami.ControladorCami;
 import expert.finder.graf.ControladorGraf;
 import expert.finder.node.Node;
+import expert.finder.utils.ControladorPersistenciaMatriu;
 import expert.finder.utils.Matriu;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -259,7 +262,15 @@ public class ControladorConsulta {
         this.consultes.remove(posicio);
     }
 
-    public void calcular_matriu_clausura(int idCami) {
+    public void calcular_matriu_clausura(int posicio) {
+        CamiClausura cami = controladorCami.get_cami_sense_codificar(posicio);
+        Matriu m = this.hetesim.matriu_clausura(cami, this.controladorGraf.get_graf());
+        ControladorPersistenciaMatriu controladorPersistenciaMatriu = new ControladorPersistenciaMatriu();
+        try {
+            controladorPersistenciaMatriu.exportar("MatriuClausuraCamiId"+cami.get_id_fitxer_clausura()+".sav", m);
+        } catch (IOException e) {
+            System.out.println("No s'ha pogut crear la matriu de clausura motiu: " + e.getMessage());
+        }
 
     }
 }

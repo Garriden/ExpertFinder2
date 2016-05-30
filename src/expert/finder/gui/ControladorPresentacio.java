@@ -19,47 +19,59 @@ public class ControladorPresentacio {
     private final ControladorGraf controladorGraf;
     private final ControladorCami controladorCami;
     private final ControladorConsulta controladorConsulta;
+    private boolean grafInicialitzat = false;
         
     public ControladorPresentacio() {
         this.controladorGraf = new ControladorGraf();
         this.controladorCami = new ControladorCami();
         this.controladorConsulta = new ControladorConsulta(this.controladorGraf, this.controladorCami);
     }
+
+    public boolean graf_inicialitzat() {
+        return this.grafInicialitzat;
+    }
         
     public void importar_graf(String rutaFitxer, boolean esNou) throws IOException {
         this.controladorGraf.importar(esNou, rutaFitxer);
+        this.grafInicialitzat = true;
     }
     
     public void exportar_graf(String rutaFitxer)  throws IOException {
         this.controladorGraf.exportar(rutaFitxer);
     }
-    
-    public ArrayList<String> get_camins(){
-        return controladorCami.get_camins();
-    }
-    
-    public String get_cami(int pos){
-        return controladorCami.get_cami(pos);
-    }
-    
-    public void importar_cami(String rutaFitxer) throws IllegalArgumentException, IOException, ClassNotFoundException{
+
+    public void importar_cami(String rutaFitxer) throws IllegalArgumentException, IOException, ClassNotFoundException {
         controladorCami.importar_camins(rutaFitxer);
     }
     
-    public void exportar_cami(String rutaFitxer) throws IOException{
+    public void exportar_cami(String rutaFitxer) throws IOException, IllegalArgumentException {
         controladorCami.exportar_camins(rutaFitxer);
     }
 
-    public void afegir_cami(String cami, String descripcio, boolean teClausura) throws ArrayIndexOutOfBoundsException {
+    public void afegir_cami(String cami, String descripcio, boolean teClausura)  throws IllegalArgumentException {
         controladorCami.afegir_cami(cami, descripcio, teClausura);
-    }
-
-    public void modificar_cami(int posicio, String cami, String camiAntic, String descripcio, boolean teClausura, boolean recalcularClausura) throws ArrayIndexOutOfBoundsException, IllegalArgumentException{
-        controladorCami.modificar_cami(posicio, cami, descripcio, teClausura, recalcularClausura);
+        if (teClausura) {
+            controladorConsulta.calcular_matriu_clausura(controladorCami.get_mida()-1);
+        }
     }
 
     public void eliminar_cami(int posicio) throws ArrayIndexOutOfBoundsException{
         controladorCami.eliminar_cami(posicio);
+    }
+
+    public void modificar_cami(int posicio, String cami, String camiAntic, String descripcio, boolean teClausura, boolean recalcularClausura) throws ArrayIndexOutOfBoundsException, IllegalArgumentException{
+        controladorCami.modificar_cami(posicio, cami, descripcio, teClausura, recalcularClausura);
+        if (teClausura && recalcularClausura && !camiAntic.equalsIgnoreCase(cami)) {
+            controladorConsulta.calcular_matriu_clausura(controladorCami.get_mida()-1);
+        }
+    }
+
+    public ArrayList<String> get_camins(){
+        return controladorCami.get_camins();
+    }
+
+    public boolean existeix_cami(String descripcio) throws IllegalArgumentException {
+        return controladorCami.existeix_cami(descripcio);
     }
 
     public ArrayList<String> get_nodes(String tipusNode) throws IllegalArgumentException {

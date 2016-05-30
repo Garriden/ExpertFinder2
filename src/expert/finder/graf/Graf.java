@@ -11,7 +11,7 @@ import java.util.HashMap;
  */
 
 /**
- * La funcio d'aquesta clase es la de representar un graf, composat per nodes i relaciones. Aquest graf contempla les
+ * La funcio d'aquesta clase es la de representar un graf, composat per nodes i relacions. Aquest graf contempla les
  * seguents cardinalitats:
  *      - un autor pot existir i no escriure cap paper.
  *      - un paper sempre te que se escrit per un o mes autors.

@@ -16,7 +16,7 @@ package expert.finder.cami;
  * codificat.
  */
 public class CamiClausura extends Cami{
-    private static int idFitxerClausura = 1;
+    private static int idFitxerClausura = 0;
     protected boolean teClausura;
     protected boolean clausuraDesactualitzada;
 
@@ -55,12 +55,12 @@ public class CamiClausura extends Cami{
     public CamiClausura(String camiCodificat) throws IllegalArgumentException {
         super("N/A","N/A");
         int posicioDescripcio = camiCodificat.indexOf('|');
-        int posicioClausura = camiCodificat.indexOf('|', posicioDescripcio);
-        int posicioActualitzada = camiCodificat.indexOf('|', posicioClausura);
+        int posicioClausura = camiCodificat.indexOf('|', posicioDescripcio+1);
+        int posicioActualitzada = camiCodificat.indexOf('|', posicioClausura+1);
 
         String cami = camiCodificat.substring(0, posicioDescripcio);
-        if (!this.cami_valid(this.cami)) {
-            throw new IllegalArgumentException("Error: El cami que intentes afegir no es un camó vàlid.");
+        if (!this.cami_valid(cami)) {
+            throw new IllegalArgumentException("Error: El cami que intentes afegir no es un cami valid.");
         }
         String descripcio = camiCodificat.substring(posicioDescripcio+1, posicioClausura);
         boolean clausura = false;
@@ -112,7 +112,7 @@ public class CamiClausura extends Cami{
 
     public void set_actualitzar_clausura(boolean recalcularClausura) {
         if (this.teClausura && recalcularClausura) {
-            this.clausuraDesactualitzada = true;
+            this.clausuraDesactualitzada = false;
         }
     }
 

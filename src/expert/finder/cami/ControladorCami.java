@@ -170,6 +170,14 @@ public class ControladorCami {
     }
 
     /**
+     * Retorna el nombre de camins que te el controlador.
+     * @return Retorna el nombre de camins que te el controlador.
+     */
+    public int get_mida() {
+        return this.camins.size();
+    }
+
+    /**
      * Retorna una boolea que indica si hi ha algun cami en el controlador on la seva descripcio es igual a la
      * descripcio passada per parametre. El cost d'executar aquesta funcio es: O(n) on n es el nombre de camins que
      * te el controlador.
@@ -230,5 +238,20 @@ public class ControladorCami {
             throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida de la taula");
         }
         return this.camins.get(posicio);
+    }
+
+    /**
+     * Retorna el id del fitxer de clausura del cami.
+     * @param posicio conte la posicio de la llista del cami a eliminar.
+     * @return C:\Users\Phenom\IdeaProjects\ExpertFinder\src\expert\finder\cami\ControladorCami.java
+     * @throws ArrayIndexOutOfBoundsException L'identificador per obtenir un cami té que estar compresa entre el 1 i
+     * la mida de la taula.
+     */
+    public int get_id_fitxer_clausura(int posicio) throws ArrayIndexOutOfBoundsException {
+        if (posicio < 0 || posicio >= camins.size()) {
+            throw new ArrayIndexOutOfBoundsException("Error: la posicio té que esta compresa entre el 1 i la mida de " +
+                    "la taula");
+        }
+        return this.camins.get(posicio).get_id_fitxer_clausura();
     }
 }

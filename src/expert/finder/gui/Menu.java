@@ -14,6 +14,20 @@ public class Menu extends javax.swing.JFrame {
 
     public Menu(ControladorPresentacio controladorPresentacio) {
         initComponents();
+        if (!controladorPresentacio.graf_inicialitzat()) {
+            BotonImpExpConsultes.setEnabled(false);
+            BotonGestioCamins.setEnabled(false);
+            BotonGestioConsultes.setEnabled(false);
+            BotonGestioGraf.setEnabled(false);
+            BotonImpExpCami.setEnabled(false);
+        }
+        else {
+            BotonImpExpConsultes.setEnabled(true);
+            BotonGestioCamins.setEnabled(true);
+            BotonGestioConsultes.setEnabled(true);
+            BotonGestioGraf.setEnabled(true);
+            BotonImpExpCami.setEnabled(true);
+        }
         this.controladorPresentacio = controladorPresentacio;
         this.setLocationRelativeTo(null);
     }
@@ -53,7 +67,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        BotonImpExpConsultes.setText("IMP/EXP Consultes");
+        BotonImpExpConsultes.setText("IMP Consultes");
         BotonImpExpConsultes.setToolTipText("");
         BotonImpExpConsultes.setActionCommand("");
         BotonImpExpConsultes.addActionListener(new java.awt.event.ActionListener() {
