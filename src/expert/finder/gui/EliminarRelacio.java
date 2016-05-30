@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Admin
+ * @author Admin 
  */
 public class EliminarRelacio extends javax.swing.JFrame {
     private final ControladorPresentacio controladorPresentacio;
